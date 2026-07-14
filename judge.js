@@ -32,6 +32,7 @@ const passwordMessage = document.getElementById("passwordMessage");
 
 function unlockJudgeSystem() {
   sessionStorage.setItem("apdcJudgeUnlocked", "yes");
+
   passwordGate.classList.add("hidden");
   passwordGate.hidden = true;
   passwordGate.style.display = "none";
@@ -39,6 +40,11 @@ function unlockJudgeSystem() {
   judgeProtected.classList.remove("hidden");
   judgeProtected.hidden = false;
   judgeProtected.style.display = "block";
+
+  if (!currentJudge) {
+    judgeGate.classList.remove("hidden");
+    scoreScreen.classList.add("hidden");
+  }
 
   passwordMessage.textContent = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -55,7 +61,7 @@ function lockJudgeSystem() {
 }
 
 function checkPassword() {
-  if (passwordInput.value === ACCESS_PASSWORD) {
+  if (passwordInput.value.trim() === ACCESS_PASSWORD) {
     unlockJudgeSystem();
   } else {
     passwordMessage.textContent = "INCORRECT PASSWORD";
@@ -75,16 +81,6 @@ if (sessionStorage.getItem("apdcJudgeUnlocked") === "yes") {
 } else {
   lockJudgeSystem();
 }
-
-
-
- else {
-  passwordGate.classList.remove("hidden");
-  judgeGate.classList.add("hidden");
-  scoreScreen.classList.add("hidden");
-}
-
-
 const natural = (a,b) => String(a).localeCompare(String(b), undefined, {numeric:true,sensitivity:"base"});
 
 function renderJudgeButtons() {

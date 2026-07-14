@@ -1,7 +1,10 @@
-# APDC JUDGE — PASSWORD GATE FIXED
+# APDC JUDGE — PASSWORD WORKING
 
-- Judge password: 0070
-- Before password entry, all judge names and scoring controls are fully hidden.
-- After correct password entry, the judge selection screen opens.
-- Admin password remains 0322.
-- Live page remains public.
+Fixed:
+- Removed JavaScript syntax error
+- Password 0070 now opens the judge selection page
+- Judge list stays fully hidden before login
+- Safari/GitHub Pages cache-buster added
+
+Admin password: 0322
+Live page: no password
