@@ -88,3 +88,12 @@
   font-weight:900;
   border-radius:0;
 }
+
+.hidden,[hidden]{display:none!important}
+#judgeProtected.hidden{display:none!important}
+.password-gate{
+  min-height:70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}

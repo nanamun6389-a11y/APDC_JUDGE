@@ -16,13 +16,15 @@
   <div class="password-box">
     <div class="small-label">APDC JUDGE ACCESS</div>
     <h1>ENTER PASSWORD</h1>
-    <input id="passwordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+    <input id="passwordInput" type="password" inputmode="numeric" maxlength="4"
+           placeholder="••••" autocomplete="off">
     <button id="passwordBtn" type="button">ENTER</button>
     <div id="passwordMessage" class="message"></div>
   </div>
 </section>
 
-  <section id="judgeGate" class="judge-gate hidden">
+<div id="judgeProtected" class="hidden" hidden style="display:none">
+<section id="judgeGate" class="judge-gate hidden">
     <h1>SELECT JUDGE</h1>
     <div class="judge-group-title">T JUDGES</div>
     <div id="tJudgeButtons" class="judge-grid"></div>
@@ -79,6 +81,7 @@
     <a href="live.html">LIVE</a>
     <a href="qr.html">QR</a>
   </nav>
+</div>
 </main>
 
 <script type="module" src="judge.js"></script>

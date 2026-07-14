@@ -1,11 +1,7 @@
-# APDC JUDGE — PASSWORD 0070
+# APDC JUDGE — PASSWORD GATE FIXED
 
-Updates:
-- Judge screen requires password 0070
-- Successful login stays active for the current browser session
-- Closing the browser/session requires the password again
-- Selected judge button changes to black with a check mark
-- Firebase connection remains included
-
-Note:
-This is a simple front-end access lock. It prevents casual access but is not the same as server-side authentication.
+- Judge password: 0070
+- Before password entry, all judge names and scoring controls are fully hidden.
+- After correct password entry, the judge selection screen opens.
+- Admin password remains 0322.
+- Live page remains public.

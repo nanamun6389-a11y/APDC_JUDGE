@@ -25,6 +25,7 @@ const message = document.getElementById("message");
 
 const ACCESS_PASSWORD = "0070";
 const passwordGate = document.getElementById("passwordGate");
+const judgeProtected = document.getElementById("judgeProtected");
 const passwordInput = document.getElementById("passwordInput");
 const passwordBtn = document.getElementById("passwordBtn");
 const passwordMessage = document.getElementById("passwordMessage");
@@ -32,8 +33,25 @@ const passwordMessage = document.getElementById("passwordMessage");
 function unlockJudgeSystem() {
   sessionStorage.setItem("apdcJudgeUnlocked", "yes");
   passwordGate.classList.add("hidden");
-  judgeGate.classList.remove("hidden");
+  passwordGate.hidden = true;
+  passwordGate.style.display = "none";
+
+  judgeProtected.classList.remove("hidden");
+  judgeProtected.hidden = false;
+  judgeProtected.style.display = "block";
+
   passwordMessage.textContent = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function lockJudgeSystem() {
+  passwordGate.classList.remove("hidden");
+  passwordGate.hidden = false;
+  passwordGate.style.display = "flex";
+
+  judgeProtected.classList.add("hidden");
+  judgeProtected.hidden = true;
+  judgeProtected.style.display = "none";
 }
 
 function checkPassword() {
@@ -48,13 +66,19 @@ function checkPassword() {
 }
 
 passwordBtn.addEventListener("click", checkPassword);
-passwordInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") checkPassword();
+passwordInput.addEventListener("keydown", event => {
+  if (event.key === "Enter") checkPassword();
 });
 
 if (sessionStorage.getItem("apdcJudgeUnlocked") === "yes") {
   unlockJudgeSystem();
 } else {
+  lockJudgeSystem();
+}
+
+
+
+ else {
   passwordGate.classList.remove("hidden");
   judgeGate.classList.add("hidden");
   scoreScreen.classList.add("hidden");
