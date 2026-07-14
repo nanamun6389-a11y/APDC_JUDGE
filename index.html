@@ -1,24 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
-  <title>APDC Judge Pro</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>APDC Judge</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topbar">
-  <div>
-    <div class="brand">APDC JUDGE PRO</div>
-    <div class="sub">ASIA PACIFIC DANCESPORT CHAMPIONSHIP</div>
-  </div>
-  <a class="top-link" href="admin.html">ADMIN</a>
+<header>
+  <div class="brand">APDC JUDGE</div>
 </header>
 
-<main class="wrap">
-  <section class="setup">
-    <label>JUDGE<select id="judgeSelect"><option value="T1">T1 · Raymond KIM</option><option value="T2">T2 · Lorencia</option><option value="T3">T3 · Marcus</option><option value="T4">T4 · Crystal</option><option value="T5">T5 · Tomohiro</option><option value="T6">T6 · Annie Oo</option><option value="T7">T7 · Nancy Chang</option><option value="T8">T8 · Max Yim</option><option value="W1">W1 · 이종률</option><option value="W2">W2 · 김도영</option><option value="W3">W3 · 엄혜리</option><option value="W4">W4 · 구채림</option><option value="W5">W5 · 고재호</option><option value="W6">W6 · 임채성</option><option value="W7">W7 · 은일</option><option value="W8">W8 · 블라디</option><option value="W9">W9 · 이세영</option></select></label>
+<main>
+  <section class="controls">
+    <label>JUDGE<select id="judgeSelect"></select></label>
     <label>SECTION<select id="eventSelect"></select></label>
     <label>ROUND
       <select id="roundSelect">
@@ -29,33 +25,35 @@
     </label>
   </section>
 
-  <section class="judge-identity">
-    <strong id="judgeIdentity">Judge selection</strong>
+  <div class="status-line">
+    <span id="judgeIdentity"></span>
+    <span><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span></span>
     <span id="judgeLockText"></span>
-  </section>
-
-  <section class="connection">
-    <span id="connectionDot" class="dot"></span>
-    <span id="connectionText">Connecting...</span>
-  </section>
+  </div>
 
   <section class="score">
     <div class="score-head">
       <div>
-        <div id="eventTitle" class="event-title"></div>
-        <div id="roundTitle" class="round-title"></div>
+        <h1 id="eventTitle"></h1>
+        <div id="roundTitle" class="muted"></div>
       </div>
       <div id="counter" class="counter"></div>
     </div>
+
     <div id="ballot" class="ballot"></div>
+
     <div class="actions">
-      <button id="resetBtn" class="secondary" type="button">RESET</button>
-      <button id="submitBtn" class="primary" type="button">SUBMIT</button>
+      <button id="resetBtn" class="light">RESET</button>
+      <button id="submitBtn" class="dark">SUBMIT</button>
     </div>
     <div id="message" class="message"></div>
   </section>
 
-  <a class="admin-link" href="qr.html">OPEN JUDGE QR CODES</a>
+  <nav class="bottom-nav">
+    <a href="admin.html">ADMIN</a>
+    <a href="live.html">LIVE</a>
+    <a href="qr.html">QR</a>
+  </nav>
 </main>
 
 <script type="module" src="judge.js"></script>

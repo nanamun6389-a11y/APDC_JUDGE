@@ -3,30 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>APDC Admin Dashboard</title>
+<meta name="theme-color" content="#000000">
+<title>APDC Admin</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div class="brand">APDC ADMIN</div><div class="sub">REAL-TIME JUDGING DASHBOARD</div></header>
+<header><div class="brand">APDC ADMIN</div></header>
 <main>
-<section class="connection"><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting...</span></section>
-<section class="admin-controls">
-<label>SECTION<select id="adminEvent"></select></label>
-<label>ROUND<select id="adminRound"><option value="quarter">Quarter Final</option><option value="semi">Semi Final</option><option value="final">Final</option></select></label>
-<label>JUDGE GROUP<select id="judgeGroup"><option value="ALL">All Judges</option><option value="T">T Judges</option><option value="W">W Judges</option></select></label>
-</section>
-<section class="admin-buttons">
-<button id="exportBtn" class="secondary">EXPORT CSV</button>
-<button id="printBtn" class="secondary">PRINT / SAVE PDF</button>
-<button id="clearBtn" class="danger">CLEAR CURRENT ROUND</button>
-<a href="qr.html" class="admin-link-inline">JUDGE QR CODES</a>
-</section>
-<section>
-<div class="score-head"><div><div id="adminTitle" class="event-title"></div><div id="submissionCount" class="round-title"></div></div><div id="completeBadge" class="complete-badge"></div></div>
-<div id="judgeStatus"></div>
-</section>
-<section class="aggregate"><h2>AGGREGATED RESULTS</h2><div id="aggregateResults"></div></section>
-<a class="admin-link" href="index.html">BACK TO JUDGE SCREEN</a>
+  <section class="controls">
+    <label>SECTION<select id="adminEvent"></select></label>
+    <label>ROUND<select id="adminRound">
+      <option value="quarter">Quarter Final</option>
+      <option value="semi">Semi Final</option>
+      <option value="final">Final</option>
+    </select></label>
+    <label>GROUP<select id="judgeGroup">
+      <option value="ALL">All Judges</option>
+      <option value="T">T Judges</option>
+      <option value="W">W Judges</option>
+    </select></label>
+  </section>
+
+  <section class="score">
+    <div class="score-head">
+      <div>
+        <h1 id="adminTitle"></h1>
+        <div id="submissionCount" class="muted"></div>
+      </div>
+      <div id="completeBadge" class="badge">IN PROGRESS</div>
+    </div>
+
+    <h2>JUDGES</h2>
+    <div id="judgeStatus"></div>
+
+    <h2>RESULT</h2>
+    <div id="aggregateResults"></div>
+
+    <div class="admin-actions">
+      <button id="exportBtn" class="light">CSV</button>
+      <button id="printBtn" class="light">PDF</button>
+      <button id="clearBtn" class="light">RESET ROUND</button>
+    </div>
+  </section>
+
+  <nav class="bottom-nav">
+    <a href="index.html">JUDGE</a>
+    <a href="live.html">LIVE</a>
+    <a href="qr.html">QR</a>
+  </nav>
 </main>
 <script type="module" src="admin.js"></script>
 </body>
