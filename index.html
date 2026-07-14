@@ -8,45 +8,59 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div class="brand">APDC JUDGE</div>
-</header>
+<header><div class="brand">APDC JUDGE</div></header>
 
 <main>
-  <section class="controls">
-    <label>JUDGE<select id="judgeSelect"></select></label>
-    <label>SECTION<select id="eventSelect"></select></label>
-    <label>ROUND
-      <select id="roundSelect">
-        <option value="quarter">Quarter Final · Select 12</option>
-        <option value="semi">Semi Final · Select 6</option>
-        <option value="final">Final · Rank All</option>
-      </select>
-    </label>
+  <section id="judgeGate" class="judge-gate">
+    <h1>SELECT JUDGE</h1>
+    <div class="judge-group-title">T JUDGES</div>
+    <div id="tJudgeButtons" class="judge-grid"></div>
+
+    <div class="judge-group-title">W JUDGES</div>
+    <div id="wJudgeButtons" class="judge-grid"></div>
   </section>
 
-  <div class="status-line">
-    <span id="judgeIdentity"></span>
-    <span><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span></span>
-    <span id="judgeLockText"></span>
-  </div>
-
-  <section class="score">
-    <div class="score-head">
+  <section id="scoreScreen" class="hidden">
+    <div class="selected-judge-bar">
       <div>
-        <h1 id="eventTitle"></h1>
-        <div id="roundTitle" class="muted"></div>
+        <div class="small-label">JUDGE</div>
+        <strong id="selectedJudgeName"></strong>
       </div>
-      <div id="counter" class="counter"></div>
+      <button id="changeJudgeBtn" type="button">CHANGE</button>
     </div>
 
-    <div id="ballot" class="ballot"></div>
+    <section class="controls two">
+      <label>SECTION<select id="eventSelect"></select></label>
+      <label>ROUND
+        <select id="roundSelect">
+          <option value="quarter">Quarter Final · Select 12</option>
+          <option value="semi">Semi Final · Select 6</option>
+          <option value="final">Final · Rank All</option>
+        </select>
+      </label>
+    </section>
 
-    <div class="actions">
-      <button id="resetBtn" class="light">RESET</button>
-      <button id="submitBtn" class="dark">SUBMIT</button>
+    <div class="status-line">
+      <span><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span></span>
     </div>
-    <div id="message" class="message"></div>
+
+    <section class="score">
+      <div class="score-head">
+        <div>
+          <h1 id="eventTitle"></h1>
+          <div id="roundTitle" class="muted"></div>
+        </div>
+        <div id="counter" class="counter"></div>
+      </div>
+
+      <div id="ballot" class="ballot"></div>
+
+      <div class="actions">
+        <button id="resetBtn" class="light" type="button">RESET</button>
+        <button id="submitBtn" class="dark" type="button">SUBMIT</button>
+      </div>
+      <div id="message" class="message"></div>
+    </section>
   </section>
 
   <nav class="bottom-nav">

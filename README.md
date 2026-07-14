@@ -1,17 +1,12 @@
-# APDC JUDGE — FIREBASE CONNECTED
+# APDC JUDGE — BUTTON LOGIN
 
-Upload every file in this folder to the APDC-JUDGE GitHub repository.
+Changes:
+- Judge dropdown removed
+- Judge selection uses large buttons
+- T1–T8 and W1–W9 included
+- T4 Crystal
+- Back numbers are black
+- Firebase connected
+- QR links can open a personal judge screen with ?judge=T1 etc.
 
-Pages
-- index.html: Judge
-- admin.html: Admin
-- live.html: Live status
-- qr.html: Judge QR codes
-
-Scoring
-- Quarter Final: select 12
-- Semi Final: select 6
-- Final: rank all finalists
-
-Firebase configuration is already included.
-After upload, publish the contents of database.rules.json in Firebase Realtime Database > Rules.
+Upload every file to the APDC_JUDGE GitHub repository and commit.
