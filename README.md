@@ -1,23 +1,16 @@
-# APDC REAL-TIME ADVANCED JUDGING
+# APDC JUDGE PRO
 
-Included:
-- Personal QR link for each judge (qr.html)
-- T1–T8 and W1–W9 judge list
-- T4 corrected to Crystal
+This version keeps the real-time Firebase workflow and provides:
+- T1–T8 / W1–W9 judge list
+- T4 Crystal
 - Quarter Final: select 12
 - Semi Final: select 6
-- Final: unique rank for every finalist
-- Live administrator submission status
-- COMPLETE indicator when all selected judges submit
-- T / W / All judge group filter
-- Check totals for preliminary rounds
-- Provisional sum-of-ranks result for finals
-- CSV export
-- Browser print / Save as PDF
+- Final: rank all finalists
+- Live administrator dashboard
+- Judge QR page
+- CSV export and Print / PDF
 
-Important:
-The final result shown is a provisional sum-of-ranks calculation.
-A fully certified DanceSport Skating System requires additional tie-break rules and should be validated before official use.
-
-Firebase:
-Paste your Firebase values into firebase-config.js and publish database.rules.json.
+Before use:
+1. Add Firebase settings to firebase-config.js
+2. Publish database.rules.json in Firebase Realtime Database
+3. Upload every file to the APDC-JUDGE GitHub repository
