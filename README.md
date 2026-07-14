@@ -1,17 +1,17 @@
-# APDC SIMPLE JUDGE SYSTEM
+# APDC JUDGE — FIREBASE CONNECTED
 
-Pages:
+Upload every file in this folder to the APDC-JUDGE GitHub repository.
+
+Pages
 - index.html: Judge
 - admin.html: Admin
 - live.html: Live status
-- qr.html: Judge QR
+- qr.html: Judge QR codes
 
-Scoring:
+Scoring
 - Quarter Final: select 12
 - Semi Final: select 6
-- Final: rank all
+- Final: rank all finalists
 
-Realtime:
-- Firebase Realtime Database
-- Add your Firebase settings to firebase-config.js
-- Publish database.rules.json
+Firebase configuration is already included.
+After upload, publish the contents of database.rules.json in Firebase Realtime Database > Rules.
