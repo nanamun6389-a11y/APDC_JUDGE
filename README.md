@@ -1,12 +1,11 @@
-# APDC JUDGE — BUTTON LOGIN
+# APDC JUDGE — PASSWORD 0070
 
-Changes:
-- Judge dropdown removed
-- Judge selection uses large buttons
-- T1–T8 and W1–W9 included
-- T4 Crystal
-- Back numbers are black
-- Firebase connected
-- QR links can open a personal judge screen with ?judge=T1 etc.
+Updates:
+- Judge screen requires password 0070
+- Successful login stays active for the current browser session
+- Closing the browser/session requires the password again
+- Selected judge button changes to black with a check mark
+- Firebase connection remains included
 
-Upload every file to the APDC_JUDGE GitHub repository and commit.
+Note:
+This is a simple front-end access lock. It prevents casual access but is not the same as server-side authentication.

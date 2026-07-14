@@ -11,7 +11,18 @@
 <header><div class="brand">APDC JUDGE</div></header>
 
 <main>
-  <section id="judgeGate" class="judge-gate">
+
+<section id="passwordGate" class="password-gate">
+  <div class="password-box">
+    <div class="small-label">APDC JUDGE ACCESS</div>
+    <h1>ENTER PASSWORD</h1>
+    <input id="passwordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+    <button id="passwordBtn" type="button">ENTER</button>
+    <div id="passwordMessage" class="message"></div>
+  </div>
+</section>
+
+  <section id="judgeGate" class="judge-gate hidden">
     <h1>SELECT JUDGE</h1>
     <div class="judge-group-title">T JUDGES</div>
     <div id="tJudgeButtons" class="judge-grid"></div>
@@ -23,10 +34,10 @@
   <section id="scoreScreen" class="hidden">
     <div class="selected-judge-bar">
       <div>
-        <div class="small-label">JUDGE</div>
+        <div class="small-label">CURRENT JUDGE</div>
         <strong id="selectedJudgeName"></strong>
       </div>
-      <button id="changeJudgeBtn" type="button">CHANGE</button>
+      <button id="changeJudgeBtn" type="button">CHANGE JUDGE</button>
     </div>
 
     <section class="controls two">

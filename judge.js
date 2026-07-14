@@ -22,6 +22,45 @@ const roundTitle = document.getElementById("roundTitle");
 const counter = document.getElementById("counter");
 const message = document.getElementById("message");
 
+
+const ACCESS_PASSWORD = "0070";
+const passwordGate = document.getElementById("passwordGate");
+const passwordInput = document.getElementById("passwordInput");
+const passwordBtn = document.getElementById("passwordBtn");
+const passwordMessage = document.getElementById("passwordMessage");
+
+function unlockJudgeSystem() {
+  sessionStorage.setItem("apdcJudgeUnlocked", "yes");
+  passwordGate.classList.add("hidden");
+  judgeGate.classList.remove("hidden");
+  passwordMessage.textContent = "";
+}
+
+function checkPassword() {
+  if (passwordInput.value === ACCESS_PASSWORD) {
+    unlockJudgeSystem();
+  } else {
+    passwordMessage.textContent = "INCORRECT PASSWORD";
+    passwordMessage.className = "message error";
+    passwordInput.value = "";
+    passwordInput.focus();
+  }
+}
+
+passwordBtn.addEventListener("click", checkPassword);
+passwordInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") checkPassword();
+});
+
+if (sessionStorage.getItem("apdcJudgeUnlocked") === "yes") {
+  unlockJudgeSystem();
+} else {
+  passwordGate.classList.remove("hidden");
+  judgeGate.classList.add("hidden");
+  scoreScreen.classList.add("hidden");
+}
+
+
 const natural = (a,b) => String(a).localeCompare(String(b), undefined, {numeric:true,sensitivity:"base"});
 
 function renderJudgeButtons() {
@@ -38,22 +77,38 @@ function renderJudgeButtons() {
 
 function chooseJudge(code) {
   currentJudge = code;
-  document.getElementById("selectedJudgeName").textContent = `${code} · ${JUDGES[code]}`;
-  judgeGate.classList.add("hidden");
-  scoreScreen.classList.remove("hidden");
-  const url = new URL(location.href);
-  url.searchParams.set("judge", code);
-  history.replaceState(null, "", url);
-  render();
+
+  document.querySelectorAll(".judge-choice").forEach(btn => {
+    const selectedNow = btn.dataset.code === code;
+    btn.classList.toggle("selected", selectedNow);
+    btn.setAttribute("aria-pressed", selectedNow ? "true" : "false");
+  });
+
+  document.getElementById("selectedJudgeName").innerHTML =
+    `<span class="current-check">✓</span> ${code} · ${JUDGES[code]}`;
+
+  setTimeout(() => {
+    judgeGate.classList.add("hidden");
+    scoreScreen.classList.remove("hidden");
+    const url = new URL(location.href);
+    url.searchParams.set("judge", code);
+    history.replaceState(null, "", url);
+    render();
+  }, 220);
 }
 
 document.getElementById("changeJudgeBtn").onclick = () => {
   currentJudge = "";
+  document.querySelectorAll(".judge-choice").forEach(btn => {
+    btn.classList.remove("selected");
+    btn.setAttribute("aria-pressed", "false");
+  });
   scoreScreen.classList.add("hidden");
   judgeGate.classList.remove("hidden");
   const url = new URL(location.href);
   url.searchParams.delete("judge");
   history.replaceState(null, "", url);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 onValue(ref(db, ".info/connected"), snap => {
