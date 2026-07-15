@@ -1,17 +1,11 @@
-# APDC JUDGE — SUBMISSION LOCK
+# APDC JUDGE — FIXED PLAYERS.JSON
 
-Judge
-- Only sections explicitly assigned to the selected judge are visible.
-- A submitted section/round shows `✓ SUBMITTED`.
-- Submitted ballots are locked and cannot be edited or submitted again.
-- Judges cannot reset submissions.
+This package includes:
+- players.json with the exact filename required by Judge
+- Submission lock and SUBMITTED status
+- Admin-only reset controls
+- NOW / ON DECK / NEXT
+- Judge, Admin, Live and QR pages
 
-Admin
-- RESET ROUND clears the selected event and round.
-- RESET ALL SUBMISSIONS clears every judge submission.
-- Global reset requires two confirmations.
-- NOW / ON DECK / NEXT controls remain included.
-
-Important
-- Assign judges in event-settings.json/Admin before use.
-- If a judge is not assigned to a section, that section will not appear.
+Upload every file in this zip to the root of the APDC_JUDGE repository.
+Do not upload the folder itself.
