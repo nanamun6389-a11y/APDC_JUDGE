@@ -97,3 +97,67 @@
   align-items:center;
   justify-content:center;
 }
+
+.brand-button,.brand-link{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font:inherit;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-decoration:none;
+  cursor:pointer;
+  padding:0;
+}
+.brand-button:active,.brand-link:active{opacity:.65}
+#backBtn{font-size:14px;letter-spacing:.04em}
+
+.on-deck-admin{border-top:2px solid #000;border-bottom:2px solid #000;margin-top:36px;padding:24px 0}
+.on-deck-admin h2{margin:0 0 22px;font-size:28px}
+.on-deck-admin label{display:block;margin:16px 0 6px;font-size:12px;font-weight:900;letter-spacing:.12em}
+.on-deck-admin input{width:100%;min-height:54px;border:1px solid #000;padding:0 14px;border-radius:0;font-size:17px}
+.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.control-grid button{min-height:54px;border:1px solid #000;background:#000;color:#fff;font-weight:900}
+.control-grid .light{background:#fff;color:#000}
+.floor-board{width:min(900px,100%);margin:30px auto;padding:0 18px 40px}
+.floor-block{border-top:1px solid #000;padding:24px 0}
+.floor-block:last-of-type{border-bottom:1px solid #000}
+.floor-label{font-size:13px;font-weight:900;letter-spacing:.18em;color:#777;margin-bottom:9px}
+.floor-event{font-size:clamp(28px,7vw,62px);line-height:1.08;font-weight:900;letter-spacing:-.02em}
+.now-block .floor-label{color:#000}
+.updated-time{padding-top:12px;text-align:right;color:#777;font-size:11px;letter-spacing:.08em}
+@media(max-width:640px){.control-grid{grid-template-columns:1fr}}
+
+#submitBtn.submitted{
+  background:#e8e8e8;
+  color:#555;
+  border-color:#999;
+  cursor:not-allowed;
+}
+.submitted-message{
+  color:#000;
+  font-weight:900;
+  letter-spacing:.04em;
+}
+.submitted-select{
+  border-left:5px solid #000;
+}
+.number-btn:disabled,.rank-select:disabled{
+  opacity:.48;
+  cursor:not-allowed;
+}
+.admin-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.admin-actions .danger{
+  grid-column:1/-1;
+  min-height:48px;
+  background:#000;
+  color:#fff;
+  border:2px solid #000;
+  font-weight:900;
+}

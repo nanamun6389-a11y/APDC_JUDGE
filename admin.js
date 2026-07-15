@@ -1,14 +1,33 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 const JUDGES=[
 {code:"T1",name:"Raymond KIM"},{code:"T2",name:"Lorencia"},{code:"T3",name:"Marcus"},{code:"T4",name:"Crystal"},{code:"T5",name:"Tomohiro"},{code:"T6",name:"Annie Oo"},{code:"T7",name:"Nancy Chang"},{code:"T8",name:"Max Yim"},
 {code:"W1",name:"이종률"},{code:"W2",name:"김도영"},{code:"W3",name:"엄혜리"},{code:"W4",name:"구채림"},{code:"W5",name:"고재호"},{code:"W6",name:"임채성"},{code:"W7",name:"은일"},{code:"W8",name:"블라디"},{code:"W9",name:"이세영"}];
 const app=initializeApp(firebaseConfig),db=getDatabase(app);
-let entries=[],unsubscribe=null,currentData={};
+let entries=[],eventSettings={events:[]},unsubscribe=null,currentData={};
 const eventSelect=document.getElementById("adminEvent"),roundSelect=document.getElementById("adminRound"),groupSelect=document.getElementById("judgeGroup");
 const natural=(a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:"base"});
-function events(data){const m=new Map();data.forEach(x=>{const key=[x.event,x.section,x.style].join("||");if(!m.has(key))m.set(key,{key,label:`${x.section} · ${x.event}`})});return[...m.values()].sort((a,b)=>natural(a.label,b.label))}
+function getSetting(key){return eventSettings.events?.find(item=>item.eventKey===key)||null}
+function eventLabel(key,section,event){
+ const number=String(getSetting(key)?.eventNumber||"").trim();
+ return `${number?`EVENT ${number} · `:""}${section} · ${event}`;
+}
+function events(data){
+ const m=new Map();
+ data.forEach(x=>{
+   const key=[x.event,x.section,x.style].join("||");
+   if(!m.has(key))m.set(key,{key,section:x.section,event:x.event});
+ });
+ return [...m.values()].sort((a,b)=>{
+   const na=Number(getSetting(a.key)?.eventNumber),nb=Number(getSetting(b.key)?.eventNumber);
+   const ha=String(getSetting(a.key)?.eventNumber||"").trim()!=="";
+   const hb=String(getSetting(b.key)?.eventNumber||"").trim()!=="";
+   if(ha&&hb&&na!==nb)return na-nb;
+   if(ha!==hb)return ha?-1:1;
+   return natural(a.section,b.section)||natural(a.event,b.event);
+ });
+} · ${x.event}`})});return[...m.values()].sort((a,b)=>natural(a.label,b.label))}
 function roundKey(){return btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","")+"_"+roundSelect.value}
 function activeJudges(){return groupSelect.value==="ALL"?JUDGES:JUDGES.filter(j=>j.code.startsWith(groupSelect.value))}
 function listen(){if(unsubscribe)unsubscribe();document.getElementById("adminTitle").textContent=eventSelect.selectedOptions[0]?.textContent||"";unsubscribe=onValue(ref(db,`submissions/${roundKey()}`),snap=>{currentData=snap.val()||{};render()})}
@@ -44,4 +63,60 @@ eventSelect.onchange=listen;roundSelect.onchange=listen;groupSelect.onchange=ren
 document.getElementById("clearBtn").onclick=()=>{if(confirm("Clear all submissions for this section and round?"))remove(ref(db,`submissions/${roundKey()}`))};
 document.getElementById("exportBtn").onclick=exportCSV;
 document.getElementById("printBtn").onclick=()=>window.print();
-fetch("players.json").then(r=>r.json()).then(d=>{entries=d;eventSelect.innerHTML=events(d).map(e=>`<option value="${e.key}">${e.label}</option>`).join("");listen()});
+Promise.all([
+ fetch("players.json",{cache:"no-store"}).then(r=>r.json()),
+ fetch("event-settings.json",{cache:"no-store"}).then(r=>r.json()).catch(()=>({events:[]}))
+]).then(([d,s])=>{
+ entries=d;eventSettings=s||{events:[]};
+ eventSelect.innerHTML=events(d).map(e=>`<option value="${e.key}">${eventLabel(e.key,e.section,e.event)}</option>`).join("");
+ listen();
+});
+
+const nowEventInput=document.getElementById("nowEventInput");
+const onDeckEventInput=document.getElementById("onDeckEventInput");
+const nextEventInput=document.getElementById("nextEventInput");
+const publishFloorBtn=document.getElementById("publishFloorBtn");
+const advanceFloorBtn=document.getElementById("advanceFloorBtn");
+const floorMessage=document.getElementById("floorMessage");
+const floorStatusRef=ref(db,"floorStatus");
+
+onValue(floorStatusRef,s=>{
+ const v=s.val()||{};
+ if(nowEventInput)nowEventInput.value=v.now||"";
+ if(onDeckEventInput)onDeckEventInput.value=v.onDeck||"";
+ if(nextEventInput)nextEventInput.value=v.next||"";
+});
+
+async function publishFloorStatus(){
+ await set(floorStatusRef,{
+  now:nowEventInput.value.trim(),
+  onDeck:onDeckEventInput.value.trim(),
+  next:nextEventInput.value.trim(),
+  updatedAt:Date.now()
+ });
+ floorMessage.textContent="PUBLISHED";
+ setTimeout(()=>floorMessage.textContent="",1500);
+}
+
+async function advanceFloorStatus(){
+ nowEventInput.value=onDeckEventInput.value.trim();
+ onDeckEventInput.value=nextEventInput.value.trim();
+ nextEventInput.value="";
+ await publishFloorStatus();
+ floorMessage.textContent="ADVANCED";
+}
+
+publishFloorBtn?.addEventListener("click",publishFloorStatus);
+advanceFloorBtn?.addEventListener("click",advanceFloorStatus);
+
+// ===== ADMIN-ONLY GLOBAL RESET =====
+const resetAllBtn = document.getElementById("resetAllBtn");
+resetAllBtn?.addEventListener("click", async () => {
+  const first = confirm("Reset ALL judge submissions for every section and round?");
+  if (!first) return;
+  const second = confirm("This cannot be undone. Continue?");
+  if (!second) return;
+
+  await remove(ref(db, "submissions"));
+  alert("ALL SUBMISSIONS HAVE BEEN RESET.");
+});

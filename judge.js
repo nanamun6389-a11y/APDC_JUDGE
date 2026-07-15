@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const JUDGES = {"T1": "Raymond KIM", "T2": "Lorencia", "T3": "Marcus", "T4": "Crystal", "T5": "Tomohiro", "T6": "Annie Oo", "T7": "Nancy Chang", "T8": "Max Yim", "W1": "이종률", "W2": "김도영", "W3": "엄혜리", "W4": "구채림", "W5": "고재호", "W6": "임채성", "W7": "은일", "W8": "블라디", "W9": "이세영"};
@@ -9,8 +9,11 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 let entries = [];
+let eventSettings = {events:[]};
 let selected = new Set();
 let currentJudge = "";
+let currentSubmissionUnsubscribe = null;
+let currentRoundSubmitted = false;
 
 const judgeGate = document.getElementById("judgeGate");
 const scoreScreen = document.getElementById("scoreScreen");
@@ -21,6 +24,7 @@ const eventTitle = document.getElementById("eventTitle");
 const roundTitle = document.getElementById("roundTitle");
 const counter = document.getElementById("counter");
 const message = document.getElementById("message");
+const submitBtn = document.getElementById("submitBtn");
 
 
 const ACCESS_PASSWORD = "0070";
@@ -113,6 +117,7 @@ function chooseJudge(code) {
     const url = new URL(location.href);
     url.searchParams.set("judge", code);
     history.replaceState(null, "", url);
+    populateEventsForJudge();
     render();
   }, 220);
 }
@@ -137,13 +142,44 @@ onValue(ref(db, ".info/connected"), snap => {
   document.getElementById("connectionText").textContent = online ? "ONLINE" : "OFFLINE";
 });
 
+function getSetting(key) {
+  return eventSettings.events?.find(item => item.eventKey === key) || null;
+}
+
+function eventLabel(item) {
+  const setting = getSetting(item.key);
+  const number = String(setting?.eventNumber || "").trim();
+  return `${number ? `EVENT ${number} · ` : ""}${item.section} · ${item.event}`;
+}
+
 function uniqueEvents(data) {
   const map = new Map();
   data.forEach(x => {
     const key = [x.event, x.section, x.style].join("||");
     if (!map.has(key)) map.set(key, {key, event:x.event, section:x.section, style:x.style});
   });
-  return [...map.values()].sort((a,b)=>natural(a.section,b.section)||natural(a.event,b.event));
+
+  let list = [...map.values()];
+
+  if (currentJudge) {
+    list = list.filter(item => {
+      const setting = getSetting(item.key);
+      const assigned = setting?.assignedJudges || [];
+      return assigned.includes(currentJudge);
+    });
+  }
+
+  return list.sort((a,b) => {
+    const sa = getSetting(a.key);
+    const sb = getSetting(b.key);
+    const na = Number(sa?.eventNumber);
+    const nb = Number(sb?.eventNumber);
+    const hasA = Number.isFinite(na) && String(sa?.eventNumber).trim() !== "";
+    const hasB = Number.isFinite(nb) && String(sb?.eventNumber).trim() !== "";
+    if (hasA && hasB && na !== nb) return na - nb;
+    if (hasA !== hasB) return hasA ? -1 : 1;
+    return natural(a.section,b.section) || natural(a.event,b.event);
+  });
 }
 
 function currentCompetitors() {
@@ -157,6 +193,61 @@ function currentCompetitors() {
 
 function roundKey() {
   return btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","") + "_" + roundSelect.value;
+}
+
+
+function setBallotLocked(locked) {
+  currentRoundSubmitted = locked;
+  submitBtn.disabled = locked;
+  submitBtn.textContent = locked ? "SUBMITTED ✓" : "SUBMIT";
+  submitBtn.classList.toggle("submitted", locked);
+
+  ballot.querySelectorAll("button,select").forEach(el => {
+    el.disabled = locked;
+  });
+
+  eventSelect.classList.toggle("submitted-select", locked);
+  roundSelect.classList.toggle("submitted-select", locked);
+}
+
+function watchCurrentSubmission() {
+  if (currentSubmissionUnsubscribe) {
+    currentSubmissionUnsubscribe();
+    currentSubmissionUnsubscribe = null;
+  }
+  if (!currentJudge || !eventSelect.value) return;
+
+  const submissionRef = ref(db, `submissions/${roundKey()}/${currentJudge}`);
+  currentSubmissionUnsubscribe = onValue(submissionRef, snap => {
+    const submitted = snap.exists();
+    setBallotLocked(submitted);
+    if (submitted) {
+      message.textContent = "THIS SECTION HAS BEEN SUBMITTED";
+      message.className = "message submitted-message";
+    } else {
+      if (message.textContent === "THIS SECTION HAS BEEN SUBMITTED") {
+        message.textContent = "";
+      }
+      message.className = "message";
+    }
+    refreshEventOptionStatuses();
+  });
+}
+
+async function refreshEventOptionStatuses() {
+  if (!currentJudge) return;
+
+  const options = [...eventSelect.options];
+  await Promise.all(options.map(async option => {
+    if (!option.value) return;
+    const original = option.dataset.originalLabel || option.textContent.replace(/\s+✓ SUBMITTED$/, "");
+    option.dataset.originalLabel = original;
+
+    const encoded = btoa(unescape(encodeURIComponent(option.value))).replaceAll("=","");
+    const snap = await get(ref(db, `submissions/${encoded}_${roundSelect.value}/${currentJudge}`));
+    option.textContent = snap.exists() ? `${original} ✓ SUBMITTED` : original;
+    option.dataset.submitted = snap.exists() ? "yes" : "no";
+  }));
 }
 
 function render() {
@@ -201,10 +292,16 @@ function render() {
       };
     });
   }
+  watchCurrentSubmission();
 }
 
 async function submitBallot() {
   if (!currentJudge) return;
+  if (currentRoundSubmitted) {
+    message.textContent = "ALREADY SUBMITTED";
+    message.className = "message error";
+    return;
+  }
   const round = roundSelect.value;
   let result;
 
@@ -238,16 +335,62 @@ async function submitBallot() {
   };
 
   await set(ref(db, `submissions/${roundKey()}/${currentJudge}`), payload);
-  message.textContent = "SUBMITTED";
-  message.className = "message";
+  message.textContent = "SUBMITTED ✓";
+  message.className = "message submitted-message";
+  setBallotLocked(true);
+  refreshEventOptionStatuses();
 }
 
 document.getElementById("submitBtn").onclick = submitBallot;
-document.getElementById("resetBtn").onclick = render;
-eventSelect.onchange = render;
-roundSelect.onchange = render;
+function returnToJudgeHome() {
+  currentJudge = "";
+  selected.clear();
 
-fetch("players.json", {cache:"no-store"})
+  document.querySelectorAll(".judge-choice").forEach(btn => {
+    btn.classList.remove("selected");
+    btn.setAttribute("aria-pressed", "false");
+  });
+
+  scoreScreen.classList.add("hidden");
+  judgeGate.classList.remove("hidden");
+
+  const url = new URL(location.href);
+  url.searchParams.delete("judge");
+  history.replaceState(null, "", url);
+
+  message.textContent = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("backBtn").onclick = returnToJudgeHome;
+document.getElementById("homeTitleBtn").onclick = returnToJudgeHome;
+eventSelect.onchange = () => { render(); refreshEventOptionStatuses(); };
+roundSelect.onchange = () => { render(); refreshEventOptionStatuses(); };
+
+
+function populateEventsForJudge() {
+  const available = uniqueEvents(entries);
+  eventSelect.innerHTML = available
+    .map(item => {
+      const label = eventLabel(item);
+      return `<option value="${item.key}" data-original-label="${label}">${label}</option>`;
+    })
+    .join("");
+
+  if (!available.length) {
+    eventSelect.innerHTML = '<option value="">NO ASSIGNED SECTIONS</option>';
+    ballot.innerHTML = '<div class="message">No sections assigned to this judge.</div>';
+    eventTitle.textContent = "";
+    counter.textContent = "";
+  } else {
+    refreshEventOptionStatuses();
+  }
+}
+
+Promise.all([
+  fetch("players.json", {cache:"no-store"}).then(r=>r.json()),
+  fetch("event-settings.json", {cache:"no-store"}).then(r=>r.json()).catch(()=>({events:[]}))
+])
   .then(r=>r.json())
   .then(data=>{
     entries = data;

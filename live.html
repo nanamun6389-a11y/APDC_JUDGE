@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body class="live-body">
-<header><div class="brand">APDC LIVE</div></header>
+<header><a class="brand brand-link" href="index.html">APDC LIVE</a></header>
 <main>
   <section class="controls">
     <label>SECTION<select id="liveEvent"></select></label>
@@ -35,7 +35,15 @@
     <a href="index.html">JUDGE</a>
     <a href="admin.html">ADMIN</a>
   </nav>
+
+<section class="floor-board">
+  <div class="floor-block now-block"><div class="floor-label">NOW</div><div id="liveNow" class="floor-event">WAITING</div></div>
+  <div class="floor-block"><div class="floor-label">ON DECK</div><div id="liveOnDeck" class="floor-event">—</div></div>
+  <div class="floor-block"><div class="floor-label">NEXT</div><div id="liveNext" class="floor-event">—</div></div>
+  <div id="liveUpdated" class="updated-time"></div>
+</section>
+
 </main>
-<script type="module" src="live.js"></script>
+<script type="module" src="live.js?v=20260716-ondeck"></script>
 </body>
 </html>

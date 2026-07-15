@@ -1,10 +1,17 @@
-# APDC JUDGE — PASSWORD WORKING
+# APDC JUDGE — SUBMISSION LOCK
 
-Fixed:
-- Removed JavaScript syntax error
-- Password 0070 now opens the judge selection page
-- Judge list stays fully hidden before login
-- Safari/GitHub Pages cache-buster added
+Judge
+- Only sections explicitly assigned to the selected judge are visible.
+- A submitted section/round shows `✓ SUBMITTED`.
+- Submitted ballots are locked and cannot be edited or submitted again.
+- Judges cannot reset submissions.
 
-Admin password: 0322
-Live page: no password
+Admin
+- RESET ROUND clears the selected event and round.
+- RESET ALL SUBMISSIONS clears every judge submission.
+- Global reset requires two confirmations.
+- NOW / ON DECK / NEXT controls remain included.
+
+Important
+- Assign judges in event-settings.json/Admin before use.
+- If a judge is not assigned to a section, that section will not appear.

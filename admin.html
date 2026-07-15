@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div class="brand">APDC ADMIN</div></header>
+<header><a class="brand brand-link" href="index.html">APDC ADMIN</a></header>
 <main>
 
 <section id="adminPasswordGate" class="password-gate">
@@ -55,6 +55,7 @@
       <button id="exportBtn" class="light">CSV</button>
       <button id="printBtn" class="light">PDF</button>
       <button id="clearBtn" class="light">RESET ROUND</button>
+      <button id="resetAllBtn" class="danger">RESET ALL SUBMISSIONS</button>
     </div>
   </section>
 
@@ -64,6 +65,19 @@
     <a href="qr.html">QR</a>
   </nav>
 </div>
+
+<section class="control-card on-deck-admin">
+  <h2>FLOOR CONTROL</h2>
+  <label>NOW</label><input id="nowEventInput" type="text" placeholder="e.g. Under 12 Solo CR">
+  <label>ON DECK</label><input id="onDeckEventInput" type="text" placeholder="e.g. Under 12 Solo RJ">
+  <label>NEXT</label><input id="nextEventInput" type="text" placeholder="e.g. Under 15 Solo C">
+  <div class="control-grid">
+    <button id="publishFloorBtn" type="button">PUBLISH</button>
+    <button id="advanceFloorBtn" type="button" class="light">ADVANCE →</button>
+  </div>
+  <p id="floorMessage" class="message"></p>
+</section>
+
 </main>
 
 <script>
@@ -102,6 +116,6 @@ if (sessionStorage.getItem("apdcAdminUnlocked") === "yes") {
 }
 </script>
 
-<script type="module" src="admin.js"></script>
+<script type="module" src="admin.js?v=20260716-ondeck"></script>
 </body>
 </html>
