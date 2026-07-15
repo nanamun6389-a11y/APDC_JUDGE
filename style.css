@@ -161,3 +161,23 @@
   border:2px solid #000;
   font-weight:900;
 }
+
+.setup-card{border-top:2px solid #000;border-bottom:2px solid #000;padding:22px 0;margin-bottom:28px}
+.setup-card h1{margin:5px 0 20px;font-size:30px}
+.setup-card input,.setup-card select,.on-deck-admin input{width:100%;min-height:48px;border:1px solid #000;border-radius:0;padding:0 10px;font-size:15px}
+.judge-label{margin-top:20px}
+.judge-check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
+.judge-check{display:flex;align-items:center;gap:8px;border:1px solid #bbb;padding:9px;font-size:12px}
+.judge-check input{width:18px;height:18px;min-height:auto}
+.setup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}
+.setup-actions button{min-height:50px;font-weight:900}
+.on-deck-admin{border-top:2px solid #000;border-bottom:2px solid #000;margin-top:36px;padding:24px 0}
+.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.control-grid button{min-height:50px;font-weight:900}
+.floor-board{width:min(900px,100%);margin:30px auto;padding:0 18px 40px}
+.floor-block{border-top:1px solid #000;padding:24px 0}
+.floor-block:last-of-type{border-bottom:1px solid #000}
+.floor-label{font-size:13px;font-weight:900;letter-spacing:.18em;color:#777;margin-bottom:9px}
+.floor-event{font-size:clamp(28px,7vw,62px);line-height:1.08;font-weight:900}
+.updated-time{text-align:right;color:#777;font-size:11px;padding-top:12px}
+@media(max-width:640px){.judge-check-grid,.setup-actions,.control-grid{grid-template-columns:1fr}}

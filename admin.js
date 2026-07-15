@@ -1,122 +1,97 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
+
+const EVENTS=[{"eventKey": "Ama Rising Star Latin||Amateur||Latin", "eventNumber": "", "event": "Ama Rising Star Latin", "section": "Amateur", "style": "Latin", "assignedJudges": []}, {"eventKey": "Amateur Latin||Amateur||Latin", "eventNumber": "", "event": "Amateur Latin", "section": "Amateur", "style": "Latin", "assignedJudges": []}, {"eventKey": "Amateur Solo Latin||Amateur||Latin", "eventNumber": "", "event": "Amateur Solo Latin", "section": "Amateur", "style": "Latin", "assignedJudges": []}, {"eventKey": "Asia Pacific Amateur Solo Latin 5 Dance||Amateur||Latin", "eventNumber": "", "event": "Asia Pacific Amateur Solo Latin 5 Dance", "section": "Amateur", "style": "Latin", "assignedJudges": []}, {"eventKey": "Formation||Formation||Other", "eventNumber": "", "event": "Formation", "section": "Formation", "style": "Other", "assignedJudges": []}, {"eventKey": "Mania Latin CR||Mania||Latin", "eventNumber": "", "event": "Mania Latin CR", "section": "Mania", "style": "Latin", "assignedJudges": []}, {"eventKey": "Mania Latin CRS||Mania||Latin", "eventNumber": "", "event": "Mania Latin CRS", "section": "Mania", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo 5 Dance||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo 5 Dance", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo C||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo C", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo CR||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo CR", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo CRS||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo CRS", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo Latin 5 Dance||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo Latin 5 Dance", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo Latin CRS||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo Latin CRS", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo P||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo P", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo R||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo R", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo RJ||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo RJ", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo S||Over 19||Latin", "eventNumber": "", "event": "Over 19 Solo S", "section": "Over 19", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 19 Solo T||Over 19||Modern", "eventNumber": "", "event": "Over 19 Solo T", "section": "Over 19", "style": "Modern", "assignedJudges": []}, {"eventKey": "Over 19 Solo W||Over 19||Modern", "eventNumber": "", "event": "Over 19 Solo W", "section": "Over 19", "style": "Modern", "assignedJudges": []}, {"eventKey": "Over 19 Solo WTF||Over 19||Modern", "eventNumber": "", "event": "Over 19 Solo WTF", "section": "Over 19", "style": "Modern", "assignedJudges": []}, {"eventKey": "Over 19 Solo WTFQ||Over 19||Modern", "eventNumber": "", "event": "Over 19 Solo WTFQ", "section": "Over 19", "style": "Modern", "assignedJudges": []}, {"eventKey": "Over 19 Solo WTQ||Over 19||Modern", "eventNumber": "", "event": "Over 19 Solo WTQ", "section": "Over 19", "style": "Modern", "assignedJudges": []}, {"eventKey": "Over 35 Solo C||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo C", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo CR||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo CR", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo CRJ||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo CRJ", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo CRS||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo CRS", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo CSR||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo CSR", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo R||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo R", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Over 35 Solo S||Over 35||Latin", "eventNumber": "", "event": "Over 35 Solo S", "section": "Over 35", "style": "Latin", "assignedJudges": []}, {"eventKey": "Pro-Am Standard 3 Dance||Pro-Am||Modern", "eventNumber": "", "event": "Pro-Am Standard 3 Dance", "section": "Pro-Am", "style": "Modern", "assignedJudges": []}, {"eventKey": "Senior 50 CR||Senior||Other", "eventNumber": "", "event": "Senior 50 CR", "section": "Senior", "style": "Other", "assignedJudges": []}, {"eventKey": "Under 10 Solo C||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo C", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo CR||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo CR", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo CRJ||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo CRJ", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo CRS||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo CRS", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo J||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo J", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo P||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo P", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo R||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo R", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo RJ||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo RJ", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo S||Under 10||Latin", "eventNumber": "", "event": "Under 10 Solo S", "section": "Under 10", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 10 Solo F||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo F", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo Q||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo Q", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo T||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo T", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo W||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo W", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo WQ||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo WQ", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo WT||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo WT", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo WTF||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo WTF", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 10 Solo WTQ||Under 10||Modern", "eventNumber": "", "event": "Under 10 Solo WTQ", "section": "Under 10", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 CRS||Under 12||Latin", "eventNumber": "", "event": "Under 12 CRS", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo C||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo C", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo CJ||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo CJ", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo CR||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo CR", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo CRJ||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo CRJ", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo CRS||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo CRS", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo J||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo J", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo P||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo P", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo R||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo R", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo RJ||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo RJ", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo S||Under 12||Latin", "eventNumber": "", "event": "Under 12 Solo S", "section": "Under 12", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 12 Solo F||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo F", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo Q||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo Q", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo T||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo T", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo W||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo W", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo WQ||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo WQ", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo WT||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo WT", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo WTF||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo WTF", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo WTFQ||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo WTFQ", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 Solo WTQ||Under 12||Modern", "eventNumber": "", "event": "Under 12 Solo WTQ", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 12 WTF||Under 12||Modern", "eventNumber": "", "event": "Under 12 WTF", "section": "Under 12", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 CRS||Under 15||Latin", "eventNumber": "", "event": "Under 15 CRS", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo 5 Dance||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo 5 Dance", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo C||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo C", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo CJ||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo CJ", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo CR||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo CR", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo CRJ||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo CRJ", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo CRS||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo CRS", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo CSR||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo CSR", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo J||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo J", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo P||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo P", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo R||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo R", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo RJ||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo RJ", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo S||Under 15||Latin", "eventNumber": "", "event": "Under 15 Solo S", "section": "Under 15", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 15 Solo F||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo F", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo Q||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo Q", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo T||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo T", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo W||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo W", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo WQ||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo WQ", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo WT||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo WT", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo WTF||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo WTF", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo WTFQ||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo WTFQ", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 Solo WTQ||Under 15||Modern", "eventNumber": "", "event": "Under 15 Solo WTQ", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 15 WTF||Under 15||Modern", "eventNumber": "", "event": "Under 15 WTF", "section": "Under 15", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo 5 Dance||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo 5 Dance", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo C||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo C", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo CJ||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo CJ", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo CR||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo CR", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo CRJ||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo CRJ", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo CRS||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo CRS", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo CSR||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo CSR", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo Elite A Latin||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo Elite A Latin", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo J||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo J", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo P||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo P", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo R||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo R", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo RJ||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo RJ", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo S||Under 18||Latin", "eventNumber": "", "event": "Under 18 Solo S", "section": "Under 18", "style": "Latin", "assignedJudges": []}, {"eventKey": "Under 18 Solo F||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo F", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo Q||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo Q", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo T||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo T", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo W||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo W", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo WQ||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo WQ", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo WT||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo WT", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo WTF||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo WTF", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo WTFQ||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo WTFQ", "section": "Under 18", "style": "Modern", "assignedJudges": []}, {"eventKey": "Under 18 Solo WTQ||Under 18||Modern", "eventNumber": "", "event": "Under 18 Solo WTQ", "section": "Under 18", "style": "Modern", "assignedJudges": []}];
 const JUDGES=[
-{code:"T1",name:"Raymond KIM"},{code:"T2",name:"Lorencia"},{code:"T3",name:"Marcus"},{code:"T4",name:"Crystal"},{code:"T5",name:"Tomohiro"},{code:"T6",name:"Annie Oo"},{code:"T7",name:"Nancy Chang"},{code:"T8",name:"Max Yim"},
-{code:"W1",name:"이종률"},{code:"W2",name:"김도영"},{code:"W3",name:"엄혜리"},{code:"W4",name:"구채림"},{code:"W5",name:"고재호"},{code:"W6",name:"임채성"},{code:"W7",name:"은일"},{code:"W8",name:"블라디"},{code:"W9",name:"이세영"}];
-const app=initializeApp(firebaseConfig),db=getDatabase(app);
-let entries=[],eventSettings={events:[]},unsubscribe=null,currentData={};
-const eventSelect=document.getElementById("adminEvent"),roundSelect=document.getElementById("adminRound"),groupSelect=document.getElementById("judgeGroup");
-const natural=(a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:"base"});
-function getSetting(key){return eventSettings.events?.find(item=>item.eventKey===key)||null}
-function eventLabel(key,section,event){
- const number=String(getSetting(key)?.eventNumber||"").trim();
- return `${number?`EVENT ${number} · `:""}${section} · ${event}`;
-}
-function events(data){
- const m=new Map();
- data.forEach(x=>{
-   const key=[x.event,x.section,x.style].join("||");
-   if(!m.has(key))m.set(key,{key,section:x.section,event:x.event});
- });
- return [...m.values()].sort((a,b)=>{
-   const na=Number(getSetting(a.key)?.eventNumber),nb=Number(getSetting(b.key)?.eventNumber);
-   const ha=String(getSetting(a.key)?.eventNumber||"").trim()!=="";
-   const hb=String(getSetting(b.key)?.eventNumber||"").trim()!=="";
-   if(ha&&hb&&na!==nb)return na-nb;
-   if(ha!==hb)return ha?-1:1;
-   return natural(a.section,b.section)||natural(a.event,b.event);
- });
-} · ${x.event}`})});return[...m.values()].sort((a,b)=>natural(a.label,b.label))}
-function roundKey(){return btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","")+"_"+roundSelect.value}
-function activeJudges(){return groupSelect.value==="ALL"?JUDGES:JUDGES.filter(j=>j.code.startsWith(groupSelect.value))}
-function listen(){if(unsubscribe)unsubscribe();document.getElementById("adminTitle").textContent=eventSelect.selectedOptions[0]?.textContent||"";unsubscribe=onValue(ref(db,`submissions/${roundKey()}`),snap=>{currentData=snap.val()||{};render()})}
-function aggregate(data){
- const scores={};
- Object.values(data).forEach(ballot=>{
-   if(ballot.round==="final"){ballot.result.forEach(x=>{scores[x.backNo]=(scores[x.backNo]||0)+x.rank})}
-   else{ballot.result.forEach(n=>{scores[n]=(scores[n]||0)+1})}
- });
- return Object.entries(scores).sort((a,b)=>roundSelect.value==="final"?(a[1]-b[1]||natural(a[0],b[0])):(b[1]-a[1]||natural(a[0],b[0])));
-}
-function render(){
- const judges=activeJudges(),filtered={};
- judges.forEach(j=>{if(currentData[j.code])filtered[j.code]=currentData[j.code]});
- const submitted=Object.keys(filtered).length,total=judges.length;
- document.getElementById("submissionCount").textContent=`${submitted} / ${total} SUBMITTED`;
- const complete=submitted===total&&total>0;
- document.getElementById("completeBadge").textContent=complete?"COMPLETE":"IN PROGRESS";
- document.getElementById("completeBadge").className=`complete-badge ${complete?"complete":""}`;
- document.getElementById("judgeStatus").innerHTML=judges.map(j=>`<div class="status-row"><div class="status-judge">${j.code}<br><span class="judge-name">${j.name}</span></div><div>${currentData[j.code]?.eventLabel||""}</div><div class="${currentData[j.code]?"submitted":"pending"}">${currentData[j.code]?"SUBMITTED":"PENDING"}</div></div>`).join("");
- const rows=aggregate(filtered);
- document.getElementById("aggregateResults").innerHTML=rows.length?rows.map(([back,score],i)=>`<div class="result-row"><div class="result-back">${back}</div><div>${roundSelect.value==="final"?`Provisional place ${i+1}`:"Total checks"}</div><div class="result-score">${score}</div></div>`).join(""):`<div class="message">No submissions yet.</div>`;
-}
-function exportCSV(){
- const judges=activeJudges(),rows=[["Judge","Judge Name","Section","Round","Back No.","Value"]];
- judges.forEach(j=>{const b=currentData[j.code];if(!b)return;if(b.round==="final"){b.result.forEach(x=>rows.push([j.code,j.name,b.eventLabel,b.round,x.backNo,x.rank]))}else{b.result.forEach(n=>rows.push([j.code,j.name,b.eventLabel,b.round,n,1]))}});
- const csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
- const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download=`APDC_${roundSelect.value}_${groupSelect.value}.csv`;a.click();URL.revokeObjectURL(url);
-}
-onValue(ref(db,".info/connected"),s=>{const online=s.val()===true;document.getElementById("connectionDot").classList.toggle("online",online);document.getElementById("connectionText").textContent=online?"ONLINE":"OFFLINE"});
-eventSelect.onchange=listen;roundSelect.onchange=listen;groupSelect.onchange=render;
-document.getElementById("clearBtn").onclick=()=>{if(confirm("Clear all submissions for this section and round?"))remove(ref(db,`submissions/${roundKey()}`))};
-document.getElementById("exportBtn").onclick=exportCSV;
-document.getElementById("printBtn").onclick=()=>window.print();
-Promise.all([
- fetch("players.json",{cache:"no-store"}).then(r=>r.json()),
- fetch("event-settings.json",{cache:"no-store"}).then(r=>r.json()).catch(()=>({events:[]}))
-]).then(([d,s])=>{
- entries=d;eventSettings=s||{events:[]};
- eventSelect.innerHTML=events(d).map(e=>`<option value="${e.key}">${eventLabel(e.key,e.section,e.event)}</option>`).join("");
- listen();
-});
+{code:"T1",name:"Raymond KIM"},{code:"T2",name:"Lorencia"},{code:"T3",name:"Marcus"},{code:"T4",name:"Crystal"},
+{code:"T5",name:"Tomohiro"},{code:"T6",name:"Annie Oo"},{code:"T7",name:"Nancy Chang"},{code:"T8",name:"Max Yim"},
+{code:"W1",name:"이종률"},{code:"W2",name:"김도영"},{code:"W3",name:"엄혜리"},{code:"W4",name:"구채림"},
+{code:"W5",name:"고재호"},{code:"W6",name:"임채성"},{code:"W7",name:"은일"},{code:"W8",name:"블라디"},{code:"W9",name:"이세영"}];
 
-const nowEventInput=document.getElementById("nowEventInput");
-const onDeckEventInput=document.getElementById("onDeckEventInput");
-const nextEventInput=document.getElementById("nextEventInput");
-const publishFloorBtn=document.getElementById("publishFloorBtn");
-const advanceFloorBtn=document.getElementById("advanceFloorBtn");
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+const encodeKey=k=>btoa(unescape(encodeURIComponent(k))).replaceAll("=","");
+
+const gate=document.getElementById("adminPasswordGate");
+const protectedBox=document.getElementById("adminProtected");
+const passInput=document.getElementById("adminPasswordInput");
+const passBtn=document.getElementById("adminPasswordBtn");
+const passMsg=document.getElementById("adminPasswordMessage");
+function unlock(){sessionStorage.setItem("apdcAdminUnlocked","yes");gate.classList.add("hidden");protectedBox.classList.remove("hidden");}
+passBtn.onclick=()=>{if(passInput.value==="0808")unlock();else passMsg.textContent="WRONG PASSWORD";};
+passInput.onkeydown=e=>{if(e.key==="Enter")passBtn.click();};
+if(sessionStorage.getItem("apdcAdminUnlocked")==="yes")unlock();
+
+const setupEvent=document.getElementById("setupEvent");
+const setupEventNumber=document.getElementById("setupEventNumber");
+const judgeChecks=document.getElementById("judgeChecks");
+const setupMessage=document.getElementById("setupMessage");
+const adminEvent=document.getElementById("adminEvent");
+const adminRound=document.getElementById("adminRound");
+const judgeGroup=document.getElementById("judgeGroup");
+
+const plainLabel=e=>`${e.section} · ${e.event}`;
+setupEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
+adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
+judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
+
+async function loadSetup(){
+ const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
+ const snap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
+ const value=snap.val()||event;
+ setupEventNumber.value=value.eventNumber||"";
+ const assigned=value.assignedJudges||[];
+ judgeChecks.querySelectorAll("input").forEach(c=>c.checked=assigned.includes(c.value));
+}
+setupEvent.onchange=loadSetup;
+
+document.getElementById("saveSetupBtn").onclick=async()=>{
+ const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
+ const assigned=[...judgeChecks.querySelectorAll("input:checked")].map(c=>c.value);
+ await set(ref(db,`eventSettings/${encodeKey(event.eventKey)}`),{...event,eventNumber:setupEventNumber.value.trim(),assignedJudges:assigned,updatedAt:Date.now()});
+ setupMessage.textContent="SAVED";setTimeout(()=>setupMessage.textContent="",1200);
+};
+
+const nowInput=document.getElementById("nowEventInput");
+const deckInput=document.getElementById("onDeckEventInput");
+const nextInput=document.getElementById("nextEventInput");
 const floorMessage=document.getElementById("floorMessage");
-const floorStatusRef=ref(db,"floorStatus");
-
-onValue(floorStatusRef,s=>{
- const v=s.val()||{};
- if(nowEventInput)nowEventInput.value=v.now||"";
- if(onDeckEventInput)onDeckEventInput.value=v.onDeck||"";
- if(nextEventInput)nextEventInput.value=v.next||"";
-});
-
-async function publishFloorStatus(){
- await set(floorStatusRef,{
-  now:nowEventInput.value.trim(),
-  onDeck:onDeckEventInput.value.trim(),
-  next:nextEventInput.value.trim(),
-  updatedAt:Date.now()
- });
- floorMessage.textContent="PUBLISHED";
- setTimeout(()=>floorMessage.textContent="",1500);
+async function publishFloor(){
+ await set(ref(db,"floorStatus"),{now:nowInput.value.trim(),onDeck:deckInput.value.trim(),next:nextInput.value.trim(),updatedAt:Date.now()});
+ floorMessage.textContent="PUBLISHED";setTimeout(()=>floorMessage.textContent="",1200);
 }
+document.getElementById("publishFloorBtn").onclick=publishFloor;
+document.getElementById("advanceFloorBtn").onclick=async()=>{nowInput.value=deckInput.value;deckInput.value=nextInput.value;nextInput.value="";await publishFloor();};
+onValue(ref(db,"floorStatus"),s=>{const v=s.val()||{};nowInput.value=v.now||"";deckInput.value=v.onDeck||"";nextInput.value=v.next||"";});
 
-async function advanceFloorStatus(){
- nowEventInput.value=onDeckEventInput.value.trim();
- onDeckEventInput.value=nextEventInput.value.trim();
- nextEventInput.value="";
- await publishFloorStatus();
- floorMessage.textContent="ADVANCED";
+document.getElementById("startEventBtn").onclick=async()=>{
+ const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
+ const label=`${setupEventNumber.value?`EVENT ${setupEventNumber.value} · `:""}${event.section} · ${event.event}`;
+ await set(ref(db,"activeEvent"),{eventKey:event.eventKey,label,round:adminRound.value,updatedAt:Date.now()});
+ nowInput.value=label;await publishFloor();setupMessage.textContent="EVENT STARTED";
+};
+
+const roundKey=()=>encodeKey(adminEvent.value)+"_"+adminRound.value;
+const activeJudges=()=>judgeGroup.value==="ALL"?JUDGES:JUDGES.filter(j=>j.code.startsWith(judgeGroup.value));
+let unsub=null,currentData={};
+function listen(){
+ if(unsub)unsub();
+ document.getElementById("adminTitle").textContent=adminEvent.selectedOptions[0]?.textContent||"";
+ unsub=onValue(ref(db,`submissions/${roundKey()}`),s=>{currentData=s.val()||{};renderStatus();});
 }
+function renderStatus(){
+ const judges=activeJudges();
+ const submitted=judges.filter(j=>currentData[j.code]);
+ document.getElementById("submissionCount").textContent=`${submitted.length} / ${judges.length} SUBMITTED`;
+ document.getElementById("completeBadge").textContent=submitted.length===judges.length&&judges.length?"COMPLETE":"IN PROGRESS";
+ document.getElementById("judgeStatus").innerHTML=judges.map(j=>`<div class="status-row"><strong>${j.code}</strong><span>${j.name}</span><span>${currentData[j.code]?"SUBMITTED ✓":"WAITING"}</span></div>`).join("");
+ document.getElementById("aggregateResults").innerHTML=submitted.length?`<div class="message">${submitted.length} ballots received.</div>`:'<div class="message">NO RESULTS YET</div>';
+}
+adminEvent.onchange=listen;adminRound.onchange=listen;judgeGroup.onchange=renderStatus;
+document.getElementById("clearBtn").onclick=async()=>{if(confirm("Reset selected round?"))await remove(ref(db,`submissions/${roundKey()}`));};
+document.getElementById("resetAllBtn").onclick=async()=>{if(confirm("Reset ALL submissions?")&&confirm("This cannot be undone. Continue?"))await remove(ref(db,"submissions"));};
+document.getElementById("exportBtn").onclick=()=>alert("CSV export will be enabled after final Event No. confirmation.");
+document.getElementById("printBtn").onclick=()=>window.print();
 
-publishFloorBtn?.addEventListener("click",publishFloorStatus);
-advanceFloorBtn?.addEventListener("click",advanceFloorStatus);
-
-// ===== ADMIN-ONLY GLOBAL RESET =====
-const resetAllBtn = document.getElementById("resetAllBtn");
-resetAllBtn?.addEventListener("click", async () => {
-  const first = confirm("Reset ALL judge submissions for every section and round?");
-  if (!first) return;
-  const second = confirm("This cannot be undone. Continue?");
-  if (!second) return;
-
-  await remove(ref(db, "submissions"));
-  alert("ALL SUBMISSIONS HAVE BEEN RESET.");
-});
+loadSetup();listen();

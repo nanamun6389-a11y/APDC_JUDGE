@@ -1,12 +1,16 @@
-# APDC JUDGE — EMBEDDED PLAYERS FIX
+# APDC JUDGE — EVENT CONTROL V1
 
-The Judge page no longer depends on loading players.json.
-Player data is embedded directly inside judge.js.
+Admin password: 0808
+Judge password: 0070
 
-This fixes:
-- FAILED TO LOAD PLAYERS.JSON
-- GitHub Pages path/cache problems for the Judge page
-
-players.json is still included for Admin and Live pages.
+Prepared now:
+- Complete event catalogue
+- Event No. field
+- Judge assignment checkboxes
+- SAVE ASSIGNMENT
+- START EVENT
+- NOW / ON DECK / NEXT
+- Submitted status and locking
+- Admin-only reset
 
 Upload every file directly to the root of APDC_JUDGE.

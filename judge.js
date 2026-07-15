@@ -12,6 +12,7 @@ const EMBEDDED_PLAYERS = [{"eventNo": "1", "section": "Formation", "style": "Oth
 
 let entries = [];
 let eventSettings = {events:[]};
+let firebaseEventSettings = {};
 let selected = new Set();
 let currentJudge = "";
 let currentSubmissionUnsubscribe = null;
@@ -145,7 +146,8 @@ onValue(ref(db, ".info/connected"), snap => {
 });
 
 function getSetting(key) {
-  return eventSettings.events?.find(item => item.eventKey === key) || null;
+  const encoded=btoa(unescape(encodeURIComponent(key))).replaceAll("=","");
+  return firebaseEventSettings[encoded] || eventSettings.events?.find(item=>item.eventKey===key) || null;
 }
 
 function eventLabel(item) {
@@ -389,6 +391,21 @@ function populateEventsForJudge() {
   }
 }
 
+
+onValue(ref(db,"eventSettings"),snap=>{
+  firebaseEventSettings=snap.val()||{};
+  if(currentJudge){populateEventsForJudge();render();}
+});
+onValue(ref(db,"activeEvent"),snap=>{
+  const active=snap.val();
+  if(!active||!currentJudge)return;
+  const option=[...eventSelect.options].find(o=>o.value===active.eventKey);
+  if(option){
+    eventSelect.value=active.eventKey;
+    roundSelect.value=active.round||"final";
+    render();
+  }
+});
 
 fetch("event-settings.json", {cache:"no-store"})
   .then(r => r.json())
