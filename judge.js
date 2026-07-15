@@ -409,4 +409,3 @@ fetch("event-settings.json", {cache:"no-store"})
     eventSettings = {events:[]};
     renderJudgeButtons();
   });
-  });
