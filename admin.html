@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>APDC Admin</title>
-<link rel="stylesheet" href="style.css?v=control-v1">
+<link rel="stylesheet" href="style.css?v=auto-advance-v2">
 </head>
 <body>
 <header><a class="brand brand-link" href="index.html">APDC ADMIN</a></header>
@@ -26,11 +26,22 @@
   <h1>EVENT SETUP</h1>
   <label>SECTION / EVENT<select id="setupEvent"></select></label>
   <label>EVENT NO.<input id="setupEventNumber" type="number" min="1" inputmode="numeric" placeholder="Later"></label>
+  <label>ROUND
+    <select id="setupRound">
+      <option value="quarter">Quarter Final</option>
+      <option value="semi">Semi Final</option>
+      <option value="final">Final</option>
+    </select>
+  </label>
   <div class="small-label judge-label">ASSIGNED JUDGES</div>
   <div id="judgeChecks" class="judge-check-grid"></div>
+  <div class="assignment-tools">
+    <button id="copyPreviousBtn" class="light" type="button">COPY PREVIOUS JUDGES</button>
+    <button id="clearJudgesBtn" class="light" type="button">CLEAR ALL</button>
+  </div>
   <div class="setup-actions">
     <button id="saveSetupBtn" class="dark" type="button">SAVE ASSIGNMENT</button>
-    <button id="startEventBtn" class="dark" type="button">START EVENT</button>
+    <button id="startEventBtn" class="dark" type="button">START FIRST EVENT</button>
   </div>
   <div id="setupMessage" class="message"></div>
 </section>
@@ -64,6 +75,20 @@
   </div>
 </section>
 
+
+<section class="auto-advance-card">
+  <div>
+    <div class="small-label">AUTOMATIC RUNNING ORDER</div>
+    <h2>AUTO ADVANCE</h2>
+    <p>Moves to the next saved Event No. when every assigned judge has submitted.</p>
+  </div>
+  <label class="auto-switch">
+    <input id="autoAdvanceToggle" type="checkbox" checked>
+    <span>ON</span>
+  </label>
+  <div id="autoAdvanceStatus" class="message">READY</div>
+</section>
+
 <section class="on-deck-admin">
   <h2>FLOOR CONTROL</h2>
   <label>NOW<input id="nowEventInput" type="text"></label>
@@ -79,6 +104,6 @@
 <nav class="bottom-nav"><a href="index.html">JUDGE</a><a href="live.html">LIVE</a><a href="qr.html">QR</a></nav>
 </div>
 </main>
-<script type="module" src="admin.js?v=control-v1"></script>
+<script type="module" src="admin.js?v=auto-advance-v2"></script>
 </body>
 </html>

@@ -25,6 +25,7 @@ if(sessionStorage.getItem("apdcAdminUnlocked")==="yes")unlock();
 
 const setupEvent=document.getElementById("setupEvent");
 const setupEventNumber=document.getElementById("setupEventNumber");
+const setupRound=document.getElementById("setupRound");
 const judgeChecks=document.getElementById("judgeChecks");
 const setupMessage=document.getElementById("setupMessage");
 const adminEvent=document.getElementById("adminEvent");
@@ -41,6 +42,7 @@ async function loadSetup(){
  const snap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
  const value=snap.val()||event;
  setupEventNumber.value=value.eventNumber||"";
+ setupRound.value=value.round||"final";
  const assigned=value.assignedJudges||[];
  judgeChecks.querySelectorAll("input").forEach(c=>c.checked=assigned.includes(c.value));
 }
@@ -49,8 +51,43 @@ setupEvent.onchange=loadSetup;
 document.getElementById("saveSetupBtn").onclick=async()=>{
  const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
  const assigned=[...judgeChecks.querySelectorAll("input:checked")].map(c=>c.value);
- await set(ref(db,`eventSettings/${encodeKey(event.eventKey)}`),{...event,eventNumber:setupEventNumber.value.trim(),assignedJudges:assigned,updatedAt:Date.now()});
+ await set(ref(db,`eventSettings/${encodeKey(event.eventKey)}`),{
+  ...event,
+  eventNumber:setupEventNumber.value.trim(),
+  round:setupRound.value,
+  assignedJudges:assigned,
+  updatedAt:Date.now()
+});
  setupMessage.textContent="SAVED";setTimeout(()=>setupMessage.textContent="",1200);
+};
+
+
+document.getElementById("clearJudgesBtn").onclick=()=>{
+  judgeChecks.querySelectorAll("input").forEach(c=>c.checked=false);
+  setupMessage.textContent="CLEARED";
+};
+
+document.getElementById("copyPreviousBtn").onclick=async()=>{
+  const currentNo=Number(setupEventNumber.value);
+  if(!Number.isFinite(currentNo)){
+    setupMessage.textContent="ENTER EVENT NO. FIRST";
+    return;
+  }
+
+  const snap=await get(ref(db,"eventSettings"));
+  const settings=Object.values(snap.val()||{});
+  const previous=settings
+    .filter(s=>Number.isFinite(Number(s.eventNumber)) && Number(s.eventNumber)<currentNo)
+    .sort((a,b)=>Number(b.eventNumber)-Number(a.eventNumber))[0];
+
+  if(!previous){
+    setupMessage.textContent="NO PREVIOUS ASSIGNMENT";
+    return;
+  }
+
+  const assigned=previous.assignedJudges||[];
+  judgeChecks.querySelectorAll("input").forEach(c=>c.checked=assigned.includes(c.value));
+  setupMessage.textContent=`COPIED EVENT ${previous.eventNumber}`;
 };
 
 const nowInput=document.getElementById("nowEventInput");
@@ -68,7 +105,13 @@ onValue(ref(db,"floorStatus"),s=>{const v=s.val()||{};nowInput.value=v.now||"";d
 document.getElementById("startEventBtn").onclick=async()=>{
  const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
  const label=`${setupEventNumber.value?`EVENT ${setupEventNumber.value} · `:""}${event.section} · ${event.event}`;
- await set(ref(db,"activeEvent"),{eventKey:event.eventKey,label,round:adminRound.value,updatedAt:Date.now()});
+ await set(ref(db,"activeEvent"),{
+  eventKey:event.eventKey,
+  label,
+  round:setupRound.value,
+  eventNumber:setupEventNumber.value.trim(),
+  updatedAt:Date.now()
+});
  nowInput.value=label;await publishFloor();setupMessage.textContent="EVENT STARTED";
 };
 
@@ -93,5 +136,115 @@ document.getElementById("clearBtn").onclick=async()=>{if(confirm("Reset selected
 document.getElementById("resetAllBtn").onclick=async()=>{if(confirm("Reset ALL submissions?")&&confirm("This cannot be undone. Continue?"))await remove(ref(db,"submissions"));};
 document.getElementById("exportBtn").onclick=()=>alert("CSV export will be enabled after final Event No. confirmation.");
 document.getElementById("printBtn").onclick=()=>window.print();
+
+
+// ===== AUTOMATIC EVENT ADVANCE =====
+const autoAdvanceToggle=document.getElementById("autoAdvanceToggle");
+const autoAdvanceStatus=document.getElementById("autoAdvanceStatus");
+let activeEventValue=null;
+let activeSubmissionUnsub=null;
+let advancing=false;
+
+function eventLabelFromSetting(s){
+  return `${s.eventNumber?`EVENT ${s.eventNumber} · `:""}${s.section} · ${s.event}`;
+}
+
+async function getConfiguredRunningOrder(){
+  const snap=await get(ref(db,"eventSettings"));
+  return Object.values(snap.val()||{})
+    .filter(s=>String(s.eventNumber||"").trim()!=="" && (s.assignedJudges||[]).length>0)
+    .sort((a,b)=>Number(a.eventNumber)-Number(b.eventNumber));
+}
+
+async function updateAutomaticFloor(order,currentIndex){
+  const now=order[currentIndex] ? eventLabelFromSetting(order[currentIndex]) : "";
+  const onDeck=order[currentIndex+1] ? eventLabelFromSetting(order[currentIndex+1]) : "";
+  const next=order[currentIndex+2] ? eventLabelFromSetting(order[currentIndex+2]) : "";
+
+  await set(ref(db,"floorStatus"),{
+    now,onDeck,next,updatedAt:Date.now()
+  });
+}
+
+async function advanceToNextEvent(){
+  if(advancing || !activeEventValue) return;
+  advancing=true;
+  autoAdvanceStatus.textContent="ADVANCING IN 3 SECONDS…";
+
+  await new Promise(resolve=>setTimeout(resolve,3000));
+
+  const order=await getConfiguredRunningOrder();
+  const currentIndex=order.findIndex(s=>s.eventKey===activeEventValue.eventKey);
+  const nextSetting=order[currentIndex+1];
+
+  if(!nextSetting){
+    autoAdvanceStatus.textContent="RUNNING ORDER COMPLETE";
+    advancing=false;
+    return;
+  }
+
+  const label=eventLabelFromSetting(nextSetting);
+  await set(ref(db,"activeEvent"),{
+    eventKey:nextSetting.eventKey,
+    label,
+    round:nextSetting.round||"final",
+    eventNumber:nextSetting.eventNumber||"",
+    updatedAt:Date.now(),
+    autoStarted:true
+  });
+
+  await updateAutomaticFloor(order,currentIndex+1);
+  autoAdvanceStatus.textContent=`ACTIVE: EVENT ${nextSetting.eventNumber}`;
+  advancing=false;
+}
+
+function watchActiveSubmissions(active){
+  if(activeSubmissionUnsub){
+    activeSubmissionUnsub();
+    activeSubmissionUnsub=null;
+  }
+  if(!active) return;
+
+  const encoded=encodeKey(active.eventKey);
+  const submissionPath=`submissions/${encoded}_${active.round||"final"}`;
+
+  activeSubmissionUnsub=onValue(ref(db,submissionPath),async snap=>{
+    if(!autoAdvanceToggle.checked || advancing) return;
+
+    const settingsSnap=await get(ref(db,`eventSettings/${encoded}`));
+    const setting=settingsSnap.val();
+    if(!setting) return;
+
+    const assigned=setting.assignedJudges||[];
+    if(!assigned.length){
+      autoAdvanceStatus.textContent="NO JUDGES ASSIGNED";
+      return;
+    }
+
+    const submitted=snap.val()||{};
+    const completed=assigned.filter(code=>submitted[code]).length;
+    autoAdvanceStatus.textContent=`${completed} / ${assigned.length} SUBMITTED`;
+
+    if(completed===assigned.length){
+      await advanceToNextEvent();
+    }
+  });
+}
+
+onValue(ref(db,"activeEvent"),snap=>{
+  activeEventValue=snap.val();
+  if(activeEventValue){
+    autoAdvanceStatus.textContent=`ACTIVE: ${activeEventValue.label||""}`;
+    watchActiveSubmissions(activeEventValue);
+  }else{
+    autoAdvanceStatus.textContent="READY — START FIRST EVENT";
+  }
+});
+
+autoAdvanceToggle.onchange=()=>{
+  localStorage.setItem("apdcAutoAdvance",autoAdvanceToggle.checked?"on":"off");
+  autoAdvanceStatus.textContent=autoAdvanceToggle.checked?"AUTO ADVANCE ON":"AUTO ADVANCE OFF";
+};
+autoAdvanceToggle.checked=localStorage.getItem("apdcAutoAdvance")!=="off";
 
 loadSetup();listen();
