@@ -1,3 +1,4 @@
+apdcBuildLanguageUI();
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getDatabase, ref, set, get, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
@@ -270,7 +271,7 @@ function render() {
       <div class="final-row">
         <div>
           <div class="final-number">${c.backNo}</div>
-          <div class="competitor-name">${c.name}</div>
+          <div class="competitor-name">${c.name}${apdcNameGuide(c.name)?`<span class="name-guide">${apdcNameGuide(c.name)}</span>`:""}</div>
         </div>
         <select class="rank-select" data-back="${c.backNo}">
           <option value="">Rank</option>
@@ -426,3 +427,8 @@ fetch("event-settings.json", {cache:"no-store"})
     eventSettings = {events:[]};
     renderJudgeButtons();
   });
+
+document.addEventListener("DOMContentLoaded",()=>{
+ const selectTitle=document.querySelector("#judgeGate h1");if(selectTitle)selectTitle.textContent=apdcT("selectJudge");
+ const submit=document.getElementById("submitBtn");if(submit&&!submit.disabled)submit.textContent=apdcT("submit");
+});

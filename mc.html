@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>APDC MC</title>
+<link rel="stylesheet" href="style.css?v=mc-v5">
+</head>
+<body>
+<header style="position:relative"><a class="brand brand-link" href="control-room.html">APDC MC</a><div id="languageHost" class="language-host"></div></header>
+<main class="mc-page">
+<section id="mcPasswordGate" class="password-gate">
+<div class="password-box"><div class="small-label">MC ACCESS</div><h1>ENTER PASSWORD</h1>
+<input id="mcPasswordInput" type="password" placeholder="••••"><button id="mcPasswordBtn">ENTER</button><div id="mcPasswordMessage" class="message"></div></div>
+</section>
+<div id="mcProtected" class="hidden">
+<section class="mc-progress"><div><span>PROGRESS</span><strong id="mcProgressText">0 / 0 EVENTS</strong></div><div class="mc-progress-bar"><i id="mcProgressBar"></i></div></section>
+<section class="mc-now-card"><div class="small-label">NOW</div><h1 id="mcNow">WAITING</h1><div id="mcRound" class="mc-round"></div></section>
+<section class="mc-script-grid">
+<article class="mc-script-card"><div class="mc-script-head"><span>🇰🇷 한국어</span><button data-copy="mcKorean">COPY</button></div><div id="mcKorean" class="mc-script-text">다음 경기를 준비하겠습니다.</div></article>
+<article class="mc-script-card"><div class="mc-script-head"><span>🇬🇧 EASY ENGLISH</span><button data-copy="mcEnglish">COPY</button></div><div id="mcEnglish" class="mc-script-text">Please get ready for the next event.</div></article>
+</section>
+<section class="mc-next-grid"><div><span>NEXT UP</span><strong id="mcOnDeck">—</strong></div><div><span>COMING SOON</span><strong id="mcNext">—</strong></div></section>
+<section class="mc-judge-status"><div class="mc-status-head"><h2>JUDGES</h2><strong id="mcJudgeCount">0 / 0 DONE</strong></div><div id="mcWaitingJudges">Waiting for Judges.</div></section>
+<section class="mc-quick-lines"><h2>QUICK LINES</h2><div class="quick-line-grid">
+<button data-ko="선수들은 경기장으로 나와주세요." data-en="Players, please come to the floor.">CALL PLAYERS</button>
+<button data-ko="심판 선생님 준비 부탁드립니다." data-en="Judges, please get ready.">CALL JUDGES</button>
+<button data-ko="준비되셨나요?" data-en="Are you ready?">READY?</button>
+<button data-ko="음악 주세요." data-en="Music, please.">MUSIC</button>
+<button data-ko="감사합니다." data-en="Thank you, Players.">THANK YOU</button>
+<button data-ko="심사 결과를 기다리고 있습니다." data-en="Waiting for Judges.">WAITING</button>
+</div></section>
+<nav class="bottom-nav"><a href="control-room.html">CONTROL</a><a href="admin.html">ADMIN</a><a href="broadcast.html">BROADCAST</a></nav>
+</div></main>
+<script src="i18n.js?v=mc-v5"></script>
+<script type="module" src="mc.js?v=mc-v5"></script>
+</body></html>

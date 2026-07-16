@@ -1,3 +1,4 @@
+apdcBuildLanguageUI();
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
@@ -18,4 +19,11 @@ onValue(ref(db,"floorStatus"),snap=>{
   const d=new Date(v.updatedAt);
   updatedEl.textContent=`UPDATED ${d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
  }else updatedEl.textContent="";
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+ const labels=document.querySelectorAll(".floor-label");
+ if(labels[0])labels[0].textContent=apdcT("now");
+ if(labels[1])labels[1].textContent=apdcT("onDeck");
+ if(labels[2])labels[2].textContent=apdcT("next");
 });

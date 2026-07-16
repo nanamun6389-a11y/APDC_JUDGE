@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="style.css?v=auto-advance-v2">
 </head>
 <body>
-<header><a class="brand brand-link" href="index.html">APDC ADMIN</a></header>
+<header style="position:relative"><a class="brand brand-link" href="index.html">APDC ADMIN</a><div id="languageHost" class="language-host"></div></header>
 <main>
 <section id="adminPasswordGate" class="password-gate">
   <div class="password-box">
@@ -89,7 +89,10 @@
   <div id="autoAdvanceStatus" class="message">READY</div>
 </section>
 
-<section class="on-deck-admin">
+<section class="sponsor-admin-card"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
+<label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
+<label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
+<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin">
   <h2>FLOOR CONTROL</h2>
   <label>NOW<input id="nowEventInput" type="text"></label>
   <label>ON DECK<input id="onDeckEventInput" type="text"></label>
@@ -101,9 +104,10 @@
   <div id="floorMessage" class="message"></div>
 </section>
 
-<nav class="bottom-nav"><a href="index.html">JUDGE</a><a href="live.html">LIVE</a><a href="qr.html">QR</a></nav>
+<nav class="bottom-nav"><a href="mc.html">MC</a><a href="broadcast.html">BROADCAST</a><a href="control-room.html">CONTROL</a><a href="index.html">JUDGE</a><a href="live.html">LIVE</a><a href="qr.html">QR</a></nav>
 </div>
 </main>
+<script src="i18n.js?v=v3"></script>
 <script type="module" src="admin.js?v=auto-advance-v2"></script>
 </body>
 </html>

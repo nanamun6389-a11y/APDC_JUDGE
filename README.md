@@ -1,26 +1,24 @@
-# APDC JUDGE — AUTO ADVANCE V2
+# APDC MC & BROADCAST V5
 
-Admin password: 0808
-Judge password: 0070
+New pages:
+- mc.html
+- broadcast.html
 
-Pre-competition setup:
-1. Select an event.
-2. Enter Event No.
-3. Choose Round.
-4. Assign a mixed T/W judge panel.
-5. SAVE ASSIGNMENT.
-6. Use COPY PREVIOUS JUDGES for the next event.
+MC password: 0808
 
-Competition day:
-1. Keep admin.html open on the operations computer.
-2. Confirm AUTO ADVANCE is ON.
-3. Press START FIRST EVENT once.
-4. After all assigned judges submit, the system waits 3 seconds and automatically:
-   - starts the next saved Event No.
-   - updates Judge screens
-   - updates NOW / ON DECK / NEXT
+MC:
+- Korean script
+- Easy English script
+- Players / Judges wording
+- Progress and judge status
+- Quick lines and copy buttons
 
-Important:
-- Automatic advance works while the Admin page remains open and connected.
-- Only events with an Event No. and at least one assigned judge are included.
-- Admin can switch AUTO ADVANCE OFF at any time.
+Broadcast:
+- NOW / NEXT UP / COMING SOON
+- Korean and English subtitles
+- Clock
+- Sponsor logo strip
+
+Admin:
+- Add sponsor name and direct logo image URL
+- Remove sponsor logos

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>APDC Control Room</title>
+<link rel="stylesheet" href="style.css?v=control-room-v4">
+</head>
+<body>
+<header style="position:relative">
+  <a class="brand brand-link" href="admin.html">APDC CONTROL ROOM</a>
+  <div id="languageHost" class="language-host"></div>
+</header>
+
+<main class="control-room">
+<section id="controlPasswordGate" class="password-gate">
+  <div class="password-box">
+    <div class="small-label">CONTROL ROOM ACCESS</div>
+    <h1>ENTER PASSWORD</h1>
+    <input id="controlPasswordInput" type="password" autocomplete="off" placeholder="••••">
+    <button id="controlPasswordBtn" type="button">ENTER</button>
+    <div id="controlPasswordMessage" class="message"></div>
+  </div>
+</section>
+
+<div id="controlProtected" class="hidden">
+  <section class="control-hero">
+    <div class="control-now">
+      <div class="control-kicker">NOW</div>
+      <h1 id="controlNow">WAITING</h1>
+      <div id="controlRound" class="control-round"></div>
+    </div>
+    <div id="controlComplete" class="control-complete">IN PROGRESS</div>
+  </section>
+
+  <section class="control-status-card">
+    <div class="control-status-head">
+      <h2>JUDGE STATUS</h2>
+      <div id="controlCount">0 / 0 SUBMITTED</div>
+    </div>
+    <div id="controlJudgeStatus" class="control-judge-grid"></div>
+  </section>
+
+  <section class="control-running-order">
+    <div>
+      <span>ON DECK</span>
+      <strong id="controlOnDeck">—</strong>
+    </div>
+    <div>
+      <span>NEXT</span>
+      <strong id="controlNext">—</strong>
+    </div>
+  </section>
+
+  <section class="control-alert-card">
+    <div>
+      <span>AUTO ADVANCE</span>
+      <strong id="controlAutoStatus">READY</strong>
+    </div>
+    <div>
+      <span>LAST UPDATE</span>
+      <strong id="controlUpdated">—</strong>
+    </div>
+  </section>
+
+  <section class="control-actions"><a href="mc.html">MC</a><a href="broadcast.html">BROADCAST</a>
+    <a href="admin.html">ADMIN</a>
+    <a href="live.html">LIVE</a>
+    <a href="index.html">JUDGE</a>
+  </section>
+</div>
+</main>
+
+<script src="i18n.js?v=v4"></script>
+<script type="module" src="control-room.js?v=v4"></script>
+</body>
+</html>
