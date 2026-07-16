@@ -9,6 +9,16 @@
 </head>
 <body>
 <header style="position:relative"><a class="brand brand-link" href="index.html">APDC ADMIN</a><div id="languageHost" class="language-host"></div></header>
+
+<nav class="top-category-nav">
+  <a href="control-room.html">DASHBOARD</a>
+  <a href="index.html">JUDGE</a>
+  <a href="mc.html">MC</a>
+  <a href="live.html">LIVE</a>
+  <a href="broadcast.html">BROADCAST</a>
+  <a href="admin.html">SETTINGS</a>
+</nav>
+
 <main>
 <section id="adminPasswordGate" class="password-gate">
   <div class="password-box">
@@ -21,7 +31,15 @@
 </section>
 
 <div id="adminProtected" class="hidden">
-<section class="setup-card">
+
+<div class="admin-section-tabs">
+  <button type="button" data-admin-tab="event" class="active">EVENT</button>
+  <button type="button" data-admin-tab="floor">FLOOR</button>
+  <button type="button" data-admin-tab="sponsor">SPONSORS</button>
+  <button type="button" data-admin-tab="system">SYSTEM</button>
+</div>
+
+<section class="setup-card admin-tab-panel" data-admin-panel="event">
   <div class="small-label">EVENT MANAGEMENT</div>
   <h1>EVENT SETUP</h1>
   <label>SECTION / EVENT<select id="setupEvent"></select></label>
@@ -46,7 +64,7 @@
   <div id="setupMessage" class="message"></div>
 </section>
 
-<section class="controls">
+<section class="controls admin-tab-panel" data-admin-panel="event">
   <label>SECTION<select id="adminEvent"></select></label>
   <label>ROUND<select id="adminRound">
     <option value="quarter">Quarter Final</option>
@@ -60,7 +78,7 @@
   </select></label>
 </section>
 
-<section class="score">
+<section class="score admin-tab-panel" data-admin-panel="event">
   <div class="score-head">
     <div><h1 id="adminTitle"></h1><div id="submissionCount" class="muted"></div></div>
     <div id="completeBadge" class="badge">IN PROGRESS</div>
@@ -89,10 +107,10 @@
   <div id="autoAdvanceStatus" class="message">READY</div>
 </section>
 
-<section class="sponsor-admin-card"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
+<section class="sponsor-admin-card admin-tab-panel hidden" data-admin-panel="sponsor"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
 <label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
 <label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
-<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin">
+<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
   <h2>FLOOR CONTROL</h2>
   <label>NOW<input id="nowEventInput" type="text"></label>
   <label>ON DECK<input id="onDeckEventInput" type="text"></label>
@@ -106,6 +124,24 @@
 
 <nav class="bottom-nav"><a href="mc.html">MC</a><a href="broadcast.html">BROADCAST</a><a href="control-room.html">CONTROL</a><a href="index.html">JUDGE</a><a href="live.html">LIVE</a><a href="qr.html">QR</a></nav>
 </div>
+
+<section class="system-panel admin-tab-panel hidden" data-admin-panel="system">
+  <div class="small-label">SYSTEM</div>
+  <h2>SYSTEM STATUS</h2>
+  <div class="system-status-grid">
+    <div><span>Firebase</span><strong>Connected</strong></div>
+    <div><span>Auto Advance</span><strong>Ready</strong></div>
+    <div><span>Judge Site</span><strong>Online</strong></div>
+    <div><span>Broadcast</span><strong>Ready</strong></div>
+  </div>
+  <div class="system-links">
+    <a href="control-room.html">OPEN DASHBOARD</a>
+    <a href="mc.html">OPEN MC</a>
+    <a href="broadcast.html">OPEN BROADCAST</a>
+    <a href="qr.html">OPEN QR</a>
+  </div>
+</section>
+
 </main>
 <script src="i18n.js?v=v3"></script>
 <script type="module" src="admin.js?v=auto-advance-v2"></script>
