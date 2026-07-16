@@ -1,11 +1,12 @@
 
 const APDC_LANGUAGES=[
- {code:"en",flag:"🇬🇧",name:"English"},
- {code:"ko",flag:"🇰🇷",name:"한국어"},
- {code:"ja",flag:"🇯🇵",name:"日本語"},
- {code:"zh-TW",flag:"🇹🇼",name:"繁體中文"},
- {code:"zh-CN",flag:"🇨🇳",name:"简体中文"},
- {code:"ms",flag:"🇲🇾",name:"Bahasa Melayu"}
+  {code:"en",flag:"🇬🇧",name:"English"},
+  {code:"ko",flag:"🇰🇷",name:"한국어"},
+  {code:"ja",flag:"🇯🇵",name:"日本語"},
+  {code:"zh-CN",flag:"🇨🇳",name:"简体中文"},
+  {code:"zh-TW",flag:"🇹🇼",name:"繁體中文"},
+  {code:"zh-HK",flag:"🇭🇰",name:"繁體中文（香港）"},
+  {code:"ms",flag:"🇲🇾",name:"Bahasa Melayu"}
 ];
 
 const APDC_I18N={
@@ -37,23 +38,55 @@ function apdcNameGuide(name){
 }
 
 function apdcBuildLanguageUI(){
- const host=document.getElementById("languageHost");
- if(!host)return;
- const current=APDC_LANGUAGES.find(x=>x.code===apdcLang())||APDC_LANGUAGES[0];
- host.innerHTML=`
-   <button id="languageToggle" class="language-toggle" type="button" aria-label="${apdcT("language")}">
-     <span>🌐</span><small>${current.flag}</small>
-   </button>
-   <div id="languageMenu" class="language-menu hidden">
-     ${APDC_LANGUAGES.map(l=>`<button type="button" data-lang="${l.code}" class="${l.code===current.code?"active":""}"><span>${l.flag}</span><strong>${l.name}</strong></button>`).join("")}
-   </div>`;
- const toggle=document.getElementById("languageToggle");
- const menu=document.getElementById("languageMenu");
- toggle.onclick=e=>{e.stopPropagation();menu.classList.toggle("hidden")};
- menu.querySelectorAll("button").forEach(b=>b.onclick=()=>{
-   localStorage.setItem("apdcLang",b.dataset.lang);
-   location.reload();
- });
- document.addEventListener("click",()=>menu.classList.add("hidden"));
- menu.onclick=e=>e.stopPropagation();
+  const host=document.getElementById("languageHost");
+  if(!host)return;
+
+  const current=APDC_LANGUAGES.find(item=>item.code===apdcLang())||APDC_LANGUAGES[0];
+
+  host.innerHTML=`
+    <button id="languageToggle" class="language-toggle" type="button"
+      aria-expanded="false" aria-controls="languageMenu">
+      <span class="language-globe">🌐</span>
+      <span class="language-current">${current.name}</span>
+      <span class="language-arrow">▼</span>
+    </button>
+
+    <div id="languageMenu" class="language-menu hidden" role="menu">
+      ${APDC_LANGUAGES.map(item=>`
+        <button type="button" role="menuitem" data-lang="${item.code}"
+          class="${item.code===current.code?"active":""}">
+          <span class="language-flag">${item.flag}</span>
+          <strong>${item.name}</strong>
+          ${item.code===current.code?'<span class="language-check">✓</span>':""}
+        </button>
+      `).join("")}
+    </div>`;
+
+  const toggle=document.getElementById("languageToggle");
+  const menu=document.getElementById("languageMenu");
+
+  function closeMenu(){
+    menu.classList.add("hidden");
+    toggle.setAttribute("aria-expanded","false");
+  }
+
+  toggle.addEventListener("click",event=>{
+    event.stopPropagation();
+    const willOpen=menu.classList.contains("hidden");
+    menu.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded",willOpen?"true":"false");
+  });
+
+  menu.querySelectorAll("[data-lang]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      localStorage.setItem("apdcLang",button.dataset.lang);
+      location.reload();
+    });
+  });
+
+  menu.addEventListener("click",event=>event.stopPropagation());
+  document.addEventListener("click",closeMenu);
+  document.addEventListener("keydown",event=>{
+    if(event.key==="Escape")closeMenu();
+  });
 }
