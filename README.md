@@ -1,11 +1,9 @@
-# APDC V8 — LANGUAGE DROPDOWN
+# APDC V9 — FULL TRANSLATION
 
-Changes:
-- Compact globe language button
-- Click to open the language list
-- Scrollable dropdown on mobile and desktop
-- English added and shown first
-- Selected language is saved on the device
+Fixed:
+- The full interface now changes language, not only the header and a few buttons.
+- Static text, placeholders, menus, settings, status cards and dynamically added labels are translated.
+- A MutationObserver translates new status text created after page load.
 
 Languages:
 - English
@@ -15,3 +13,5 @@ Languages:
 - 繁體中文
 - 繁體中文（香港）
 - Bahasa Melayu
+
+Official player names and event names remain unchanged.

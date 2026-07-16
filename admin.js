@@ -97,7 +97,7 @@ const nextInput=document.getElementById("nextEventInput");
 const floorMessage=document.getElementById("floorMessage");
 async function publishFloor(){
  await set(ref(db,"floorStatus"),{now:nowInput.value.trim(),onDeck:deckInput.value.trim(),next:nextInput.value.trim(),updatedAt:Date.now()});
- floorMessage.textContent="PUBLISHED";setTimeout(()=>floorMessage.textContent="",1200);
+ floorMessage.textContent="PUBLISH";setTimeout(()=>floorMessage.textContent="",1200);
 }
 document.getElementById("publishFloorBtn").onclick=publishFloor;
 document.getElementById("advanceFloorBtn").onclick=async()=>{nowInput.value=deckInput.value;deckInput.value=nextInput.value;nextInput.value="";await publishFloor();};
@@ -113,7 +113,7 @@ document.getElementById("startEventBtn").onclick=async()=>{
   eventNumber:setupEventNumber.value.trim(),
   updatedAt:Date.now()
 });
- nowInput.value=label;await publishFloor();setupMessage.textContent="EVENT STARTED";
+ nowInput.value=label;await publishFloor();setupMessage.textContent="START EVENT";
 };
 
 const roundKey=()=>encodeKey(adminEvent.value)+"_"+adminRound.value;

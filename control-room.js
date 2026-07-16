@@ -66,7 +66,7 @@ async function watchSubmissions(active){
     const submitted=snap.val()||{};
     const done=assigned.filter(code=>submitted[code]);
     countEl.textContent=`${done.length} / ${assigned.length} SUBMITTED`;
-    completeEl.textContent=assigned.length>0&&done.length===assigned.length?"COMPLETE ✓":"IN PROGRESS";
+    completeEl.textContent=assigned.length>0&&done.length===assigned.length?"COMPLETE":"IN PROGRESS";
     completeEl.classList.toggle("complete",assigned.length>0&&done.length===assigned.length);
 
     judgesEl.innerHTML=assigned.length?assigned.map(code=>{
@@ -79,7 +79,7 @@ async function watchSubmissions(active){
     }).join(""):'<div class="control-empty">NO JUDGES ASSIGNED</div>';
 
     const waiting=assigned.filter(code=>!submitted[code]);
-    autoEl.textContent=waiting.length?`WAITING FOR ${waiting.join(", ")}`:"READY TO ADVANCE";
+    autoEl.textContent=waiting.length?`WAITING FOR ${waiting.join(", ")}`:"READY";
     autoEl.classList.toggle("warning",waiting.length>0);
   });
 }
