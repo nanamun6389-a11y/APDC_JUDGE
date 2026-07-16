@@ -371,3 +371,35 @@
     max-height:55vh;
   }
 }
+
+/* APDC Official V10 cleanup */
+.bottom-nav,
+.control-actions,
+.system-links {
+  display: none !important;
+}
+
+.top-category-nav {
+  margin: 0;
+  box-shadow: none;
+}
+
+.top-category-nav a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+main {
+  padding-bottom: 40px;
+}
+
+.mc-script-text {
+  min-height: 110px;
+}
+
+@media (max-width: 640px) {
+  .top-category-nav a {
+    padding: 12px 14px;
+  }
+}

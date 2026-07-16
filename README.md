@@ -1,17 +1,11 @@
-# APDC V9 — FULL TRANSLATION
+# APDC Official V10
 
-Fixed:
-- The full interface now changes language, not only the header and a few buttons.
-- Static text, placeholders, menus, settings, status cards and dynamically added labels are translated.
-- A MutationObserver translates new status text created after page load.
+Updated:
+- Only one top category menu remains.
+- Duplicate lower and inner category buttons were removed.
+- MC Korean wording uses '심사위원 여러분'.
+- MC Korean script is shorter and more natural.
+- Broadcast Korean captions use short, screen-friendly wording.
+- Existing full translation and language dropdown remain included.
 
-Languages:
-- English
-- 한국어
-- 日本語
-- 简体中文
-- 繁體中文
-- 繁體中文（香港）
-- Bahasa Melayu
-
-Official player names and event names remain unchanged.
+Upload every file directly to the root of the APDC_JUDGE repository.
