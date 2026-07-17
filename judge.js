@@ -408,7 +408,7 @@ onValue(ref(db,"activeEvent"),snap=>{
   }
 });
 
-fetch("event-settings.json", {cache:"no-store"})
+fetch("event-settings.json?v=20260717-1305", {cache:"no-store"})
   .then(r => r.json())
   .catch(() => ({events:[]}))
   .then(settingsData => {

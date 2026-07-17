@@ -9,3 +9,6 @@ Updated:
 - Existing full translation and language dropdown remain included.
 
 Upload every file directly to the root of the APDC_JUDGE repository.
+
+
+Update 20260717-1305: Under 18 Solo CSR merged into Under 18 Solo CRS; cache-busting enabled.
