@@ -421,3 +421,7 @@ main {
 .mc-comment-note-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:14px;margin-bottom:14px}
 .mc-note-text{white-space:pre-line}
 @media(max-width:760px){.mc-comment-note-grid{grid-template-columns:1fr}.mc-tt-head{align-items:flex-start;flex-direction:column}.mc-tt-buttons{width:100%}.mc-tt-buttons button{flex:1}}
+
+/* LIVE participant back numbers */
+.live-backnos{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);font-size:clamp(14px,1.7vw,24px);font-weight:700;letter-spacing:.08em;line-height:1.5;word-break:break-word;color:inherit;opacity:.9}
+.now-block .live-backnos{opacity:1}
