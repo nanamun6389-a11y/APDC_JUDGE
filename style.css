@@ -425,3 +425,11 @@ main {
 /* LIVE participant back numbers */
 .live-backnos{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);font-size:clamp(14px,1.7vw,24px);font-weight:700;letter-spacing:.08em;line-height:1.5;word-break:break-word;color:inherit;opacity:.9}
 .now-block .live-backnos{opacity:1}
+
+/* LIVE: final event only */
+.floor-board.final-only .floor-block:not(.now-block){display:none}
+.floor-board.final-only .now-block{min-height:60vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border-bottom:1px solid #000;padding:56px 18px}
+.floor-board.final-only .now-block .floor-label{font-size:clamp(18px,2.2vw,30px);margin-bottom:18px}
+.floor-board.final-only .now-block .floor-event{font-size:clamp(48px,10vw,112px);max-width:1100px}
+.floor-board.final-only .now-block .live-backnos{font-size:clamp(20px,2.5vw,34px);margin-top:22px;padding-top:18px}
+.floor-board.final-only .updated-time{text-align:center;margin-top:18px}

@@ -41,6 +41,10 @@ function renderBack(el,label){
   const nums=backNumbersFor(label);
   el.textContent=nums.length?`BACK NO. ${nums.join(" · ")}`:"BACK NO. —";
 }
+function hasEvent(v){
+  const s=String(v||"").trim();
+  return !!s && s!=="—" && s.toUpperCase()!=="WAITING";
+}
 function renderStatus(){
   const v=latestStatus||{};
   nowEl.textContent=v.now||"WAITING";
@@ -49,13 +53,18 @@ function renderStatus(){
   renderBack(nowBackEl,v.now);
   renderBack(deckBackEl,v.onDeck);
   renderBack(nextBackEl,v.next);
+
+  // 마지막 이벤트 하나만 남으면 ON DECK / NEXT를 숨기고 현재 이벤트만 크게 표시
+  const finalOnly=hasEvent(v.now) && !hasEvent(v.onDeck) && !hasEvent(v.next);
+  document.querySelector(".floor-board")?.classList.toggle("final-only",finalOnly);
+
   if(v.updatedAt){
     const d=new Date(v.updatedAt);
     updatedEl.textContent=`UPDATED ${d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}`;
   }else updatedEl.textContent="";
 }
 
-fetch("players.json?v=20260719-live-backno",{cache:"no-store"})
+fetch("players.json?v=20260720-consolidated-final",{cache:"no-store"})
   .then(r=>r.json())
   .then(x=>{players=Array.isArray(x)?x:[];renderStatus()})
   .catch(e=>console.error("players.json load failed",e));

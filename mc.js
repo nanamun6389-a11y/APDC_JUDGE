@@ -56,7 +56,7 @@ function renderTimetableRow(){
   prevBtn.disabled=ttIndex===0;nextBtn.disabled=ttIndex===TT.length-1;
   progress();
 }
-async function loadTimetable(){try{const r=await fetch("timetable-data.json?v=20260719-mc-next",{cache:"no-store"});const d=await r.json();TT=d.rows||[];renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
+async function loadTimetable(){try{const r=await fetch("timetable-data.json?v=20260720-realistic-times",{cache:"no-store"});const d=await r.json();TT=d.rows||[];renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
 async function publishLiveStatus(){
   if(!TT.length)return;
   const current=TT[ttIndex]||{};
