@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref, get, onValue, set } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 apdcBuildLanguageUI();
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app),PASSWORD="0808";
@@ -57,8 +57,22 @@ function renderTimetableRow(){
   progress();
 }
 async function loadTimetable(){try{const r=await fetch("timetable-data.json?v=20260719-mc-next",{cache:"no-store"});const d=await r.json();TT=d.rows||[];renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
-prevBtn.onclick=()=>{if(ttIndex>0){ttIndex--;renderTimetableRow()}};
-nextBtn.onclick=()=>{if(ttIndex<TT.length-1){ttIndex++;renderTimetableRow()}};
+async function publishLiveStatus(){
+  if(!TT.length)return;
+  const current=TT[ttIndex]||{};
+  const onDeck=TT[ttIndex+1]||{};
+  const next=TT[ttIndex+2]||{};
+  await set(ref(db,"floorStatus"),{
+    now:current.event||"WAITING",
+    onDeck:onDeck.event||"—",
+    next:next.event||"—",
+    round:current.round||"",
+    danceOrder:current.danceOrder||"",
+    updatedAt:Date.now()
+  });
+}
+prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
+nextBtn.onclick=async()=>{if(ttIndex<TT.length-1){ttIndex++;renderTimetableRow();await publishLiveStatus()}};
 function setScripts(){if(TT.length){renderTimetableRow();return}if(!active){koEl.textContent="다음 경기 준비.";enEl.textContent="Please get ready for the next event.";return}const kr=active.round==="quarter"?"쿼터 파이널":active.round==="semi"?"세미 파이널":"파이널";koEl.textContent=`다음 경기는 ${active.label} ${kr}입니다. 선수 입장. 심사위원 여러분, 준비 부탁드립니다.`;enEl.textContent=`Next event: ${active.label}. ${rtext(active.round)}. Players, please come to the floor. Judges, please get ready.`}
 function progress(){const t=TT.length||order.length;const d=TT.length?ttIndex:(active?Math.max(0,order.findIndex(x=>x.eventKey===active.eventKey)):0);document.getElementById("mcProgressText").textContent=`${t?d+1:0} / ${t} EVENTS`;document.getElementById("mcProgressBar").style.width=t?`${(d+1)/t*100}%`:"0%"}
 let submissionUnsub=null;
