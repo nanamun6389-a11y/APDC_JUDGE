@@ -49,7 +49,7 @@ function renderTimetableRow(){
   ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));localStorage.setItem("apdcMcTimetableIndex",String(ttIndex));
   const row=ttRow();
   ttPos.textContent=`${ttIndex+1} / ${TT.length}`;
-  ttMeta.textContent=[row.start?`START ${row.start}`:"",row.no?`RUN ${row.no}`:"",row.section,row.division].filter(Boolean).join(" · ");
+  ttMeta.textContent=[row.start?`START ${row.start}`:"",row.no?`EVENT ${row.no}`:"",row.section,row.division].filter(Boolean).join(" · ");
   nowEl.textContent=row.event||"WAITING";roundEl.textContent=[row.round,row.danceOrder].filter(Boolean).join(" · ");
   ttComment.textContent=buildComment(row);ttNote.textContent=buildNote(row);
   koEl.textContent=buildComment(row);enEl.textContent=buildEnglish(row);
