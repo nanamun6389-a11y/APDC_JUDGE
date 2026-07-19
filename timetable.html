@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>APDC Timetable</title>
+<link rel="stylesheet" href="style.css?v=20260719-timetable">
+</head>
+<body>
+<header style="position:relative"><a class="brand brand-link" href="index.html">APDC JUDGE</a></header>
+<nav class="top-category-nav">
+  <a href="control-room.html">DASHBOARD</a>
+  <a href="index.html">JUDGE</a>
+  <a href="timetable.html" class="active">TIMETABLE</a>
+  <a href="mc.html">MC</a>
+  <a href="live.html">LIVE</a>
+  <a href="broadcast.html">BROADCAST</a>
+  <a href="admin.html">SETTINGS</a>
+</nav>
+<main>
+<section id="ttPasswordGate" class="password-gate">
+  <div class="password-box">
+    <div class="small-label">APDC JUDGE ACCESS</div>
+    <h1>ENTER PASSWORD</h1>
+    <input id="ttPasswordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+    <button id="ttPasswordBtn" type="button">ENTER</button>
+    <div id="ttPasswordMessage" class="message"></div>
+  </div>
+</section>
+<section id="ttProtected" class="hidden" hidden style="display:none">
+  <div class="tt-head">
+    <div>
+      <div class="small-label">APDC 2026 · JUDGE PROGRAM ONLY</div>
+      <h1>TIMETABLE</h1>
+      <p id="ttSummary" class="muted"></p>
+    </div>
+    <div class="tt-tools"><input id="ttSearch" type="search" placeholder="Search event / section"><button id="ttNowBtn" class="light" type="button">NOW</button></div>
+  </div>
+  <div id="ttCards" class="tt-cards"></div>
+</section>
+</main>
+<script src="timetable.js?v=20260719-timetable"></script>
+</body>
+</html>
