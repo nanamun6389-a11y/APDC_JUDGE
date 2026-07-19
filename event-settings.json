@@ -9,17 +9,25 @@
       "assignedJudges": []
     },
     {
-      "eventKey": "Asia Pacific Amateur Latin||Amateur||Latin",
+      "eventKey": "Amateur Latin||Amateur||Latin",
       "eventNumber": "",
-      "event": "Asia Pacific Amateur Latin",
+      "event": "Amateur Latin",
       "section": "Amateur",
       "style": "Latin",
       "assignedJudges": []
     },
     {
-      "eventKey": "Asia Pacific Amateur Solo Latin||Amateur||Latin",
-      "eventNumber": "104",
-      "event": "Asia Pacific Amateur Solo Latin",
+      "eventKey": "Amateur Solo Latin||Amateur||Latin",
+      "eventNumber": "",
+      "event": "Amateur Solo Latin",
+      "section": "Amateur",
+      "style": "Latin",
+      "assignedJudges": []
+    },
+    {
+      "eventKey": "Asia Pacific Amateur Solo Latin 5 Dance||Amateur||Latin",
+      "eventNumber": "",
+      "event": "Asia Pacific Amateur Solo Latin 5 Dance",
       "section": "Amateur",
       "style": "Latin",
       "assignedJudges": []
@@ -30,6 +38,14 @@
       "event": "Formation",
       "section": "Formation",
       "style": "Other",
+      "assignedJudges": []
+    },
+    {
+      "eventKey": "Mania Latin R||Mania||Latin",
+      "eventNumber": "",
+      "event": "Mania Latin R",
+      "section": "Mania",
+      "style": "Latin",
       "assignedJudges": []
     },
     {
@@ -553,6 +569,14 @@
       "assignedJudges": []
     },
     {
+      "eventKey": "Under 15 Solo CSRJ||Under 15||Latin",
+      "eventNumber": "",
+      "event": "Under 15 Solo CSRJ",
+      "section": "Under 15",
+      "style": "Latin",
+      "assignedJudges": []
+    },
+    {
       "eventKey": "Under 15 Solo C||Under 15||Latin",
       "eventNumber": "",
       "event": "Under 15 Solo C",
@@ -596,14 +620,6 @@
       "eventKey": "Under 15 Solo CSR||Under 15||Latin",
       "eventNumber": "",
       "event": "Under 15 Solo CSR",
-      "section": "Under 15",
-      "style": "Latin",
-      "assignedJudges": []
-    },
-    {
-      "eventKey": "Under 15 Solo CSRJ||Under 15||Latin",
-      "eventNumber": "",
-      "event": "Under 15 Solo CSRJ",
       "section": "Under 15",
       "style": "Latin",
       "assignedJudges": []
