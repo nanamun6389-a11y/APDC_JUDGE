@@ -1,6 +1,6 @@
 {
   "title": "APDC 2026 TIMETABLE · JUDGE PROGRAM",
-  "summary": "Formation → Quarter Final (15+ entries) → Semi Final (8–14 entries, plus QF qualifiers) → Amateur Rising Star → Opening Ceremony & Judges Introduction → Country Team Match → Finals. Timetable recalculated from the current entry file; all non-timetable program files are unchanged.",
+  "summary": "Formation → Quarter Final (15+ entries) → Semi Final (8–14 entries, plus QF qualifiers) → Finals. Recalculated from the latest entry file. MC V7 and LIVE synchronization preserved.",
   "rules": {
     "quarterFinal": "15 or more entries",
     "semiFinal": "8–14 entries",
@@ -198,7 +198,7 @@
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo C",
-      "entries": "17",
+      "entries": "19",
       "danceOrder": "C",
       "duration": 1.42,
       "note": "Initial entry count: 15 or more.",
@@ -213,7 +213,7 @@
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo R",
-      "entries": "17",
+      "entries": "20",
       "danceOrder": "R",
       "duration": 1.42,
       "note": "Initial entry count: 15 or more.",
@@ -243,7 +243,7 @@
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo CRJ",
-      "entries": "15",
+      "entries": "17",
       "danceOrder": "C → R → J",
       "duration": 4.08,
       "note": "Initial entry count: 15 or more.",
@@ -268,21 +268,6 @@
     {
       "start": "12:54",
       "no": "18",
-      "round": "Quarter Final",
-      "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo Latin CRS",
-      "entries": "15",
-      "danceOrder": "C → R → S",
-      "duration": 4.08,
-      "note": "Initial entry count: 15 or more.",
-      "durationSeconds": 245,
-      "durationText": "4:05"
-    },
-    {
-      "start": "12:58:05",
-      "no": "19",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -296,8 +281,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "12:59:30",
-      "no": "20",
+      "start": "12:55:25",
+      "no": "19",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -311,8 +296,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "13:02:15",
-      "no": "21",
+      "start": "12:58:10",
+      "no": "20",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -326,8 +311,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:03:40",
-      "no": "22",
+      "start": "12:59:35",
+      "no": "21",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -341,8 +326,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "13:06:25",
-      "no": "23",
+      "start": "13:02:20",
+      "no": "22",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -356,8 +341,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:07:50",
-      "no": "24",
+      "start": "13:03:45",
+      "no": "23",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -371,8 +356,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "13:11:55",
-      "no": "25",
+      "start": "13:07:50",
+      "no": "24",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -386,8 +371,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "13:16",
-      "no": "26",
+      "start": "13:11:55",
+      "no": "25",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -401,8 +386,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:17:25",
-      "no": "27",
+      "start": "13:13:20",
+      "no": "26",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -416,8 +401,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "13:20:10",
-      "no": "28",
+      "start": "13:16:05",
+      "no": "27",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -431,8 +416,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "13:24:15",
-      "no": "29",
+      "start": "13:20:10",
+      "no": "28",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -446,8 +431,8 @@
       "durationText": "5:25"
     },
     {
-      "start": "13:29:40",
-      "no": "30",
+      "start": "13:25:35",
+      "no": "29",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -461,14 +446,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:31:05",
-      "no": "31",
+      "start": "13:27",
+      "no": "30",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo C",
-      "entries": "17",
+      "entries": "19",
       "danceOrder": "C",
       "duration": 1.42,
       "note": "Quarter Final qualifiers advance to this Semi Final.",
@@ -476,14 +461,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:32:30",
-      "no": "32",
+      "start": "13:28:25",
+      "no": "31",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo R",
-      "entries": "17",
+      "entries": "20",
       "danceOrder": "R",
       "duration": 1.42,
       "note": "Quarter Final qualifiers advance to this Semi Final.",
@@ -491,8 +476,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:33:55",
-      "no": "33",
+      "start": "13:29:50",
+      "no": "32",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -506,8 +491,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:35:20",
-      "no": "34",
+      "start": "13:31:15",
+      "no": "33",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -521,14 +506,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:36:45",
-      "no": "35",
+      "start": "13:32:40",
+      "no": "34",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo CRJ",
-      "entries": "15",
+      "entries": "17",
       "danceOrder": "C → R → J",
       "duration": 4.08,
       "note": "Quarter Final qualifiers advance to this Semi Final.",
@@ -536,8 +521,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "13:40:50",
-      "no": "36",
+      "start": "13:36:45",
+      "no": "35",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -551,8 +536,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "13:44:55",
-      "no": "37",
+      "start": "13:40:50",
+      "no": "36",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 12",
@@ -566,8 +551,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:46:20",
-      "no": "38",
+      "start": "13:42:15",
+      "no": "37",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -581,8 +566,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:47:45",
-      "no": "39",
+      "start": "13:43:40",
+      "no": "38",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -596,8 +581,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "13:50:30",
-      "no": "40",
+      "start": "13:46:25",
+      "no": "39",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 15",
@@ -611,19 +596,34 @@
       "durationText": "1:25"
     },
     {
-      "start": "13:51:55",
-      "no": "41",
+      "start": "13:47:50",
+      "no": "40",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo CR",
-      "entries": "13",
+      "entries": "14",
       "danceOrder": "C → R",
       "duration": 2.75,
       "note": "Initial entry count: 8–14.",
       "durationSeconds": 165,
       "durationText": "2:45"
+    },
+    {
+      "start": "13:50:35",
+      "no": "41",
+      "round": "Semi Final",
+      "style": "Latin",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo CRS",
+      "entries": "11",
+      "danceOrder": "C → R → S",
+      "duration": 4.08,
+      "note": "Initial entry count: 8–14.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
     },
     {
       "start": "13:54:40",
@@ -632,23 +632,8 @@
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
-      "event": "Under 10 Solo CRS",
-      "entries": "10",
-      "danceOrder": "C → R → S",
-      "duration": 4.08,
-      "note": "Initial entry count: 8–14.",
-      "durationSeconds": 245,
-      "durationText": "4:05"
-    },
-    {
-      "start": "13:58:45",
-      "no": "43",
-      "round": "Semi Final",
-      "style": "Latin",
-      "section": "Under 10",
-      "division": "Under 10 Solo",
       "event": "Under 10 Solo J",
-      "entries": "14",
+      "entries": "15",
       "danceOrder": "J",
       "duration": 1.42,
       "note": "Initial entry count: 8–14.",
@@ -656,14 +641,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "14:00:10",
-      "no": "44",
+      "start": "13:56:05",
+      "no": "43",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo RJ",
-      "entries": "12",
+      "entries": "13",
       "danceOrder": "R → J",
       "duration": 2.75,
       "note": "Initial entry count: 8–14.",
@@ -671,8 +656,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "14:02:55",
-      "no": "45",
+      "start": "13:58:50",
+      "no": "44",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
@@ -686,14 +671,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "14:04:20",
-      "no": "46",
+      "start": "14:00:15",
+      "no": "45",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Over 19",
       "division": "Over 19 Solo",
       "event": "Over 19 Solo Latin 5 Dance",
-      "entries": "13",
+      "entries": "12",
       "danceOrder": "C → S → R → P → J",
       "duration": 6.75,
       "note": "Initial entry count: 8–14.",
@@ -701,14 +686,14 @@
       "durationText": "6:45"
     },
     {
-      "start": "14:11:05",
-      "no": "47",
+      "start": "14:07",
+      "no": "46",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Over 19",
       "division": "Over 19 Solo",
       "event": "Over 19 Solo Latin CRS",
-      "entries": "15",
+      "entries": "14",
       "danceOrder": "C → R → S",
       "duration": 4.08,
       "note": "Quarter Final qualifiers advance to this Semi Final.",
@@ -716,8 +701,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "14:15:10",
-      "no": "48",
+      "start": "14:11:05",
+      "no": "47",
       "round": "Semi Final",
       "style": "Modern",
       "section": "Under 15",
@@ -731,8 +716,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "14:16:35",
-      "no": "49",
+      "start": "14:12:30",
+      "no": "48",
       "round": "Final",
       "style": "Latin",
       "section": "Amateur",
@@ -746,8 +731,8 @@
       "durationText": "6:45"
     },
     {
-      "start": "14:23:20",
-      "no": "50",
+      "start": "14:19:15",
+      "no": "49",
       "round": "Special Program",
       "style": "",
       "section": "Special Program",
@@ -761,8 +746,8 @@
       "durationText": "10:00"
     },
     {
-      "start": "14:33:20",
-      "no": "51",
+      "start": "14:29:15",
+      "no": "50",
       "round": "Special Program",
       "style": "",
       "section": "Special Program",
@@ -776,8 +761,8 @@
       "durationText": "15:00"
     },
     {
-      "start": "14:48:20",
-      "no": "52",
+      "start": "14:44:15",
+      "no": "51",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -791,8 +776,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "14:49:45",
-      "no": "53",
+      "start": "14:45:40",
+      "no": "52",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -806,8 +791,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "14:52:30",
-      "no": "54",
+      "start": "14:48:25",
+      "no": "53",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -821,8 +806,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "14:53:55",
-      "no": "55",
+      "start": "14:49:50",
+      "no": "54",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -836,8 +821,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "14:58",
-      "no": "56",
+      "start": "14:53:55",
+      "no": "55",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -851,8 +836,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "15:02:05",
-      "no": "57",
+      "start": "14:58",
+      "no": "56",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -866,8 +851,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:03:30",
-      "no": "58",
+      "start": "14:59:25",
+      "no": "57",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -881,8 +866,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "15:06:15",
-      "no": "59",
+      "start": "15:02:10",
+      "no": "58",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -896,8 +881,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "15:10:20",
-      "no": "60",
+      "start": "15:06:15",
+      "no": "59",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -911,8 +896,8 @@
       "durationText": "5:25"
     },
     {
-      "start": "15:15:45",
-      "no": "61",
+      "start": "15:11:40",
+      "no": "60",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -926,14 +911,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:17:10",
-      "no": "62",
+      "start": "15:13:05",
+      "no": "61",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo C",
-      "entries": "17",
+      "entries": "19",
       "danceOrder": "C",
       "duration": 1.42,
       "note": "Final after Quarter Final and Semi Final.",
@@ -941,14 +926,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:18:35",
-      "no": "63",
+      "start": "15:14:30",
+      "no": "62",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo R",
-      "entries": "17",
+      "entries": "20",
       "danceOrder": "R",
       "duration": 1.42,
       "note": "Final after Quarter Final and Semi Final.",
@@ -956,8 +941,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:20",
-      "no": "64",
+      "start": "15:15:55",
+      "no": "63",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -971,8 +956,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:21:25",
-      "no": "65",
+      "start": "15:17:20",
+      "no": "64",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -986,8 +971,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "15:24:10",
-      "no": "66",
+      "start": "15:20:05",
+      "no": "65",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1001,8 +986,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:25:35",
-      "no": "67",
+      "start": "15:21:30",
+      "no": "66",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1016,14 +1001,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:27",
-      "no": "68",
+      "start": "15:22:55",
+      "no": "67",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo CRJ",
-      "entries": "15",
+      "entries": "17",
       "danceOrder": "C → R → J",
       "duration": 4.08,
       "note": "Final after Quarter Final and Semi Final.",
@@ -1031,8 +1016,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "15:31:05",
-      "no": "69",
+      "start": "15:27",
+      "no": "68",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1046,8 +1031,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "15:35:10",
-      "no": "70",
+      "start": "15:31:05",
+      "no": "69",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1061,8 +1046,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:36:35",
-      "no": "71",
+      "start": "15:32:30",
+      "no": "70",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1076,8 +1061,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:38",
-      "no": "72",
+      "start": "15:33:55",
+      "no": "71",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1091,8 +1076,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "15:40:45",
-      "no": "73",
+      "start": "15:36:40",
+      "no": "72",
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1106,19 +1091,34 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:42:10",
-      "no": "74",
+      "start": "15:38:05",
+      "no": "73",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo CR",
-      "entries": "13",
+      "entries": "14",
       "danceOrder": "C → R",
       "duration": 2.75,
       "note": "Final after Semi Final.",
       "durationSeconds": 165,
       "durationText": "2:45"
+    },
+    {
+      "start": "15:40:50",
+      "no": "74",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo CRS",
+      "entries": "11",
+      "danceOrder": "C → R → S",
+      "duration": 4.08,
+      "note": "Final after Semi Final.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
     },
     {
       "start": "15:44:55",
@@ -1127,23 +1127,8 @@
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
-      "event": "Under 10 Solo CRS",
-      "entries": "10",
-      "danceOrder": "C → R → S",
-      "duration": 4.08,
-      "note": "Final after Semi Final.",
-      "durationSeconds": 245,
-      "durationText": "4:05"
-    },
-    {
-      "start": "15:49",
-      "no": "76",
-      "round": "Final",
-      "style": "Latin",
-      "section": "Under 10",
-      "division": "Under 10 Solo",
       "event": "Under 10 Solo J",
-      "entries": "14",
+      "entries": "15",
       "danceOrder": "J",
       "duration": 1.42,
       "note": "Final after Semi Final.",
@@ -1151,14 +1136,14 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:50:25",
-      "no": "77",
+      "start": "15:46:20",
+      "no": "76",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
       "division": "Under 10 Solo",
       "event": "Under 10 Solo RJ",
-      "entries": "12",
+      "entries": "13",
       "danceOrder": "R → J",
       "duration": 2.75,
       "note": "Final after Semi Final.",
@@ -1166,8 +1151,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "15:53:10",
-      "no": "78",
+      "start": "15:49:05",
+      "no": "77",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1181,8 +1166,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "15:54:35",
-      "no": "79",
+      "start": "15:50:30",
+      "no": "78",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1196,14 +1181,14 @@
       "durationText": "2:45"
     },
     {
-      "start": "15:57:20",
-      "no": "80",
+      "start": "15:53:15",
+      "no": "79",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
       "division": "Over 19 Solo",
       "event": "Over 19 Solo Latin 5 Dance",
-      "entries": "13",
+      "entries": "12",
       "danceOrder": "C → S → R → P → J",
       "duration": 6.75,
       "note": "Final after Semi Final.",
@@ -1211,14 +1196,14 @@
       "durationText": "6:45"
     },
     {
-      "start": "16:04:05",
-      "no": "81",
+      "start": "16:00",
+      "no": "80",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
       "division": "Over 19 Solo",
       "event": "Over 19 Solo Latin CRS",
-      "entries": "15",
+      "entries": "14",
       "danceOrder": "C → R → S",
       "duration": 4.08,
       "note": "Final after Quarter Final and Semi Final.",
@@ -1226,8 +1211,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "16:08:10",
-      "no": "82",
+      "start": "16:04:05",
+      "no": "81",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1241,8 +1226,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:09:35",
-      "no": "83",
+      "start": "16:05:30",
+      "no": "82",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1256,8 +1241,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "16:13:40",
-      "no": "84",
+      "start": "16:09:35",
+      "no": "83",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1271,8 +1256,8 @@
       "durationText": "6:45"
     },
     {
-      "start": "16:20:25",
-      "no": "85",
+      "start": "16:16:20",
+      "no": "84",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1286,8 +1271,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:21:50",
-      "no": "86",
+      "start": "16:17:45",
+      "no": "85",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1301,8 +1286,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "16:24:35",
-      "no": "87",
+      "start": "16:20:30",
+      "no": "86",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1316,8 +1301,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "16:28:40",
-      "no": "88",
+      "start": "16:24:35",
+      "no": "87",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1331,8 +1316,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "16:32:45",
-      "no": "89",
+      "start": "16:28:40",
+      "no": "88",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1346,8 +1331,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:34:10",
-      "no": "90",
+      "start": "16:30:05",
+      "no": "89",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1361,8 +1346,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:35:35",
-      "no": "91",
+      "start": "16:31:30",
+      "no": "90",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1376,8 +1361,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:37",
-      "no": "92",
+      "start": "16:32:55",
+      "no": "91",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -1391,8 +1376,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:38:25",
-      "no": "93",
+      "start": "16:34:20",
+      "no": "92",
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1406,8 +1391,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:39:50",
-      "no": "94",
+      "start": "16:35:45",
+      "no": "93",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1421,8 +1406,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:41:15",
-      "no": "95",
+      "start": "16:37:10",
+      "no": "94",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1436,8 +1421,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "16:45:20",
-      "no": "96",
+      "start": "16:41:15",
+      "no": "95",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1451,8 +1436,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:46:45",
-      "no": "97",
+      "start": "16:42:40",
+      "no": "96",
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1466,8 +1451,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:48:10",
-      "no": "98",
+      "start": "16:44:05",
+      "no": "97",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1481,8 +1466,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:49:35",
-      "no": "99",
+      "start": "16:45:30",
+      "no": "98",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1496,8 +1481,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "16:52:20",
-      "no": "100",
+      "start": "16:48:15",
+      "no": "99",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1511,8 +1496,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:53:45",
-      "no": "101",
+      "start": "16:49:40",
+      "no": "100",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1526,8 +1511,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:55:10",
-      "no": "102",
+      "start": "16:51:05",
+      "no": "101",
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1541,8 +1526,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "16:56:35",
-      "no": "103",
+      "start": "16:52:30",
+      "no": "102",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -1556,8 +1541,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "16:59:20",
-      "no": "104",
+      "start": "16:55:15",
+      "no": "103",
       "round": "Final",
       "style": "Modern",
       "section": "Over 19",
@@ -1571,8 +1556,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:00:45",
-      "no": "105",
+      "start": "16:56:40",
+      "no": "104",
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -1586,8 +1571,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:02:10",
-      "no": "106",
+      "start": "16:58:05",
+      "no": "105",
       "round": "Final",
       "style": "Modern",
       "section": "Over 19",
@@ -1601,8 +1586,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:03:35",
-      "no": "107",
+      "start": "16:59:30",
+      "no": "106",
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -1616,8 +1601,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:05",
-      "no": "108",
+      "start": "17:00:55",
+      "no": "107",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1631,8 +1616,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:09:05",
-      "no": "109",
+      "start": "17:05",
+      "no": "108",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1646,8 +1631,8 @@
       "durationText": "5:25"
     },
     {
-      "start": "17:14:30",
-      "no": "110",
+      "start": "17:10:25",
+      "no": "109",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1661,8 +1646,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:18:35",
-      "no": "111",
+      "start": "17:14:30",
+      "no": "110",
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -1676,8 +1661,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:20",
-      "no": "112",
+      "start": "17:15:55",
+      "no": "111",
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -1691,8 +1676,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:21:25",
-      "no": "113",
+      "start": "17:17:20",
+      "no": "112",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -1706,8 +1691,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:22:50",
-      "no": "114",
+      "start": "17:18:45",
+      "no": "113",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1721,8 +1706,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "17:25:35",
-      "no": "115",
+      "start": "17:21:30",
+      "no": "114",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1736,8 +1721,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "17:28:20",
-      "no": "116",
+      "start": "17:24:15",
+      "no": "115",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -1751,8 +1736,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:32:25",
-      "no": "117",
+      "start": "17:28:20",
+      "no": "116",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -1766,8 +1751,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "17:35:10",
-      "no": "118",
+      "start": "17:31:05",
+      "no": "117",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1781,8 +1766,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:36:35",
-      "no": "119",
+      "start": "17:32:30",
+      "no": "118",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1796,8 +1781,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:38",
-      "no": "120",
+      "start": "17:33:55",
+      "no": "119",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1811,8 +1796,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:39:25",
-      "no": "121",
+      "start": "17:35:20",
+      "no": "120",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1826,8 +1811,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "17:40:50",
-      "no": "122",
+      "start": "17:36:45",
+      "no": "121",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1841,8 +1826,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "17:43:35",
-      "no": "123",
+      "start": "17:39:30",
+      "no": "122",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1856,8 +1841,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "17:46:20",
-      "no": "124",
+      "start": "17:42:15",
+      "no": "123",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1871,8 +1856,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:50:25",
-      "no": "125",
+      "start": "17:46:20",
+      "no": "124",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -1886,8 +1871,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:54:30",
-      "no": "126",
+      "start": "17:50:25",
+      "no": "125",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -1901,8 +1886,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "17:58:35",
-      "no": "127",
+      "start": "17:54:30",
+      "no": "126",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1916,8 +1901,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:00",
-      "no": "128",
+      "start": "17:55:55",
+      "no": "127",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1931,8 +1916,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:01:25",
-      "no": "129",
+      "start": "17:57:20",
+      "no": "128",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1946,8 +1931,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:02:50",
-      "no": "130",
+      "start": "17:58:45",
+      "no": "129",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1961,8 +1946,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "18:05:35",
-      "no": "131",
+      "start": "18:01:30",
+      "no": "130",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1976,8 +1961,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "18:08:20",
-      "no": "132",
+      "start": "18:04:15",
+      "no": "131",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -1991,8 +1976,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "18:12:25",
-      "no": "133",
+      "start": "18:08:20",
+      "no": "132",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2006,8 +1991,8 @@
       "durationText": "5:25"
     },
     {
-      "start": "18:17:50",
-      "no": "134",
+      "start": "18:13:45",
+      "no": "133",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2021,8 +2006,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "18:21:55",
-      "no": "135",
+      "start": "18:17:50",
+      "no": "134",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2036,8 +2021,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:23:20",
-      "no": "136",
+      "start": "18:19:15",
+      "no": "135",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2051,8 +2036,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:24:45",
-      "no": "137",
+      "start": "18:20:40",
+      "no": "136",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2066,8 +2051,8 @@
       "durationText": "1:25"
     },
     {
-      "start": "18:26:10",
-      "no": "138",
+      "start": "18:22:05",
+      "no": "137",
       "round": "Final",
       "style": "Other",
       "section": "Senior",
@@ -2081,8 +2066,8 @@
       "durationText": "2:45"
     },
     {
-      "start": "18:28:55",
-      "no": "139",
+      "start": "18:24:50",
+      "no": "138",
       "round": "Progressive Final",
       "style": "Latin",
       "section": "Mania",
@@ -2096,8 +2081,8 @@
       "durationText": "4:05"
     },
     {
-      "start": "18:33",
-      "no": "140",
+      "start": "18:28:55",
+      "no": "139",
       "round": "Final",
       "style": "Modern",
       "section": "Pro-Am",
@@ -2111,14 +2096,14 @@
       "durationText": "4:05"
     },
     {
-      "start": "18:37:05",
-      "no": "141",
+      "start": "18:33",
+      "no": "140",
       "round": "Final",
       "style": "Latin",
       "section": "Amateur",
       "division": "Amateur Solo",
       "event": "Asia Pacific Amateur Solo Latin",
-      "entries": "15",
+      "entries": "14",
       "danceOrder": "C → S → R → P → J",
       "duration": 6.75,
       "note": "All previous Amateur Solo Latin entries consolidated here. Separate Amateur Solo Latin 5 Dance event removed.",
@@ -2126,8 +2111,8 @@
       "durationText": "6:45"
     },
     {
-      "start": "18:43:50",
-      "no": "142",
+      "start": "18:39:45",
+      "no": "141",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2141,8 +2126,8 @@
       "durationText": "6:45"
     },
     {
-      "start": "18:50:35",
-      "no": "143",
+      "start": "18:46:30",
+      "no": "142",
       "round": "Final",
       "style": "Latin",
       "section": "Amateur",
@@ -2156,8 +2141,518 @@
       "durationText": "6:45"
     },
     {
-      "start": "18:57:20",
+      "start": "18:53:15",
+      "no": "143",
+      "round": "Final",
+      "style": "Other",
+      "section": "Formation",
+      "division": "Formation",
+      "event": "Formation",
+      "entries": "3",
+      "danceOrder": "Formation",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "18:54:40",
       "no": "144",
+      "round": "Quarter Final",
+      "style": "Latin",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo J",
+      "entries": "15",
+      "danceOrder": "J",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "18:56:05",
+      "no": "145",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo WQ",
+      "entries": "3",
+      "danceOrder": "W → Q",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "18:58:50",
+      "no": "146",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo WT",
+      "entries": "3",
+      "danceOrder": "W → T",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:01:35",
+      "no": "147",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo WTF",
+      "entries": "3",
+      "danceOrder": "W → T → F",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:05:40",
+      "no": "148",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 10",
+      "division": "Under 10 Solo",
+      "event": "Under 10 Solo WTQ",
+      "entries": "3",
+      "danceOrder": "W → T → Q",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:09:45",
+      "no": "149",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 12",
+      "division": "Under 12 Couple",
+      "event": "Under 12 CRS",
+      "entries": "2",
+      "danceOrder": "C → R → S",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:13:50",
+      "no": "150",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 12",
+      "division": "Under 12 Solo",
+      "event": "Under 12 Solo CJ",
+      "entries": "1",
+      "danceOrder": "C → J",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:16:35",
+      "no": "151",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 12",
+      "division": "Under 12 Solo",
+      "event": "Under 12 Solo WTFQ",
+      "entries": "1",
+      "danceOrder": "W → T → F → Q",
+      "duration": 5.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 325,
+      "durationText": "5:25"
+    },
+    {
+      "start": "19:22",
+      "no": "152",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 12",
+      "division": "Under 12 Couple",
+      "event": "Under 12 WTF",
+      "entries": "2",
+      "danceOrder": "W → T → F",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:26:05",
+      "no": "153",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 15",
+      "division": "Under 15 Couple",
+      "event": "Under 15 CRS",
+      "entries": "1",
+      "danceOrder": "C → R → S",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:30:10",
+      "no": "154",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 15",
+      "division": "Under 15 Solo",
+      "event": "Under 15 Solo CJ",
+      "entries": "2",
+      "danceOrder": "C → J",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:32:55",
+      "no": "155",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 15",
+      "division": "Under 15 Couple",
+      "event": "Under 15 WTF",
+      "entries": "1",
+      "danceOrder": "W → T → F",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:37",
+      "no": "156",
+      "round": "Semi Final",
+      "style": "Latin",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo 5 Dance",
+      "entries": "8",
+      "danceOrder": "",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "19:38:25",
+      "no": "157",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo CJ",
+      "entries": "1",
+      "danceOrder": "C → J",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:41:10",
+      "no": "158",
+      "round": "Semi Final",
+      "style": "Latin",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo Elite A Latin",
+      "entries": "9",
+      "danceOrder": "",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "19:42:35",
+      "no": "159",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo RJ",
+      "entries": "2",
+      "danceOrder": "R → J",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:45:20",
+      "no": "160",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo WQ",
+      "entries": "2",
+      "danceOrder": "W → Q",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:48:05",
+      "no": "161",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo WT",
+      "entries": "3",
+      "danceOrder": "W → T",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "19:50:50",
+      "no": "162",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo WTF",
+      "entries": "2",
+      "danceOrder": "W → T → F",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "19:54:55",
+      "no": "163",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo WTFQ",
+      "entries": "3",
+      "danceOrder": "W → T → F → Q",
+      "duration": 5.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 325,
+      "durationText": "5:25"
+    },
+    {
+      "start": "20:00:20",
+      "no": "164",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Under 18",
+      "division": "Under 18 Solo",
+      "event": "Under 18 Solo WTQ",
+      "entries": "3",
+      "danceOrder": "W → T → Q",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "20:04:25",
+      "no": "165",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Over 19",
+      "division": "Over 19 Solo",
+      "event": "Over 19 Solo RJ",
+      "entries": "2",
+      "danceOrder": "R → J",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "20:07:10",
+      "no": "166",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Over 19",
+      "division": "Over 19 Solo",
+      "event": "Over 19 Solo WTF",
+      "entries": "1",
+      "danceOrder": "W → T → F",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "20:11:15",
+      "no": "167",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Over 19",
+      "division": "Over 19 Solo",
+      "event": "Over 19 Solo WTFQ",
+      "entries": "2",
+      "danceOrder": "W → T → F → Q",
+      "duration": 5.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 325,
+      "durationText": "5:25"
+    },
+    {
+      "start": "20:16:40",
+      "no": "168",
+      "round": "Final",
+      "style": "Modern",
+      "section": "Over 19",
+      "division": "Over 19 Solo",
+      "event": "Over 19 Solo WTQ",
+      "entries": "1",
+      "danceOrder": "W → T → Q",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "20:20:45",
+      "no": "169",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Over 19",
+      "division": "Over 19 Solo",
+      "event": "Over 19 Solo Latin CSRJ",
+      "entries": "1",
+      "danceOrder": "C → S → R → J",
+      "duration": 5.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 325,
+      "durationText": "5:25"
+    },
+    {
+      "start": "20:26:10",
+      "no": "170",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Mania",
+      "division": "Mania Couple",
+      "event": "Mania Latin CR",
+      "entries": "3",
+      "danceOrder": "C → R",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "20:28:55",
+      "no": "171",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Mania",
+      "division": "Mania Couple",
+      "event": "Mania Latin CRS",
+      "entries": "4",
+      "danceOrder": "C → R → S",
+      "duration": 4.08,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 245,
+      "durationText": "4:05"
+    },
+    {
+      "start": "20:33",
+      "no": "172",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Mania",
+      "division": "Mania Couple",
+      "event": "Mania Latin R",
+      "entries": "1",
+      "danceOrder": "R",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "20:34:25",
+      "no": "173",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Pro-Am",
+      "division": "Pro-Am Couple",
+      "event": "Pro-Am Latin CR",
+      "entries": "1",
+      "danceOrder": "C → R",
+      "duration": 2.75,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 165,
+      "durationText": "2:45"
+    },
+    {
+      "start": "20:37:10",
+      "no": "174",
+      "round": "Semi Final",
+      "style": "Latin",
+      "section": "Amateur",
+      "division": "Asia Pacific Amateur Latin",
+      "event": "Asia Pacific Amateur Latin",
+      "entries": "8",
+      "danceOrder": "",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "20:38:35",
+      "no": "175",
+      "round": "Final",
+      "style": "Latin",
+      "section": "Amateur",
+      "division": "Asia Pacific Amateur Latin",
+      "event": "Asia Pacific Amateur Latin",
+      "entries": "8",
+      "danceOrder": "",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "20:40",
+      "no": "176",
+      "round": "Semi Final",
+      "style": "Latin",
+      "section": "Amateur",
+      "division": "Asia Pacific Amateur Solo Latin",
+      "event": "Asia Pacific Amateur Solo Latin",
+      "entries": "14",
+      "danceOrder": "",
+      "duration": 1.42,
+      "note": "Added from latest entry file.",
+      "durationSeconds": 85,
+      "durationText": "1:25"
+    },
+    {
+      "start": "20:41:25",
+      "no": "177",
       "round": "Grand Final",
       "style": "Latin",
       "section": "Amateur",
@@ -2172,5 +2667,5 @@
     }
   ],
   "projectedStart": "12:00",
-  "projectedFinish": "19:04:05"
+  "projectedFinish": "20:48:10"
 }
