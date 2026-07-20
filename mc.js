@@ -18,24 +18,33 @@ function eventRoundLabel(row){
   const round=rtext(String(row?.round||"").toLowerCase());
   return [no?`EVENT ${no}`:"EVENT —",round].filter(Boolean).join(" · ");
 }
+function eventCue(row){
+  const no=String(row?.no||"").trim();
+  if(!no)return"";
+  const round=rtext(String(row?.round||"").toLowerCase());
+  return [`EVENT ${no}`,round].filter(Boolean).join(" ");
+}
 function buildComment(row){
-  if(!row)return"다음 경기를 준비하겠습니다.";
+  if(!row)return"다음 EVENT를 준비하겠습니다.";
   const ev=String(row.event||"").trim();
   const upper=ev.toUpperCase();
+  const cue=eventCue(row);
+  if(cue)return `다음은 ${cue}입니다.`;
   if(upper.includes("OPENING"))return"지금부터 2026 아시아 퍼시픽 댄스스포츠 챔피언십을 시작하겠습니다. 이어서 심사위원 여러분을 소개하겠습니다.";
-  if(upper.includes("COUNTRY TEAM MATCH"))return"다음은 Country Team Match입니다. 선수 여러분은 플로어로 입장해 주세요.";
+  if(upper.includes("COUNTRY TEAM MATCH"))return"다음은 Country Team Match입니다.";
   if(upper.includes("BREAK"))return"잠시 휴식 시간을 갖겠습니다. 다음 EVENT 시간에 맞춰 준비해 주세요.";
-  if(String(row.round||"").toLowerCase().includes("formation"))return`다음은 EVENT ${row.no||"—"}입니다. 참가 팀은 플로어로 입장해 주세요. 심사위원 여러분, 준비 부탁드립니다.`;
-  return `다음은 EVENT ${row.no||"—"}입니다. 선수 여러분은 플로어로 입장해 주세요. 심사위원 여러분, 준비 부탁드립니다.`;
+  return"다음 EVENT를 준비하겠습니다.";
 }
 function buildEnglish(row){
-  if(!row)return"Please get ready for the next event.";
+  if(!row)return"Please get ready for the next EVENT.";
   const ev=String(row.event||"").trim();
   const upper=ev.toUpperCase();
+  const cue=eventCue(row);
+  if(cue)return `Next is ${cue}.`;
   if(upper.includes("OPENING"))return"Welcome to the 2026 Asia Pacific Dancesport Championship. We will now introduce our Judges.";
   if(upper.includes("COUNTRY TEAM MATCH"))return"Next is the Country Team Match.";
   if(upper.includes("BREAK"))return"We will now take a short break. Please be ready for the next EVENT.";
-  return `Next is EVENT ${row.no||"—"}.`;
+  return"Please get ready for the next EVENT.";
 }
 function buildNote(row){
   if(!row)return"—";
@@ -81,8 +90,8 @@ async function publishLiveStatus(){
   await set(ref(db,"floorStatus"),{
     now:current.no?`EVENT ${current.no}`:(current.event||"WAITING"),
     eventNo:current.no||"",
-    onDeck:onDeck.event||"—",
-    next:next.event||"—",
+    onDeck:eventCue(onDeck)||(onDeck.event||"—"),
+    next:eventCue(next)||(next.event||"—"),
     round:current.round||"",
     danceOrder:current.danceOrder||"",
     updatedAt:Date.now()
@@ -92,7 +101,7 @@ firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableR
 prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
 nextBtn.onclick=async()=>{if(ttIndex<TT.length-1){ttIndex++;renderTimetableRow();await publishLiveStatus()}};
 lastBtn.onclick=async()=>{if(TT.length&&ttIndex!==TT.length-1){ttIndex=TT.length-1;renderTimetableRow();await publishLiveStatus()}};
-function setScripts(){if(TT.length){renderTimetableRow();return}if(!active){koEl.textContent="다음 경기 준비.";enEl.textContent="Please get ready for the next event.";return}const kr=active.round==="quarter"?"쿼터 파이널":active.round==="semi"?"세미 파이널":"파이널";koEl.textContent=`다음은 EVENT ${active.eventNumber||"—"}입니다. 선수 여러분은 플로어로 입장해 주세요. 심사위원 여러분, 준비 부탁드립니다.`;enEl.textContent=`Next is EVENT ${active.eventNumber||"—"}.`}
+function setScripts(){if(TT.length){renderTimetableRow();return}if(!active){koEl.textContent="다음 EVENT를 준비하겠습니다.";enEl.textContent="Please get ready for the next EVENT.";return}const round=rtext(active.round);const cue=[`EVENT ${active.eventNumber||"—"}`,round].filter(Boolean).join(" ");koEl.textContent=`다음은 ${cue}입니다.`;enEl.textContent=`Next is ${cue}.`}
 function progress(){const t=TT.length||order.length;const d=TT.length?ttIndex:(active?Math.max(0,order.findIndex(x=>x.eventKey===active.eventKey)):0);document.getElementById("mcProgressText").textContent=`${t?d+1:0} / ${t} EVENTS`;document.getElementById("mcProgressBar").style.width=t?`${(d+1)/t*100}%`:"0%"}
 let submissionUnsub=null;
 async function watch(active){if(submissionUnsub){submissionUnsub();submissionUnsub=null}if(!active||!active.eventKey)return;const e=enc(active.eventKey),s=await get(ref(db,`eventSettings/${e}`)),assigned=s.val()?.assignedJudges||[];submissionUnsub=onValue(ref(db,`submissions/${e}_${active.round||"final"}`),snap=>{const v=snap.val()||{},done=assigned.filter(c=>v[c]),wait=assigned.filter(c=>!v[c]);document.getElementById("mcJudgeCount").textContent=`${done.length} / ${assigned.length} DONE`;document.getElementById("mcWaitingJudges").textContent=wait.length?`Waiting for Judges: ${wait.join(", ")}`:"JUDGES ARE DONE."})}
