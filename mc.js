@@ -8,7 +8,7 @@ function unlock(){sessionStorage.setItem("apdcMcUnlocked","yes");gate.classList.
 btn.onclick=()=>pass.value===PASSWORD?unlock():msg.textContent="WRONG PASSWORD";pass.onkeydown=e=>{if(e.key==="Enter")btn.click()};if(sessionStorage.getItem("apdcMcUnlocked")==="yes")unlock();
 const enc=k=>btoa(unescape(encodeURIComponent(k))).replaceAll("=","");
 let active=null,order=[],TT=[],ttIndex=Number(localStorage.getItem("apdcMcTimetableIndex")||0);
-const nowEl=document.getElementById("mcNow"),roundEl=document.getElementById("mcRound"),koEl=document.getElementById("mcKorean"),enEl=document.getElementById("mcEnglish"),eventNameEl=document.getElementById("mcEventName");
+const nowEl=document.getElementById("mcNow"),roundEl=document.getElementById("mcRound"),koEl=document.getElementById("mcKorean"),enEl=document.getElementById("mcEnglish"),eventNameEl=document.getElementById("mcEventName"),danceOrderEl=document.getElementById("mcDanceOrder");
 const ttPos=document.getElementById("mcTtPosition"),ttMeta=document.getElementById("mcTtMeta"),ttComment=document.getElementById("mcTimetableComment"),ttNote=document.getElementById("mcTimetableNote"),prevBtn=document.getElementById("mcPrevBtn"),nextBtn=document.getElementById("mcNextBtn"),firstBtn=document.getElementById("mcFirstBtn"),lastBtn=document.getElementById("mcLastBtn"),rangeButtons=document.getElementById("mcRangeButtons");
 function rtext(r){return r==="quarter"?"Quarter Final":r==="semi"?"Semi Final":r==="final"?"Final":r||""}
 function roundKo(r){const x=String(r||"").toLowerCase();if(x.includes("quarter"))return"쿼터 파이널";if(x.includes("semi"))return"세미 파이널";if(x.includes("final"))return"파이널";if(x.includes("formation"))return"포메이션";if(x.includes("special"))return"특별 프로그램";return r||""}
@@ -29,58 +29,67 @@ function buildComment(row){
   return String(row.event||"—").trim()||"—";
 }
 const DANCE_NAMES={C:"Cha Cha",S:"Samba",R:"Rumba",J:"Jive",W:"Waltz",T:"Tango",F:"Foxtrot",Q:"Quickstep",V:"Viennese Waltz"};
-const ORDINAL_EN=["First","Second","Third","Fourth","Fifth"];
-const ORDINAL_KO=["첫 번째","두 번째","세 번째","네 번째","다섯 번째"];
-function danceList(row){
-  const raw=String(row?.danceOrder||"").trim();
-  if(!raw||raw.toLowerCase()==="formation")return[];
-  return raw.split(/\s*(?:→|>|,|\/)\s*/).map(x=>x.trim()).filter(Boolean).map(x=>DANCE_NAMES[x.toUpperCase()]||x);
-}
 function danceSequenceEnglish(row){
   const dances=danceList(row);
   if(dances.length<=1)return"";
-  return dances.map((d,i)=>`${ORDINAL_EN[i]||`${i+1}th`} dance, ${d}.`).join("\n");
+  return `The dance order is ${dances.join(", ")}.`;
 }
 function danceSequenceKorean(row){
   const dances=danceList(row);
   if(dances.length<=1)return"";
-  return dances.map((d,i)=>`${ORDINAL_KO[i]||`${i+1}번째`} 댄스, ${d}.`).join("\n");
+  return `${dances.join(", ")} 순서입니다.`;
+}
+function isRapidContinuation(row){
+  const prev=TT[ttIndex-1];
+  if(!prev||!row)return false;
+  const prevNo=String(prev.no||"").trim(),no=String(row.no||"").trim();
+  if(!prevNo||!no)return false;
+  const prevEvent=String(prev.event||"").trim().toUpperCase();
+  const event=String(row.event||"").trim().toUpperCase();
+  if(prevEvent.includes("BREAK")||prevEvent.includes("OPENING")||event.includes("BREAK")||event.includes("OPENING"))return false;
+  return true;
 }
 function buildEnglish(row){
   if(!row)return "Please get ready for the next EVENT.";
   const ev=String(row.event||"").trim().toUpperCase();
   const no=String(row.no||"").trim();
+  const round=String(row.round||"").toLowerCase();
   if(ev.includes("OPENING"))return "Welcome to the 2026 Asia Pacific Dancesport Championship.";
   if(ev.includes("COUNTRY TEAM MATCH"))return "Next is the Country Team Match. Players, please come to the floor. Judges, please get ready.";
   if(ev.includes("BREAK"))return "We will now take a short break.";
-  if(no){
-    const dances=danceList(row);
-    const lines=[`Players for EVENT ${no}, please come to the floor.`,`Judges, please check EVENT ${no}.`];
-    const seq=danceSequenceEnglish(row);
-    if(seq)lines.push(seq);
-    if(dances.length===1)lines.push(`The dance is ${dances[0]}.`);
-    lines.push("Judges, are you ready? Players, are you ready? Music, please.");
-    return lines.join("\n");
+  if(!no)return "Please get ready for the next EVENT.";
+  if(round.includes("final")){
+    return [`We now have EVENT ${no}, the Final.`,`Finalists, please come to the floor.`,`Judges, please check EVENT ${no}.`,`When ready, music please.`].join("\n");
   }
-  return "Please get ready for the next EVENT.";
+  if(round.includes("quarter")||round.includes("semi")){
+    const label=round.includes("quarter")?"Quarter-Final":"Semi-Final";
+    return [`Next is EVENT ${no}, ${label}.`,`Players, please come to the floor.`,`Judges, please check EVENT ${no}.`,`Music, please.`].join("\n");
+  }
+  if(isRapidContinuation(row)){
+    return [`We now move on to EVENT ${no}.`,`Players, please get ready.`,`Music, please.`].join("\n");
+  }
+  return [`Next is EVENT ${no}.`,`Players, please take your positions on the floor.`,`Judges, please check EVENT ${no}.`,`We are ready to begin. Music, please.`].join("\n");
 }
 function buildKorean(row){
   if(!row)return "다음 EVENT를 준비하겠습니다.";
   const ev=String(row.event||"").trim().toUpperCase();
   const no=String(row.no||"").trim();
+  const round=String(row.round||"").toLowerCase();
   if(ev.includes("OPENING"))return "지금부터 2026 아시아 퍼시픽 댄스스포츠 챔피언십을 시작하겠습니다.";
   if(ev.includes("COUNTRY TEAM MATCH"))return "다음은 Country Team Match입니다. 선수 여러분, 플로어로 입장해 주세요. 심사위원 여러분, 준비해 주세요.";
   if(ev.includes("BREAK"))return "잠시 휴식 시간을 갖겠습니다.";
-  if(no){
-    const dances=danceList(row);
-    const lines=[`EVENT ${no} 선수 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`];
-    const seq=danceSequenceKorean(row);
-    if(seq)lines.push(seq);
-    if(dances.length===1)lines.push(`댄스는 ${dances[0]}입니다.`);
-    lines.push("심사위원 여러분, 준비되셨습니까? 선수 여러분, 준비되셨습니까? 음악 주세요.");
-    return lines.join("\n");
+  if(!no)return "다음 EVENT를 준비하겠습니다.";
+  if(round.includes("final")){
+    return [`이제 EVENT ${no}, Final을 진행하겠습니다.`,`파이널리스트 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`준비되셨으면 음악 주세요.`].join("\n");
   }
-  return "다음 EVENT를 준비하겠습니다.";
+  if(round.includes("quarter")||round.includes("semi")){
+    const label=round.includes("quarter")?"Quarter-Final":"Semi-Final";
+    return [`다음은 EVENT ${no}, ${label}입니다.`,`선수 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`음악 주세요.`].join("\n");
+  }
+  if(isRapidContinuation(row)){
+    return [`이어서 EVENT ${no} 진행하겠습니다.`,`선수 여러분, 준비해 주세요.`,`음악 주세요.`].join("\n");
+  }
+  return [`다음은 EVENT ${no}입니다.`,`선수 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`준비되셨으면 시작하겠습니다. 음악 주세요.`].join("\n");
 }
 function buildNote(row){
   if(!row)return"—";
@@ -113,6 +122,7 @@ function renderTimetableRow(){
   nowEl.textContent=row.no?`EVENT ${row.no}`:"WAITING";roundEl.textContent=rtext(String(row.round||"").toLowerCase());
   ttComment.textContent=buildComment(row);ttNote.textContent=buildNote(row);
   if(eventNameEl)eventNameEl.textContent=String(row.event||"—").trim()||"—";
+  if(danceOrderEl){const dances=danceList(row);danceOrderEl.textContent=dances.length?dances.join(" → "):"—";}
   koEl.textContent=buildKorean(row);enEl.textContent=buildEnglish(row);
   prevBtn.disabled=ttIndex===0;nextBtn.disabled=ttIndex===TT.length-1;firstBtn.disabled=ttIndex===0;lastBtn.disabled=ttIndex===TT.length-1;
   renderRangeButtons();
