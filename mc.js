@@ -223,3 +223,17 @@ document.querySelectorAll(".quick-line-grid button").forEach(b=>b.onclick=()=>{
 });
 get(ref(db,"eventSettings")).then(s=>{order=Object.values(s.val()||{}).filter(x=>String(x.eventNumber||"").trim()!=="").sort((a,b)=>Number(a.eventNumber)-Number(b.eventNumber));progress()});
 loadTimetable();
+
+
+/* APDC_MC_COMBINED_EXIT_GUIDE */
+function apdcCombinedExitGuide(row) {
+  if (!row || String(row.note || '').trim() !== 'COMB.') return '';
+  const plan = String(row.danceOrder || '').split(/[→>,/]+/).map(s => s.trim()).filter(Boolean);
+  if (!plan.length) return 'COMB. 진행';
+  // Public timetable stays clean. MC receives a compact operational cue.
+  // Player/back-number-specific exit names are shown when exitGuide is present in row metadata.
+  if (row.exitGuide) return row.exitGuide;
+  return 'COMB. 진행 | ' + plan.map((d, i) =>
+    `${d} 종료${i === plan.length - 1 ? ' → 남은 선수 전원 퇴장' : ' → 해당 종목 종료 선수 퇴장'}`
+  ).join(' | ');
+}
