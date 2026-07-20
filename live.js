@@ -12,6 +12,8 @@ const updatedEl=document.getElementById("liveUpdated");
 const nowBackEl=document.getElementById("liveNowBackNos");
 const deckBackEl=document.getElementById("liveOnDeckBackNos");
 const nextBackEl=document.getElementById("liveNextBackNos");
+const eventNoEl=document.getElementById("liveEventNo");
+const liveRoundEl=document.getElementById("liveRound");
 
 let players=[];
 let latestStatus={};
@@ -45,8 +47,19 @@ function hasEvent(v){
   const s=String(v||"").trim();
   return !!s && s!=="—" && s.toUpperCase()!=="WAITING";
 }
+function displayRound(v){
+  const s=String(v||"").trim();
+  if(!s)return "—";
+  const x=s.toLowerCase();
+  if(x.includes("quarter"))return "QUARTER FINAL";
+  if(x.includes("semi"))return "SEMI FINAL";
+  if(x.includes("final"))return "FINAL";
+  return s.toUpperCase();
+}
 function renderStatus(){
   const v=latestStatus||{};
+  eventNoEl.textContent=v.eventNo?`EVENT ${v.eventNo}`:"EVENT —";
+  liveRoundEl.textContent=displayRound(v.round);
   nowEl.textContent=v.now||"WAITING";
   deckEl.textContent=v.onDeck||"—";
   nextEl.textContent=v.next||"—";

@@ -9,7 +9,7 @@ btn.onclick=()=>pass.value===PASSWORD?unlock():msg.textContent="WRONG PASSWORD";
 const enc=k=>btoa(unescape(encodeURIComponent(k))).replaceAll("=","");
 let active=null,order=[],TT=[],ttIndex=Number(localStorage.getItem("apdcMcTimetableIndex")||0);
 const nowEl=document.getElementById("mcNow"),roundEl=document.getElementById("mcRound"),koEl=document.getElementById("mcKorean"),enEl=document.getElementById("mcEnglish");
-const ttPos=document.getElementById("mcTtPosition"),ttMeta=document.getElementById("mcTtMeta"),ttComment=document.getElementById("mcTimetableComment"),ttNote=document.getElementById("mcTimetableNote"),prevBtn=document.getElementById("mcPrevBtn"),nextBtn=document.getElementById("mcNextBtn");
+const ttPos=document.getElementById("mcTtPosition"),ttMeta=document.getElementById("mcTtMeta"),ttComment=document.getElementById("mcTimetableComment"),ttNote=document.getElementById("mcTimetableNote"),prevBtn=document.getElementById("mcPrevBtn"),nextBtn=document.getElementById("mcNextBtn"),firstBtn=document.getElementById("mcFirstBtn"),lastBtn=document.getElementById("mcLastBtn"),rangeButtons=document.getElementById("mcRangeButtons");
 function rtext(r){return r==="quarter"?"Quarter Final":r==="semi"?"Semi Final":r==="final"?"Final":r||""}
 function roundKo(r){const x=String(r||"").toLowerCase();if(x.includes("quarter"))return"쿼터 파이널";if(x.includes("semi"))return"세미 파이널";if(x.includes("final"))return"파이널";if(x.includes("formation"))return"포메이션";if(x.includes("special"))return"특별 프로그램";return r||""}
 function ttRow(){return TT[ttIndex]||null}
@@ -44,6 +44,19 @@ function buildNote(row){
   if(String(row.note||"").toLowerCase().includes("together")||String(row.note||"").toLowerCase().includes("multiple"))parts.push("여러 EVENT 동시 진행 · 각 EVENT 개별 심사");
   return parts.length?parts.join("\n"):"별도 참고사항 없음";
 }
+function renderRangeButtons(){
+  if(!rangeButtons)return;
+  rangeButtons.innerHTML="";
+  for(let start=0;start<TT.length;start+=10){
+    const end=Math.min(start+10,TT.length);
+    const b=document.createElement("button");
+    b.type="button";
+    b.textContent=`${start+1}–${end}`;
+    b.classList.toggle("active",ttIndex>=start&&ttIndex<end);
+    b.onclick=async()=>{ttIndex=start;renderTimetableRow();await publishLiveStatus()};
+    rangeButtons.appendChild(b);
+  }
+}
 function renderTimetableRow(){
   if(!TT.length){ttPos.textContent="0 / 0";return}
   ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));localStorage.setItem("apdcMcTimetableIndex",String(ttIndex));
@@ -53,7 +66,8 @@ function renderTimetableRow(){
   nowEl.textContent=row.event||"WAITING";roundEl.textContent=[row.round,row.danceOrder].filter(Boolean).join(" · ");
   ttComment.textContent=buildComment(row);ttNote.textContent=buildNote(row);
   koEl.textContent=buildComment(row);enEl.textContent=buildEnglish(row);
-  prevBtn.disabled=ttIndex===0;nextBtn.disabled=ttIndex===TT.length-1;
+  prevBtn.disabled=ttIndex===0;nextBtn.disabled=ttIndex===TT.length-1;firstBtn.disabled=ttIndex===0;lastBtn.disabled=ttIndex===TT.length-1;
+  renderRangeButtons();
   progress();
 }
 async function loadTimetable(){try{const r=await fetch("timetable-data.json?v=20260720-realistic-times",{cache:"no-store"});const d=await r.json();TT=d.rows||[];renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
@@ -64,6 +78,7 @@ async function publishLiveStatus(){
   const next=TT[ttIndex+2]||{};
   await set(ref(db,"floorStatus"),{
     now:current.event||"WAITING",
+    eventNo:current.no||"",
     onDeck:onDeck.event||"—",
     next:next.event||"—",
     round:current.round||"",
@@ -71,8 +86,10 @@ async function publishLiveStatus(){
     updatedAt:Date.now()
   });
 }
+firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
 prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
 nextBtn.onclick=async()=>{if(ttIndex<TT.length-1){ttIndex++;renderTimetableRow();await publishLiveStatus()}};
+lastBtn.onclick=async()=>{if(TT.length&&ttIndex!==TT.length-1){ttIndex=TT.length-1;renderTimetableRow();await publishLiveStatus()}};
 function setScripts(){if(TT.length){renderTimetableRow();return}if(!active){koEl.textContent="다음 경기 준비.";enEl.textContent="Please get ready for the next event.";return}const kr=active.round==="quarter"?"쿼터 파이널":active.round==="semi"?"세미 파이널":"파이널";koEl.textContent=`다음 경기는 ${active.label} ${kr}입니다. 선수 입장. 심사위원 여러분, 준비 부탁드립니다.`;enEl.textContent=`Next event: ${active.label}. ${rtext(active.round)}. Players, please come to the floor. Judges, please get ready.`}
 function progress(){const t=TT.length||order.length;const d=TT.length?ttIndex:(active?Math.max(0,order.findIndex(x=>x.eventKey===active.eventKey)):0);document.getElementById("mcProgressText").textContent=`${t?d+1:0} / ${t} EVENTS`;document.getElementById("mcProgressBar").style.width=t?`${(d+1)/t*100}%`:"0%"}
 let submissionUnsub=null;

@@ -433,3 +433,17 @@ main {
 .floor-board.final-only .now-block .floor-event{font-size:clamp(48px,10vw,112px);max-width:1100px}
 .floor-board.final-only .now-block .live-backnos{font-size:clamp(20px,2.5vw,34px);margin-top:22px;padding-top:18px}
 .floor-board.final-only .updated-time{text-align:center;margin-top:18px}
+
+
+/* LIVE current event metadata: event number / round */
+.now-block{position:relative}
+.live-now-meta{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.live-now-meta span:last-child{text-align:right}
+.floor-board.final-only .now-block .live-now-meta{position:absolute;top:22px;left:18px;right:18px;width:auto}
+@media(max-width:640px){.live-now-meta{font-size:11px;letter-spacing:.08em}}
+
+/* MC quick timetable navigation */
+.mc-range-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mc-range-buttons button{padding:9px 12px;border:1px solid #bbb;background:#fff;color:#111;font-size:12px;font-weight:800;cursor:pointer}
+.mc-range-buttons button.active{background:#111;color:#fff;border-color:#111}
+@media(max-width:760px){.mc-tt-buttons{flex-wrap:wrap}.mc-tt-buttons button{min-width:calc(50% - 4px);flex:1 1 calc(50% - 4px)}.mc-range-buttons button{flex:1 0 auto}}
