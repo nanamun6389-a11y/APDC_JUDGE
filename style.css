@@ -13,7 +13,7 @@
 .controls.two{grid-template-columns:1fr 1fr}
 .number-btn{color:#000!important}
 .number-btn.selected{color:#fff!important}
-.competitor-name{color:#666;font-size:13px;margin-top:3px}
+.player-name{color:#666;font-size:13px;margin-top:3px}
 @media(max-width:700px){
   .judge-grid{grid-template-columns:1fr}
   .controls.two{grid-template-columns:1fr}
