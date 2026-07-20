@@ -196,6 +196,43 @@ function currentPlayers() {
   return [...map.values()].sort((a,b)=>natural(a.backNo,b.backNo));
 }
 
+function encodedEventKey() {
+  return btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","");
+}
+
+async function qualifiersFromRound(previousRound, limit) {
+  if (!eventSelect.value) return null;
+  const snap = await get(ref(db, `submissions/${encodedEventKey()}_${previousRound}`));
+  const ballots = Object.values(snap.val() || {});
+  if (!ballots.length) return null;
+
+  const counts = new Map();
+  ballots.forEach(ballot => {
+    const result = Array.isArray(ballot?.result) ? ballot.result : [];
+    result.forEach(item => {
+      const backNo = typeof item === "object" ? String(item?.backNo || "") : String(item || "");
+      if (!backNo) return;
+      counts.set(backNo, (counts.get(backNo) || 0) + 1);
+    });
+  });
+
+  return [...counts.entries()]
+    .sort((a,b) => (b[1]-a[1]) || natural(a[0],b[0]))
+    .slice(0, limit)
+    .map(([backNo]) => backNo);
+}
+
+async function playersForRound(round) {
+  const all = currentPlayers();
+  let qualified = null;
+  if (round === "semi") qualified = await qualifiersFromRound("quarter", 12);
+  if (round === "final") qualified = await qualifiersFromRound("semi", 6);
+  if (!qualified || !qualified.length) return all;
+
+  const allowed = new Set(qualified.map(String));
+  return all.filter(p => allowed.has(String(p.backNo)));
+}
+
 function roundKey() {
   return btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","") + "_" + roundSelect.value;
 }
@@ -255,14 +292,18 @@ async function refreshEventOptionStatuses() {
   }));
 }
 
-function render() {
+async function render() {
   if (!currentJudge || !eventSelect.value) return;
+  const renderToken = `${eventSelect.value}||${roundSelect.value}||${Date.now()}||${Math.random()}`;
+  render.latestToken = renderToken;
   selected.clear();
   message.textContent = "";
   message.className = "message";
 
-  const comps = currentPlayers();
   const round = roundSelect.value;
+  const comps = await playersForRound(round);
+  if (render.latestToken !== renderToken) return;
+
   eventTitle.textContent = eventSelect.selectedOptions[0]?.textContent || "";
   roundTitle.textContent = round==="quarter" ? "QUARTER FINAL" : round==="semi" ? "SEMI FINAL" : "FINAL";
 
@@ -280,7 +321,7 @@ function render() {
       </div>`).join("");
     counter.textContent = `${comps.length} FINALISTS`;
   } else {
-    const needed = round==="quarter" ? 12 : 6;
+    const needed = round==="quarter" ? 12 : Math.min(6, comps.length);
     ballot.innerHTML = comps.map(c => `<button class="number-btn" data-back="${c.backNo}" type="button">${c.backNo}</button>`).join("");
     counter.textContent = `0 / ${needed}`;
     ballot.querySelectorAll(".number-btn").forEach(btn => {
