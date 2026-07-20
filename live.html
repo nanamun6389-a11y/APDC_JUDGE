@@ -1,3 +1,34 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>APDC LIVE</title><link rel="stylesheet" href="style.css?v=5"></head><body class="fullscreen"><main class="screen"><div class="screenhead"><b>APDC LIVE</b><span id="clock"></span></div><section class="screenmain"><div class="screenlabel" id="hno"></div><div class="screentitle" id="title"></div><div class="screensub" id="subt"></div><div class="badge" id="status"></div><div class="screen-events" id="events"></div><div class="screenpeople" id="people"></div></section><div class="screennext" id="nextinfo"></div></main><script src="shared.js"></script><script>requireAdmin();
-let H=[],S=loadState();fetch('running_groups.json').then(r=>r.json()).then(x=>{H=x;render()});function render(){if(!H.length)return;let h=H[S.groupIndex||0],u=uniqueEventEntries(h);hno.textContent='EVENT '+String(h.groupNo).padStart(2,'0');title.textContent=h.events.length===1?h.events[0].title:h.dance;subt.textContent=h.events.length+' SEPARATE EVENTS · '+h.entryCount+' FLOOR ENTRIES';status.textContent=statusText(S.status);events.innerHTML=h.events.map(e=>`<span><b>EVENT ${String(e.no).padStart(2,'0')}</b> · ${e.title}</span>`).join('');people.innerHTML=u.map(p=>`<div class="screenperson">${p.backNo} · ${p.name}</div>`).join('');let n=H[(S.groupIndex||0)+1];nextinfo.innerHTML=n?'NEXT · <b>EVENT '+String(n.groupNo).padStart(2,'0')+'</b><div style="margin-top:6px">'+n.events.map(e=>`EVENT ${String(e.no).padStart(2,'0')} · ${e.title}`).join('<br>')+'</div>':'NEXT · <b>END OF PROGRAM</b>'}subscribeState(x=>{S=x;render()});setInterval(()=>clock.textContent=new Date().toLocaleTimeString('ko-KR'),1000);
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>APDC LIVE</title>
+<link rel="stylesheet" href="style.css?v=20260720-live-linked">
+</head>
+<body>
+<header style="position:relative"><div class="brand">APDC LIVE</div><div id="languageHost" class="language-host"></div></header>
+<main class="floor-board">
+  <section class="floor-block now-block">
+    <div class="live-now-meta"><span id="liveEventNo">EVENT —</span><span id="liveRound">—</span></div>
+    <div class="floor-label">NOW</div>
+    <div id="liveNow" class="floor-event">WAITING</div>
+    <div id="liveNowBackNos" class="live-backnos">BACK NO. —</div>
+  </section>
+  <section class="floor-block">
+    <div class="floor-label">ON DECK</div>
+    <div id="liveOnDeck" class="floor-event">—</div>
+    <div id="liveOnDeckBackNos" class="live-backnos">BACK NO. —</div>
+  </section>
+  <section class="floor-block">
+    <div class="floor-label">NEXT</div>
+    <div id="liveNext" class="floor-event">—</div>
+    <div id="liveNextBackNos" class="live-backnos">BACK NO. —</div>
+  </section>
+  <div id="liveUpdated" class="updated-time"></div>
+</main>
+<script src="i18n.js?v=20260717-1305"></script>
+<script type="module" src="live.js?v=20260720-live-linked"></script>
+</body>
+</html>

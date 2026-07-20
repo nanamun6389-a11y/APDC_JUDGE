@@ -447,3 +447,11 @@ main {
 .mc-range-buttons button{padding:9px 12px;border:1px solid #bbb;background:#fff;color:#111;font-size:12px;font-weight:800;cursor:pointer}
 .mc-range-buttons button.active{background:#111;color:#fff;border-color:#111}
 @media(max-width:760px){.mc-tt-buttons{flex-wrap:wrap}.mc-tt-buttons button{min-width:calc(50% - 4px);flex:1 1 calc(50% - 4px)}.mc-range-buttons button{flex:1 0 auto}}
+
+/* MC event reference: visible information, not spoken script */
+.mc-event-reference{margin-top:18px;padding-top:14px;border-top:1px solid #ddd;display:flex;flex-direction:column;gap:6px}
+.mc-event-reference span{font-size:11px;color:#666;font-weight:900;letter-spacing:.08em}
+.mc-event-reference strong{font-size:clamp(18px,3vw,28px);line-height:1.35}
+.mc-reference-title{margin-top:14px;font-size:20px;line-height:1.45;font-weight:900;min-height:58px}
+@media(max-width:760px){.mc-script-grid{grid-template-columns:1fr 1fr}.mc-script-text{font-size:18px;min-height:130px}.mc-script-card{padding:12px}}
+@media(max-width:560px){.mc-script-grid{grid-template-columns:1fr}.mc-script-text{min-height:auto}}
