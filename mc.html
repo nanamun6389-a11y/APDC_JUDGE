@@ -1,60 +1,8 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>APDC MC</title>
-<link rel="stylesheet" href="style.css?v=20260717-1305">
-</head>
-<body>
-<header style="position:relative"><a class="brand brand-link" href="control-room.html">APDC MC</a><div id="languageHost" class="language-host"></div></header>
-
-<nav class="top-category-nav">
-  <a href="control-room.html">DASHBOARD</a>
-  <a href="index.html">JUDGE</a>
-  <a href="timetable.html">TIMETABLE</a>
-  <a href="mc.html">MC</a>
-  <a href="live.html">LIVE</a>
-  <a href="broadcast.html">BROADCAST</a>
-  <a href="admin.html">SETTINGS</a>
-</nav>
-
-<main class="mc-page">
-<section id="mcPasswordGate" class="password-gate">
-<div class="password-box"><div class="small-label">MC ACCESS</div><h1>ENTER PASSWORD</h1>
-<input id="mcPasswordInput" type="password" placeholder="••••"><button id="mcPasswordBtn">ENTER</button><div id="mcPasswordMessage" class="message"></div></div>
-</section>
-<div id="mcProtected" class="hidden">
-<section class="mc-progress"><div><span>PROGRESS</span><strong id="mcProgressText">0 / 0 EVENTS</strong></div><div class="mc-progress-bar"><i id="mcProgressBar"></i></div></section>
-<section class="mc-now-card"><div class="small-label">NOW</div><h1 id="mcNow">WAITING</h1><div id="mcRound" class="mc-round"></div></section>
-<section class="mc-timetable-control">
-  <div class="mc-tt-head"><div><span class="small-label">TIMETABLE ORDER</span><strong id="mcTtPosition">0 / 0</strong></div><div class="mc-tt-buttons"><button id="mcFirstBtn">FIRST</button><button id="mcPrevBtn">PREV</button><button id="mcNextBtn" class="primary">NEXT</button><button id="mcLastBtn">LAST</button></div></div>
-  <div id="mcRangeButtons" class="mc-range-buttons" aria-label="Event range navigation"></div>
-  <div id="mcTtMeta" class="mc-tt-meta">Loading timetable…</div>
-</section>
-<section class="mc-comment-note-grid">
-  <article class="mc-script-card"><div class="mc-script-head"><span>MC 멘트</span></div><div id="mcTimetableComment" class="mc-script-text">다음 경기를 준비하겠습니다.</div></article>
-  <article class="mc-script-card"><div class="mc-script-head"><span>참고사항</span></div><div id="mcTimetableNote" class="mc-script-text mc-note-text">—</div></article>
-</section>
-<section class="mc-script-grid">
-<article class="mc-script-card"><div class="mc-script-head"><span>🇰🇷 한국어</span><button data-copy="mcKorean">COPY</button></div><div id="mcKorean" class="mc-script-text">다음 경기를 준비하겠습니다.</div></article>
-<article class="mc-script-card"><div class="mc-script-head"><span>English</span><button data-copy="mcEnglish">COPY</button></div><div id="mcEnglish" class="mc-script-text">Please get ready for the next event.</div></article>
-</section>
-<section class="mc-next-grid"><div><span>NEXT UP</span><strong id="mcOnDeck">—</strong></div><div><span>COMING SOON</span><strong id="mcNext">—</strong></div></section>
-<section class="mc-judge-status"><div class="mc-status-head"><h2>JUDGES</h2><strong id="mcJudgeCount">0 / 0 DONE</strong></div><div id="mcWaitingJudges">Waiting for Judges.</div></section>
-<section class="mc-quick-lines"><h2>QUICK LINES</h2><div class="quick-line-grid">
-<button data-ko="선수 여러분은 플로어로 입장해 주세요." data-en="Players, please come to the floor.">CALL PLAYERS</button>
-<button data-ko="심사위원 여러분, 준비 부탁드립니다." data-en="Judges, please get ready.">CALL JUDGES</button>
-<button data-back-number="true">BACK NUMBER</button>
-<button data-ko="음악 주세요." data-en="Music, please.">MUSIC</button>
-<button data-ko="감사합니다. 선수 여러분은 플로어에서 퇴장해 주세요." data-en="Thank you. Players, please leave the floor.">CLEAR FLOOR</button>
-<button data-ko="심사위원 여러분, 심사를 마무리해 주세요." data-en="Judges, please complete your marks.">FINISH JUDGING</button>
-<button data-ko="다음 EVENT를 준비해 주세요." data-en="Please get ready for the next EVENT.">NEXT EVENT</button>
-<button data-ko="R 경기가 끝났습니다. R만 출전한 선수는 퇴장해 주세요. CR과 CRS 선수는 플로어에 남아 주세요." data-en="R is complete. R-only Players, please leave the floor. CR and CRS Players, please remain on the floor.">MANIA AFTER R</button>
-<button data-ko="C 경기가 끝났습니다. CR 선수는 퇴장해 주세요. CRS 선수는 S 경기를 위해 플로어에 남아 주세요." data-en="C is complete. CR Players, please leave the floor. CRS Players, please remain for S.">MANIA AFTER C</button>
-</div></section>
-
-</div></main>
-<script src="i18n.js?v=20260717-1305"></script>
-<script type="module" src="mc.js?v=20260717-1305"></script>
-</body></html>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>APDC MC</title><link rel="stylesheet" href="style.css?v=5"></head><body>
+<div class="all-events-script">
+  <div class="ko">🎤 여러 연령 EVENT가 함께 진행됩니다. 심사위원께서는 표시된 각 EVENT를 개별 심사해 주세요.</div>
+  <div class="en">🎤 Multiple events are running in this group. Please judge each event separately.</div>
+</div>
+<div id="nav"></div><main class="wrap"><section class="hero"><h1>MC Screen</h1><p>EVENT 단위로 현재 경기와 다음 경기를 안내합니다.</p></section><section class="panel"><div class="kicker" id="hno"></div><div class="bigtitle" id="title"></div><div class="badge" id="badge"></div><div id="events" class="group-events" style="margin-top:18px"></div><hr style="margin:24px 0;border:0;border-top:1px solid #ddd"><div class="mcbox" id="script"></div><div class="event-card" style="margin-top:22px"><b>NEXT</b><div class="meta" id="nextinfo"></div></div></section></main><script src="shared.js"></script><script>requireAdmin();</script><script>
+document.getElementById('nav').innerHTML=nav('mc');let H=[],S=loadState();fetch('running_groups.json').then(r=>r.json()).then(x=>{H=x;render()});function render(){if(!H.length)return;let h=H[S.groupIndex||0];hno.textContent='CURRENT · EVENT '+String(h.groupNo).padStart(2,'0');title.textContent=h.dance+' · '+h.entryCount+' ON FLOOR';badge.textContent=statusText(S.status);events.innerHTML='<div style="font-weight:700;margin-bottom:10px">CURRENT EVENTS</div>'+h.events.map(e=>`<div class="group-event-row"><b>EVENT ${String(e.no).padStart(2,'0')}</b><span>${e.title}</span></div>`).join('');let ko='',en='';if(S.status==='LIVE'){ko='심사위원 여러분, EVENT '+h.groupNo+' 심사를 준비해 주시기 바랍니다.<br>선수 여러분, 플로어로 입장해 주세요.<br>준비되셨으면 경기를 시작하겠습니다.';en='Judges, please get ready for EVENT '+h.groupNo+'.<br>Players, please come onto the floor and take your places.<br>Thank you. When everyone is ready, we will begin this EVENT.';}else if(S.status==='FINISHED'){ko='EVENT '+h.groupNo+' 경기가 종료되었습니다.<br>선수 여러분께 큰 박수 부탁드립니다.<br>다음 EVENT를 준비하겠습니다.';en='EVENT '+h.groupNo+' is now finished.<br>Thank you to all the players. Please give them a big round of applause.<br>We will now move on and get ready for the next EVENT.';}else{ko='다음은 EVENT '+h.groupNo+'입니다.<br>심사위원 여러분, 심사를 준비해 주시기 바랍니다.<br>선수 여러분께서는 대기해 주세요.';en='Next is EVENT '+h.groupNo+'.<br>Judges, please get ready for the next EVENT.<br>Players, please stand by and be ready to enter the floor when called.';}script.innerHTML='<div class="ko"><b>Korean</b><br>'+ko+'</div><div class="en" style="margin-top:16px"><b>English</b><br>'+en+'</div>';let n=H[(S.groupIndex||0)+1];nextinfo.innerHTML=n?'<div><b>EVENT '+String(n.groupNo).padStart(2,'0')+' · '+n.dance+'</b></div>'+n.events.map(e=>`<div style="margin-top:6px">EVENT ${String(e.no).padStart(2,'0')} · ${e.title}</div>`).join(''):'END OF PROGRAM'}subscribeState(x=>{S=x;render()});
+</script></body></html>
