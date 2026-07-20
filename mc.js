@@ -7,7 +7,7 @@ const gate=document.getElementById("mcPasswordGate"),box=document.getElementById
 function unlock(){sessionStorage.setItem("apdcMcUnlocked","yes");gate.classList.add("hidden");box.classList.remove("hidden")}
 btn.onclick=()=>pass.value===PASSWORD?unlock():msg.textContent="WRONG PASSWORD";pass.onkeydown=e=>{if(e.key==="Enter")btn.click()};if(sessionStorage.getItem("apdcMcUnlocked")==="yes")unlock();
 const enc=k=>btoa(unescape(encodeURIComponent(k))).replaceAll("=","");
-let active=null,order=[],TT=[],ttIndex=Number(localStorage.getItem("apdcMcTimetableIndex")||0);
+let active=null,order=[],TT=[],PLAYERS=[],ttIndex=Number(localStorage.getItem("apdcMcTimetableIndex")||0);
 const nowEl=document.getElementById("mcNow"),roundEl=document.getElementById("mcRound"),koEl=document.getElementById("mcKorean"),enEl=document.getElementById("mcEnglish"),eventNameEl=document.getElementById("mcEventName"),danceOrderEl=document.getElementById("mcDanceOrder");
 const ttPos=document.getElementById("mcTtPosition"),ttMeta=document.getElementById("mcTtMeta"),ttComment=document.getElementById("mcTimetableComment"),ttNote=document.getElementById("mcTimetableNote"),prevBtn=document.getElementById("mcPrevBtn"),nextBtn=document.getElementById("mcNextBtn"),firstBtn=document.getElementById("mcFirstBtn"),lastBtn=document.getElementById("mcLastBtn"),rangeButtons=document.getElementById("mcRangeButtons");
 function rtext(r){return r==="quarter"?"Quarter Final":r==="semi"?"Semi Final":r==="final"?"Final":r||""}
@@ -39,6 +39,35 @@ function danceSequenceKorean(row){
   if(dances.length<=1)return"";
   return `${dances.join(", ")} 순서입니다.`;
 }
+
+function hasEarlierQuarter(row){
+  if(!row)return false;
+  const no=String(row.no||"").trim();
+  if(!no)return false;
+  return TT.slice(0,ttIndex).some(r=>String(r.no||"").trim()===no&&String(r.round||"").toLowerCase().includes("quarter"));
+}
+function isAmateur(row){
+  const t=`${row?.section||""} ${row?.event||""}`.toUpperCase();
+  return t.includes("AMATEUR");
+}
+function isAmateurCoupleFinal(row){
+  const t=`${row?.section||""} ${row?.event||""}`.toUpperCase();
+  return String(row?.round||"").toLowerCase().includes("final")&&t.includes("ASIA PACIFIC AMATEUR LATIN")&&!t.includes("SOLO");
+}
+function amateurCoupleCallout(row,lang){
+  if(!isAmateurCoupleFinal(row))return "";
+  const no=String(row?.no||"").trim();
+  const eventName=String(row?.event||"").trim().toUpperCase();
+  const couples=PLAYERS.filter(p=>{
+    const pev=String(p.event||"").trim().toUpperCase();
+    const pno=String(p.eventNo||"").trim();
+    return String(p.entryType||"").toLowerCase()==="couple" && (pno===no || pev===eventName) && pev.includes("ASIA PACIFIC AMATEUR LATIN") && !pev.includes("SOLO");
+  }).sort((a,b)=>Number(a.backNo||999)-Number(b.backNo||999));
+  if(!couples.length)return "";
+  if(lang==="ko")return ["파이널에 진출한 커플을 소개하겠습니다.",...couples.map(c=>`Back Number ${c.backNo}, ${c.player}.`),"모든 파이널리스트에게 큰 박수 부탁드립니다."].join("\n");
+  return ["Let us introduce our finalists.",...couples.map(c=>`Back Number ${c.backNo}, ${c.player}.`),"Please give all our finalists a big round of applause."].join("\n");
+}
+
 function isRapidContinuation(row){
   const prev=TT[ttIndex-1];
   if(!prev||!row)return false;
@@ -58,12 +87,25 @@ function buildEnglish(row){
   if(ev.includes("COUNTRY TEAM MATCH"))return "Next is the Country Team Match. Players, please come to the floor. Judges, please get ready.";
   if(ev.includes("BREAK"))return "We will now take a short break.";
   if(!no)return "Please get ready for the next EVENT.";
-  if(round.includes("final")){
-    return [`We now have EVENT ${no}, the Final.`,`Finalists, please come to the floor.`,`Judges, please check EVENT ${no}.`,`When ready, music please.`].join("\n");
+  if(isAmateurCoupleFinal(row)){
+    const calls=amateurCoupleCallout(row,"en");
+    return [`We now have EVENT ${no}, the Asia Pacific Amateur Latin Final.`,`This is one of the highlights of today’s championship.`,calls,`Judges, please check EVENT ${no}.`,`Finalists, take your positions. When ready, music please.`].filter(Boolean).join("\n");
   }
-  if(round.includes("quarter")||round.includes("semi")){
-    const label=round.includes("quarter")?"Quarter-Final":"Semi-Final";
-    return [`Next is EVENT ${no}, ${label}.`,`Players, please come to the floor.`,`Judges, please check EVENT ${no}.`,`Music, please.`].join("\n");
+  if(round.includes("final")){
+    const lines=[`We now have EVENT ${no}, the Final.`];
+    if(hasEarlierQuarter(row))lines.push("These finalists have advanced through the earlier rounds. Please give them a warm round of applause.");
+    else if(isAmateur(row))lines.push("Please give our finalists a warm round of applause.");
+    lines.push("Finalists, please come to the floor.",`Judges, please check EVENT ${no}.`,`When ready, music please.`);
+    return lines.join("\n");
+  }
+  if(round.includes("semi")){
+    const lines=[`Next is EVENT ${no}, Semi-Final.`];
+    if(hasEarlierQuarter(row))lines.push("Congratulations to the players who have advanced from the Quarter-Final. Please give them a big hand.");
+    lines.push("Players, please come to the floor.",`Judges, please check EVENT ${no}.`,`Music, please.`);
+    return lines.join("\n");
+  }
+  if(round.includes("quarter")){
+    return [`Next is EVENT ${no}, Quarter-Final.`,`Best of luck to all players competing for a place in the next round.`,`Players, please come to the floor.`,`Judges, please check EVENT ${no}.`,`Music, please.`].join("\n");
   }
   if(isRapidContinuation(row)){
     return [`We now move on to EVENT ${no}.`,`Players, please get ready.`,`Music, please.`].join("\n");
@@ -79,12 +121,25 @@ function buildKorean(row){
   if(ev.includes("COUNTRY TEAM MATCH"))return "다음은 Country Team Match입니다. 선수 여러분, 플로어로 입장해 주세요. 심사위원 여러분, 준비해 주세요.";
   if(ev.includes("BREAK"))return "잠시 휴식 시간을 갖겠습니다.";
   if(!no)return "다음 EVENT를 준비하겠습니다.";
-  if(round.includes("final")){
-    return [`이제 EVENT ${no}, Final을 진행하겠습니다.`,`파이널리스트 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`준비되셨으면 음악 주세요.`].join("\n");
+  if(isAmateurCoupleFinal(row)){
+    const calls=amateurCoupleCallout(row,"ko");
+    return [`이제 EVENT ${no}, Asia Pacific Amateur Latin Final을 진행하겠습니다.`,`오늘 대회의 하이라이트 무대 중 하나입니다.`,calls,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`파이널리스트 여러분, 자리를 잡아 주세요. 준비되셨으면 음악 주세요.`].filter(Boolean).join("\n");
   }
-  if(round.includes("quarter")||round.includes("semi")){
-    const label=round.includes("quarter")?"Quarter-Final":"Semi-Final";
-    return [`다음은 EVENT ${no}, ${label}입니다.`,`선수 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`음악 주세요.`].join("\n");
+  if(round.includes("final")){
+    const lines=[`이제 EVENT ${no}, Final을 진행하겠습니다.`];
+    if(hasEarlierQuarter(row))lines.push("앞선 라운드를 거쳐 파이널에 오른 선수들입니다. 큰 박수로 응원해 주세요.");
+    else if(isAmateur(row))lines.push("파이널 무대에 오른 선수들에게 큰 박수 부탁드립니다.");
+    lines.push("파이널리스트 여러분, 플로어로 입장해 주세요.",`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`준비되셨으면 음악 주세요.`);
+    return lines.join("\n");
+  }
+  if(round.includes("semi")){
+    const lines=[`다음은 EVENT ${no}, Semi-Final입니다.`];
+    if(hasEarlierQuarter(row))lines.push("Quarter-Final을 통과한 선수들입니다. 큰 박수로 응원해 주세요.");
+    lines.push("선수 여러분, 플로어로 입장해 주세요.",`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`음악 주세요.`);
+    return lines.join("\n");
+  }
+  if(round.includes("quarter")){
+    return [`다음은 EVENT ${no}, Quarter-Final입니다.`,`다음 라운드 진출을 위해 함께하는 모든 선수들에게 응원의 박수 부탁드립니다.`,`선수 여러분, 플로어로 입장해 주세요.`,`심사위원 여러분, EVENT ${no}를 확인해 주세요.`,`음악 주세요.`].join("\n");
   }
   if(isRapidContinuation(row)){
     return [`이어서 EVENT ${no} 진행하겠습니다.`,`선수 여러분, 준비해 주세요.`,`음악 주세요.`].join("\n");
@@ -128,7 +183,7 @@ function renderTimetableRow(){
   renderRangeButtons();
   progress();
 }
-async function loadTimetable(){try{const r=await fetch("timetable-data.json?v=20260720-realistic-times",{cache:"no-store"});const d=await r.json();TT=d.rows||[];renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
+async function loadTimetable(){try{const [tr,pr]=await Promise.all([fetch("timetable-data.json?v=20260720-realistic-times",{cache:"no-store"}),fetch("players.json?v=20260721-mc-v6",{cache:"no-store"})]);const d=await tr.json();TT=d.rows||[];try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}renderTimetableRow()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
 async function publishLiveStatus(){
   if(!TT.length)return;
   const current=TT[ttIndex]||{};
