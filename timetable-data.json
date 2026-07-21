@@ -25,7 +25,6 @@
       "durationSeconds": 600,
       "durationText": "10:00",
       "sourceEventNo": "10",
-      "priorEventNo": "140",
       "backNumbers": [
         "297",
         "298",
@@ -47,7 +46,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "52",
-      "priorEventNo": "2",
+      "priorEventNo": "1",
       "backNumbers": [
         "47",
         "50",
@@ -82,7 +81,7 @@
       "durationSeconds": 145,
       "durationText": "2:25",
       "sourceEventNo": "54",
-      "priorEventNo": "3",
+      "priorEventNo": "2",
       "backNumbers": [
         "44",
         "46",
@@ -119,7 +118,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "61",
-      "priorEventNo": "4",
+      "priorEventNo": "3",
       "backNumbers": [
         "47",
         "50",
@@ -154,7 +153,7 @@
       "durationSeconds": 145,
       "durationText": "2:25",
       "sourceEventNo": "62",
-      "priorEventNo": "5",
+      "priorEventNo": "4",
       "backNumbers": [
         "44",
         "46",
@@ -189,7 +188,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "55",
-      "priorEventNo": "6",
+      "priorEventNo": "5",
       "backNumbers": [
         "44",
         "46",
@@ -224,7 +223,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "56",
-      "priorEventNo": "7",
+      "priorEventNo": "6",
       "backNumbers": [
         "44",
         "46",
@@ -259,7 +258,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "81",
-      "priorEventNo": "8",
+      "priorEventNo": "7",
       "backNumbers": [
         "14",
         "90",
@@ -297,7 +296,7 @@
       "durationSeconds": 145,
       "durationText": "2:25",
       "sourceEventNo": "83",
-      "priorEventNo": "9",
+      "priorEventNo": "8",
       "backNumbers": [
         "90",
         "91",
@@ -334,7 +333,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "84",
-      "priorEventNo": "10",
+      "priorEventNo": "9",
       "backNumbers": [
         "75",
         "90",
@@ -370,7 +369,7 @@
       "durationSeconds": 285,
       "durationText": "4:45",
       "sourceEventNo": "86",
-      "priorEventNo": "11",
+      "priorEventNo": "10",
       "backNumbers": [
         "14",
         "75",
@@ -404,7 +403,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "91",
-      "priorEventNo": "12",
+      "priorEventNo": "11",
       "backNumbers": [
         "14",
         "90",
@@ -441,7 +440,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "21",
-      "priorEventNo": "13",
+      "priorEventNo": "12",
       "backNumbers": [
         "40",
         "41",
@@ -479,7 +478,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "29",
-      "priorEventNo": "14",
+      "priorEventNo": "13",
       "backNumbers": [
         "40",
         "41",
@@ -518,7 +517,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "58",
-      "priorEventNo": "15",
+      "priorEventNo": "14",
       "backNumbers": [
         "47",
         "50",
@@ -552,7 +551,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "23",
-      "priorEventNo": "16",
+      "priorEventNo": "15",
       "backNumbers": [
         "40",
         "41",
@@ -588,7 +587,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "85",
-      "priorEventNo": "17",
+      "priorEventNo": "16",
       "backNumbers": [
         "75",
         "90",
@@ -625,7 +624,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "52",
-      "priorEventNo": "18",
+      "priorEventNo": "17",
       "backNumbers": []
     },
     {
@@ -643,7 +642,7 @@
       "durationSeconds": 165,
       "durationText": "2:45",
       "sourceEventNo": "54",
-      "priorEventNo": "19",
+      "priorEventNo": "18",
       "backNumbers": []
     },
     {
@@ -661,7 +660,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "61",
-      "priorEventNo": "20",
+      "priorEventNo": "19",
       "backNumbers": []
     },
     {
@@ -679,7 +678,7 @@
       "durationSeconds": 165,
       "durationText": "2:45",
       "sourceEventNo": "62",
-      "priorEventNo": "21",
+      "priorEventNo": "20",
       "backNumbers": []
     },
     {
@@ -697,7 +696,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "63",
-      "priorEventNo": "22",
+      "priorEventNo": "21",
       "backNumbers": [
         "47",
         "50",
@@ -730,7 +729,7 @@
       "durationSeconds": 245,
       "durationText": "4:05",
       "sourceEventNo": "55",
-      "priorEventNo": "23",
+      "priorEventNo": "22",
       "backNumbers": []
     },
     {
@@ -748,7 +747,7 @@
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "220",
-      "priorEventNo": "48",
+      "priorEventNo": "23",
       "backNumbers": [
         "1",
         "2",
@@ -882,7 +881,7 @@
       "durationSeconds": 75,
       "durationText": "1:15",
       "sourceEventNo": "26",
-      "priorEventNo": "141",
+      "priorEventNo": "30",
       "backNumbers": [
         "40",
         "41",
@@ -916,7 +915,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "21",
-      "priorEventNo": "30",
+      "priorEventNo": "31",
       "backNumbers": []
     },
     {
@@ -985,7 +984,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "29",
-      "priorEventNo": "31",
+      "priorEventNo": "34",
       "backNumbers": []
     },
     {
@@ -1142,7 +1141,7 @@
       "durationSeconds": 245,
       "durationText": "4:05",
       "sourceEventNo": "23",
-      "priorEventNo": "34",
+      "priorEventNo": "40",
       "backNumbers": []
     },
     {
@@ -1160,7 +1159,7 @@
       "durationSeconds": 165,
       "durationText": "2:45",
       "sourceEventNo": "22",
-      "priorEventNo": "40",
+      "priorEventNo": "41",
       "backNumbers": [
         "40",
         "41",
@@ -1193,7 +1192,7 @@
       "durationSeconds": 245,
       "durationText": "4:05",
       "sourceEventNo": "24",
-      "priorEventNo": "41",
+      "priorEventNo": "42",
       "backNumbers": [
         "40",
         "41",
@@ -1223,7 +1222,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "26",
-      "priorEventNo": "42",
+      "priorEventNo": "43",
       "backNumbers": []
     },
     {
@@ -1241,7 +1240,7 @@
       "durationSeconds": 165,
       "durationText": "2:45",
       "sourceEventNo": "30",
-      "priorEventNo": "43",
+      "priorEventNo": "44",
       "backNumbers": [
         "40",
         "41",
@@ -1351,7 +1350,6 @@
     },
     {
       "start": "13:44:35",
-      "no": "",
       "round": "",
       "style": "",
       "section": "",
@@ -1363,13 +1361,10 @@
       "note": "",
       "durationSeconds": 600,
       "durationText": "10:00",
-      "sourceEventNo": "",
-      "priorEventNo": "",
       "backNumbers": []
     },
     {
       "start": "13:54:35",
-      "no": "",
       "round": "",
       "style": "",
       "section": "",
@@ -1381,13 +1376,11 @@
       "note": "",
       "durationSeconds": 600,
       "durationText": "10:00",
-      "sourceEventNo": "",
-      "priorEventNo": "",
       "backNumbers": []
     },
     {
       "start": "14:04:35",
-      "no": 50,
+      "no": 49,
       "round": "",
       "style": "",
       "section": "",
@@ -1400,34 +1393,38 @@
       "durationSeconds": 900,
       "durationText": "15:00",
       "sourceEventNo": "50",
-      "priorEventNo": "50",
+      "priorEventNo": "48",
       "backNumbers": []
     },
     {
       "start": "14:19:35",
-      "no": 51,
-      "round": "Final",
+      "no": 50,
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Amateur",
-      "division": "Amateur Couple",
-      "event": "Korea Closed Amateur Latin",
-      "entries": "3",
-      "danceOrder": "C → S → R → P → J",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Korea Closed Amateur Latin + Over 19 Solo P",
+      "entries": "5",
+      "danceOrder": "P → C → S → R → J",
       "duration": 7.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "223",
-      "priorEventNo": "139",
+      "priorEventNo": "49",
       "backNumbers": [
         "1",
         "2",
-        "8"
-      ]
+        "8",
+        "13",
+        "23"
+      ],
+      "sourceEventNos": "223 / 144",
+      "exitGuide": "P: 전원 함께 진행 → Over 19 Solo P 선수 퇴장 → Korea Closed Amateur Latin 선수만 C → S → R → J 진행 후 종료."
     },
     {
       "start": "14:27:10",
-      "no": 52,
+      "no": 51,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1440,12 +1437,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "52",
-      "priorEventNo": "51",
+      "priorEventNo": "50",
       "backNumbers": []
     },
     {
       "start": "14:28:45",
-      "no": 53,
+      "no": 52,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1458,12 +1455,12 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "54",
-      "priorEventNo": "52",
+      "priorEventNo": "51",
       "backNumbers": []
     },
     {
       "start": "14:31:50",
-      "no": 54,
+      "no": 53,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1476,12 +1473,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "61",
-      "priorEventNo": "53",
+      "priorEventNo": "52",
       "backNumbers": []
     },
     {
       "start": "14:33:25",
-      "no": 55,
+      "no": 54,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1494,12 +1491,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "55",
-      "priorEventNo": "54",
+      "priorEventNo": "53",
       "backNumbers": []
     },
     {
       "start": "14:38:00",
-      "no": 56,
+      "no": 55,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1512,12 +1509,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "56",
-      "priorEventNo": "55",
+      "priorEventNo": "54",
       "backNumbers": []
     },
     {
       "start": "14:42:35",
-      "no": 57,
+      "no": 56,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1530,12 +1527,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "81",
-      "priorEventNo": "56",
+      "priorEventNo": "55",
       "backNumbers": []
     },
     {
       "start": "14:44:10",
-      "no": 58,
+      "no": 57,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1548,12 +1545,12 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "83",
-      "priorEventNo": "57",
+      "priorEventNo": "56",
       "backNumbers": []
     },
     {
       "start": "14:47:15",
-      "no": 59,
+      "no": 58,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1566,12 +1563,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "84",
-      "priorEventNo": "58",
+      "priorEventNo": "57",
       "backNumbers": []
     },
     {
       "start": "14:51:50",
-      "no": 60,
+      "no": 59,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1584,12 +1581,12 @@
       "durationSeconds": 365,
       "durationText": "6:05",
       "sourceEventNo": "86",
-      "priorEventNo": "59",
+      "priorEventNo": "58",
       "backNumbers": []
     },
     {
       "start": "14:57:55",
-      "no": 61,
+      "no": 60,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1602,12 +1599,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "91",
-      "priorEventNo": "60",
+      "priorEventNo": "59",
       "backNumbers": []
     },
     {
       "start": "14:59:30",
-      "no": 62,
+      "no": 61,
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1620,7 +1617,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "31",
-      "priorEventNo": "44",
+      "priorEventNo": "60",
       "backNumbers": [
         "40",
         "41",
@@ -1637,7 +1634,7 @@
     },
     {
       "start": "15:00:55",
-      "no": 63,
+      "no": 62,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1655,7 +1652,7 @@
     },
     {
       "start": "15:02:30",
-      "no": 64,
+      "no": 63,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1668,12 +1665,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "58",
-      "priorEventNo": "63",
+      "priorEventNo": "62",
       "backNumbers": []
     },
     {
       "start": "15:04:05",
-      "no": 65,
+      "no": 64,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1686,12 +1683,12 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "62",
-      "priorEventNo": "64",
+      "priorEventNo": "63",
       "backNumbers": []
     },
     {
       "start": "15:07:10",
-      "no": 66,
+      "no": 65,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1704,12 +1701,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "63",
-      "priorEventNo": "65",
+      "priorEventNo": "64",
       "backNumbers": []
     },
     {
       "start": "15:08:45",
-      "no": 67,
+      "no": 66,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1722,12 +1719,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "88",
-      "priorEventNo": "66",
+      "priorEventNo": "65",
       "backNumbers": []
     },
     {
       "start": "15:10:20",
-      "no": 68,
+      "no": 67,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1740,12 +1737,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "29",
-      "priorEventNo": "62",
+      "priorEventNo": "66",
       "backNumbers": []
     },
     {
       "start": "15:11:55",
-      "no": 69,
+      "no": 68,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1758,12 +1755,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "85",
-      "priorEventNo": "68",
+      "priorEventNo": "67",
       "backNumbers": []
     },
     {
       "start": "15:16:30",
-      "no": 70,
+      "no": 69,
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -1776,12 +1773,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "59",
-      "priorEventNo": "69",
+      "priorEventNo": "68",
       "backNumbers": []
     },
     {
       "start": "15:18:05",
-      "no": 71,
+      "no": 70,
       "round": "Semi Final",
       "style": "Latin",
       "section": "Amateur",
@@ -1794,7 +1791,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "221",
-      "priorEventNo": "164",
+      "priorEventNo": "69",
       "backNumbers": [
         "1",
         "2",
@@ -1808,7 +1805,7 @@
     },
     {
       "start": "15:19:30",
-      "no": 72,
+      "no": 71,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1826,7 +1823,7 @@
     },
     {
       "start": "15:21:05",
-      "no": 73,
+      "no": 72,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1844,7 +1841,7 @@
     },
     {
       "start": "15:24:10",
-      "no": 74,
+      "no": 73,
       "round": "Final",
       "style": "Latin",
       "section": "Under 15",
@@ -1862,7 +1859,7 @@
     },
     {
       "start": "15:25:45",
-      "no": 75,
+      "no": 74,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1875,12 +1872,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "23",
-      "priorEventNo": "67",
+      "priorEventNo": "73",
       "backNumbers": []
     },
     {
       "start": "15:30:20",
-      "no": 76,
+      "no": 75,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1893,12 +1890,12 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "22",
-      "priorEventNo": "73",
+      "priorEventNo": "74",
       "backNumbers": []
     },
     {
       "start": "15:33:25",
-      "no": 77,
+      "no": 76,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1911,12 +1908,12 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "24",
-      "priorEventNo": "74",
+      "priorEventNo": "75",
       "backNumbers": []
     },
     {
       "start": "15:38:00",
-      "no": 78,
+      "no": 77,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1929,12 +1926,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "26",
-      "priorEventNo": "75",
+      "priorEventNo": "76",
       "backNumbers": []
     },
     {
       "start": "15:39:35",
-      "no": 79,
+      "no": 78,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -1947,12 +1944,12 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "30",
-      "priorEventNo": "76",
+      "priorEventNo": "77",
       "backNumbers": []
     },
     {
       "start": "15:42:40",
-      "no": 80,
+      "no": 79,
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -1978,7 +1975,7 @@
     },
     {
       "start": "15:45:45",
-      "no": 81,
+      "no": 80,
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -1996,7 +1993,7 @@
     },
     {
       "start": "15:53:20",
-      "no": 82,
+      "no": 81,
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -2014,7 +2011,7 @@
     },
     {
       "start": "15:57:55",
-      "no": 83,
+      "no": 82,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2032,7 +2029,7 @@
     },
     {
       "start": "15:59:30",
-      "no": 84,
+      "no": 83,
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -2058,7 +2055,7 @@
     },
     {
       "start": "16:04:05",
-      "no": 85,
+      "no": 84,
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2071,7 +2068,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "110",
-      "priorEventNo": "152",
+      "priorEventNo": "83",
       "backNumbers": [
         "12",
         "15",
@@ -2085,7 +2082,7 @@
     },
     {
       "start": "16:05:30",
-      "no": 86,
+      "no": 85,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2111,7 +2108,7 @@
     },
     {
       "start": "16:07:05",
-      "no": 87,
+      "no": 86,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2136,7 +2133,7 @@
     },
     {
       "start": "16:10:10",
-      "no": 88,
+      "no": 87,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2159,16 +2156,16 @@
     },
     {
       "start": "16:14:45",
-      "no": 89,
-      "round": "Final",
+      "no": 88,
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo CRS",
-      "entries": "6",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Under 18 Solo CRS + Under 12 CRS",
+      "entries": "8",
       "danceOrder": "C → R → S",
       "duration": 4.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "115",
@@ -2179,12 +2176,16 @@
         "120",
         "121",
         "124",
-        "143"
-      ]
+        "143",
+        "200",
+        "201"
+      ],
+      "sourceEventNos": "115 / 50",
+      "exitGuide": "C → R → S: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과."
     },
     {
       "start": "16:19:20",
-      "no": 90,
+      "no": 89,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2207,28 +2208,31 @@
     },
     {
       "start": "16:20:55",
-      "no": 91,
-      "round": "Final",
+      "no": 90,
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Over 35",
-      "division": "Over 35 Solo",
-      "event": "Over 35 Solo CRJ",
-      "entries": 1,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 35 Solo CRJ + Over 19 Solo C + Pro-Am Latin CR",
+      "entries": "3",
       "danceOrder": "C → R → J",
       "duration": 4.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": 167,
-      "priorEventNo": "88",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "sourceEventNo": "167",
+      "priorEventNo": "89",
+      "exitGuide": "C: 전원 함께 진행 → Over 19 Solo C 선수 퇴장 → R: Over 35 Solo CRJ + Pro-Am Latin CR 진행 → Pro-Am 선수 퇴장 → Over 35 선수만 J 진행 후 종료.",
       "backNumbers": [
-        "36"
-      ]
+        "36",
+        "22",
+        "216"
+      ],
+      "sourceEventNos": "167 / 140 / 201"
     },
     {
       "start": "16:25:30",
-      "no": 92,
+      "no": 91,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2241,7 +2245,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "119",
-      "priorEventNo": "89",
+      "priorEventNo": "90",
       "backNumbers": [
         "12",
         "120",
@@ -2252,7 +2256,7 @@
     },
     {
       "start": "16:27:05",
-      "no": 93,
+      "no": 92,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2265,7 +2269,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "121",
-      "priorEventNo": "90",
+      "priorEventNo": "91",
       "backNumbers": [
         "12",
         "120",
@@ -2278,30 +2282,33 @@
     },
     {
       "start": "16:28:40",
-      "no": 94,
-      "round": "Final",
+      "no": 93,
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo S",
-      "entries": "4",
-      "danceOrder": "S",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Under 18 Solo S + Under 15 CRS",
+      "entries": "5",
+      "danceOrder": "S → C → R",
+      "duration": 4.58,
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
+      "durationSeconds": 275,
+      "durationText": "4:35",
       "sourceEventNo": "123",
-      "priorEventNo": "91",
+      "priorEventNo": "92",
       "backNumbers": [
         "12",
         "120",
         "124",
-        "125"
-      ]
+        "125",
+        "201"
+      ],
+      "sourceEventNos": "123 / 80",
+      "exitGuide": "S: 전원 함께 진행 → Under 18 Solo S 선수 퇴장 → Under 15 CRS 선수만 C → R 진행 후 종료."
     },
     {
-      "start": "16:30:15",
-      "no": 95,
+      "start": "16:33:15",
+      "no": 94,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -2314,12 +2321,12 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "31",
-      "priorEventNo": "77",
+      "priorEventNo": "93",
       "backNumbers": []
     },
     {
-      "start": "16:31:50",
-      "no": 96,
+      "start": "16:34:50",
+      "no": 95,
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -2332,7 +2339,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "165",
-      "priorEventNo": "93",
+      "priorEventNo": "94",
       "backNumbers": [
         "30",
         "31",
@@ -2343,63 +2350,45 @@
       ]
     },
     {
-      "start": "16:33:25",
+      "start": "16:36:25",
+      "no": 96,
+      "round": "Final · Combined",
+      "style": "Latin",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 19 Solo R + Mania Latin R + Senior 50 CR",
+      "entries": "3",
+      "danceOrder": "R → C",
+      "duration": 3.08,
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
+      "durationSeconds": 185,
+      "durationText": "3:05",
+      "sourceEventNo": "145",
+      "priorEventNo": "95",
+      "exitGuide": "R: 전원 함께 진행 → Over 19 Solo R 및 Mania Latin R 선수 퇴장 → Senior 50 CR 선수만 C 진행 후 종료.",
+      "backNumbers": [
+        "23",
+        "213",
+        "210"
+      ],
+      "sourceEventNos": "145 / 192 / 180"
+    },
+    {
+      "start": "16:39:30",
       "no": 97,
-      "round": "Final",
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo C",
-      "entries": 1,
-      "danceOrder": "C",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": 140,
-      "priorEventNo": "97",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "22"
-      ]
-    },
-    {
-      "start": "16:35:00",
-      "no": 98,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo R",
-      "entries": 1,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 35 Solo R + Pro-Am Latin R",
+      "entries": "8",
       "danceOrder": "R",
       "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": 145,
-      "priorEventNo": "97",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "23"
-      ]
-    },
-    {
-      "start": "16:36:35",
-      "no": 99,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Over 35",
-      "division": "Over 35 Solo",
-      "event": "Over 35 Solo R",
-      "entries": "7",
-      "danceOrder": "R",
-      "duration": 1.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "169",
-      "priorEventNo": "95",
+      "priorEventNo": "96",
       "backNumbers": [
         "30",
         "31",
@@ -2407,12 +2396,15 @@
         "33",
         "34",
         "35",
-        "36"
-      ]
+        "36",
+        "217"
+      ],
+      "sourceEventNos": "169 / 202",
+      "exitGuide": "R: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과."
     },
     {
-      "start": "16:38:10",
-      "no": 100,
+      "start": "16:41:05",
+      "no": 98,
       "round": "Final",
       "style": "Latin",
       "section": "Over 35",
@@ -2425,7 +2417,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "170",
-      "priorEventNo": "96",
+      "priorEventNo": "97",
       "backNumbers": [
         "30",
         "31",
@@ -2436,8 +2428,8 @@
       ]
     },
     {
-      "start": "16:39:45",
-      "no": 101,
+      "start": "16:42:40",
+      "no": 99,
       "round": "Final",
       "style": "Latin",
       "section": "Over 19",
@@ -2450,7 +2442,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "141",
-      "priorEventNo": "97",
+      "priorEventNo": "98",
       "backNumbers": [
         "22",
         "24",
@@ -2461,50 +2453,32 @@
       ]
     },
     {
-      "start": "16:42:50",
-      "no": 102,
-      "round": "Final",
+      "start": "16:45:45",
+      "no": 100,
+      "round": "Final · Combined",
       "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo P",
-      "entries": "2",
-      "danceOrder": "P",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "144",
-      "priorEventNo": "98",
-      "backNumbers": [
-        "13",
-        "23"
-      ]
-    },
-    {
-      "start": "16:44:25",
-      "no": 103,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo S",
-      "entries": "2",
-      "danceOrder": "S",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 19 Solo S + Over 19 Solo Latin CSRJ",
+      "entries": "3",
+      "danceOrder": "S → C → R → J",
+      "duration": 6.08,
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
+      "durationSeconds": 365,
+      "durationText": "6:05",
       "sourceEventNo": "147",
       "priorEventNo": "99",
       "backNumbers": [
         "13",
-        "37"
-      ]
+        "37",
+        "16"
+      ],
+      "sourceEventNos": "147 / 153",
+      "exitGuide": "S: 전원 함께 진행 → Over 19 Solo S 선수 퇴장 → CSRJ 선수만 C → R → J 진행 후 종료."
     },
     {
-      "start": "16:46:00",
-      "no": 104,
+      "start": "16:51:50",
+      "no": 101,
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -2528,51 +2502,62 @@
       ]
     },
     {
-      "start": "16:48:25",
-      "no": 105,
-      "round": "Final",
+      "start": "16:54:15",
+      "no": 102,
+      "round": "Final · Combined",
       "style": "Modern",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo T",
-      "entries": 1,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 19 Solo T + Under 18 Solo T",
+      "entries": "5",
       "danceOrder": "T",
       "duration": 1.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": 148,
+      "sourceEventNo": "148",
       "priorEventNo": "101",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "exitGuide": "T: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과.",
       "backNumbers": [
-        "23"
-      ]
+        "23",
+        "12",
+        "120",
+        "121",
+        "122"
+      ],
+      "sourceEventNos": "148 / 124"
     },
     {
-      "start": "16:50:00",
-      "no": 106,
-      "round": "Final",
+      "start": "16:55:50",
+      "no": 103,
+      "round": "Final · Combined",
       "style": "Modern",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo Q",
-      "entries": 2,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Under 18 Solo Q + Under 12 Solo Q",
+      "entries": "7",
       "danceOrder": "Q",
       "duration": 1.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": 120,
-      "priorEventNo": "101",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "sourceEventNo": "120",
+      "priorEventNo": "102",
+      "exitGuide": "Q: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과.",
       "backNumbers": [
         "12",
-        "120"
-      ]
+        "120",
+        "61",
+        "63",
+        "64",
+        "65",
+        "77"
+      ],
+      "sourceEventNos": "120 / 60"
     },
     {
-      "start": "16:51:35",
-      "no": 107,
+      "start": "16:57:25",
+      "no": 104,
       "round": "Final",
       "style": "Latin",
       "section": "Under 10",
@@ -2585,7 +2570,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "27",
-      "priorEventNo": "92",
+      "priorEventNo": "103",
       "backNumbers": [
         "40",
         "41",
@@ -2595,52 +2580,59 @@
       ]
     },
     {
-      "start": "16:53:10",
-      "no": 108,
-      "round": "Final",
+      "start": "16:59:00",
+      "no": 105,
+      "round": "Final · Combined",
       "style": "Modern",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo W",
-      "entries": 2,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Over 19 Solo W + Under 18 Solo W",
+      "entries": "6",
       "danceOrder": "W",
       "duration": 1.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": 149,
-      "priorEventNo": "103",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "sourceEventNo": "149",
+      "priorEventNo": "104",
+      "exitGuide": "W: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과.",
       "backNumbers": [
         "22",
-        "23"
-      ]
+        "23",
+        "12",
+        "120",
+        "121",
+        "124"
+      ],
+      "sourceEventNos": "149 / 125"
     },
     {
-      "start": "16:54:45",
-      "no": 109,
-      "round": "Final",
+      "start": "17:00:35",
+      "no": 106,
+      "round": "Final · Combined",
       "style": "Modern",
-      "section": "Under 12",
-      "division": "Under 12 Couple",
-      "event": "Under 12 WTF",
-      "entries": 2,
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Under 12 WTF + Pro-Am Standard 3 Dance",
+      "entries": "3",
       "danceOrder": "W → T → F",
       "duration": 4.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": 71,
-      "priorEventNo": "103",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "sourceEventNo": "71",
+      "priorEventNo": "105",
+      "exitGuide": "W → T → F: 전원 함께 진행 후 종료. 두 종목은 별도 심사·별도 결과.",
       "backNumbers": [
         "200",
-        "201"
-      ]
+        "201",
+        "212"
+      ],
+      "sourceEventNos": "71 / 200"
     },
     {
-      "start": "16:59:20",
-      "no": 110,
+      "start": "17:05:10",
+      "no": 107,
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -2653,7 +2645,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "32",
-      "priorEventNo": "102",
+      "priorEventNo": "106",
       "backNumbers": [
         "41",
         "42",
@@ -2662,8 +2654,8 @@
       ]
     },
     {
-      "start": "17:00:55",
-      "no": 111,
+      "start": "17:06:45",
+      "no": 108,
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -2676,7 +2668,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "33",
-      "priorEventNo": "104",
+      "priorEventNo": "107",
       "backNumbers": [
         "41",
         "42",
@@ -2685,8 +2677,8 @@
       ]
     },
     {
-      "start": "17:02:30",
-      "no": 112,
+      "start": "17:08:20",
+      "no": 109,
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2699,7 +2691,7 @@
       "durationSeconds": 285,
       "durationText": "4:45",
       "sourceEventNo": "151",
-      "priorEventNo": "106",
+      "priorEventNo": "108",
       "exitGuide": "W/T/F 종료 → 전원 잔류 | Q 종료 → 남은 선수 전원 퇴장",
       "sourceEventNos": "151 / 69 / 129",
       "backNumbers": [
@@ -2712,8 +2704,8 @@
       ]
     },
     {
-      "start": "17:07:15",
-      "no": 113,
+      "start": "17:13:05",
+      "no": 110,
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2726,7 +2718,7 @@
       "durationSeconds": 215,
       "durationText": "3:35",
       "sourceEventNo": "150",
-      "priorEventNo": "105",
+      "priorEventNo": "109",
       "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장",
       "sourceEventNos": "150 / 36 / 128",
       "backNumbers": [
@@ -2739,8 +2731,8 @@
       ]
     },
     {
-      "start": "17:10:50",
-      "no": 114,
+      "start": "17:16:40",
+      "no": 111,
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2753,7 +2745,7 @@
       "durationSeconds": 245,
       "durationText": "4:05",
       "sourceEventNo": "152",
-      "priorEventNo": "107",
+      "priorEventNo": "110",
       "exitGuide": "W → T → Q 진행 후 해당 종목 종료 선수 퇴장",
       "sourceEventNos": "152 / 37 / 130",
       "backNumbers": [
@@ -2767,8 +2759,8 @@
       ]
     },
     {
-      "start": "17:14:55",
-      "no": 115,
+      "start": "17:20:45",
+      "no": 112,
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -2781,7 +2773,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "25",
-      "priorEventNo": "108",
+      "priorEventNo": "111",
       "backNumbers": [
         "41",
         "42",
@@ -2790,8 +2782,8 @@
       ]
     },
     {
-      "start": "17:16:30",
-      "no": 116,
+      "start": "17:22:20",
+      "no": 113,
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -2804,7 +2796,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "28",
-      "priorEventNo": "109",
+      "priorEventNo": "112",
       "backNumbers": [
         "41",
         "42",
@@ -2813,8 +2805,8 @@
       ]
     },
     {
-      "start": "17:18:05",
-      "no": 117,
+      "start": "17:23:55",
+      "no": 114,
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2827,7 +2819,7 @@
       "durationSeconds": 145,
       "durationText": "2:25",
       "sourceEventNo": "34",
-      "priorEventNo": "111",
+      "priorEventNo": "113",
       "exitGuide": "W → Q 진행 후 해당 종목 종료 선수 퇴장",
       "sourceEventNos": "34 / 126",
       "backNumbers": [
@@ -2839,8 +2831,8 @@
       ]
     },
     {
-      "start": "17:20:30",
-      "no": 118,
+      "start": "17:26:20",
+      "no": 115,
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -2864,8 +2856,8 @@
       ]
     },
     {
-      "start": "17:22:55",
-      "no": 119,
+      "start": "17:28:45",
+      "no": 116,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2887,32 +2879,8 @@
       ]
     },
     {
-      "start": "17:24:30",
-      "no": 120,
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 12",
-      "division": "Under 12 Solo",
-      "event": "Under 12 Solo Q",
-      "entries": "5",
-      "danceOrder": "Q",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "60",
-      "priorEventNo": "116",
-      "backNumbers": [
-        "61",
-        "63",
-        "64",
-        "65",
-        "77"
-      ]
-    },
-    {
-      "start": "17:26:05",
-      "no": 121,
+      "start": "17:30:20",
+      "no": 117,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2925,7 +2893,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "64",
-      "priorEventNo": "117",
+      "priorEventNo": "116",
       "backNumbers": [
         "61",
         "62",
@@ -2936,8 +2904,8 @@
       ]
     },
     {
-      "start": "17:27:40",
-      "no": 122,
+      "start": "17:31:55",
+      "no": 118,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2950,7 +2918,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "65",
-      "priorEventNo": "118",
+      "priorEventNo": "117",
       "backNumbers": [
         "61",
         "62",
@@ -2961,8 +2929,8 @@
       ]
     },
     {
-      "start": "17:29:15",
-      "no": 123,
+      "start": "17:33:30",
+      "no": 119,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2975,7 +2943,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "66",
-      "priorEventNo": "119",
+      "priorEventNo": "118",
       "backNumbers": [
         "63",
         "64",
@@ -2984,8 +2952,8 @@
       ]
     },
     {
-      "start": "17:32:20",
-      "no": 124,
+      "start": "17:36:35",
+      "no": 120,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2998,7 +2966,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "67",
-      "priorEventNo": "120",
+      "priorEventNo": "119",
       "backNumbers": [
         "61",
         "62",
@@ -3009,8 +2977,8 @@
       ]
     },
     {
-      "start": "17:35:25",
-      "no": 125,
+      "start": "17:39:40",
+      "no": 121,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -3023,7 +2991,7 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "68",
-      "priorEventNo": "121",
+      "priorEventNo": "120",
       "backNumbers": [
         "63",
         "64",
@@ -3032,8 +3000,8 @@
       ]
     },
     {
-      "start": "17:40:00",
-      "no": 126,
+      "start": "17:44:15",
+      "no": 122,
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -3046,7 +3014,7 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "70",
-      "priorEventNo": "122",
+      "priorEventNo": "121",
       "backNumbers": [
         "61",
         "63",
@@ -3056,113 +3024,34 @@
       ]
     },
     {
-      "start": "17:44:35",
-      "no": 127,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Under 12",
-      "division": "Under 12 Couple",
-      "event": "Under 12 CRS",
-      "entries": "2",
-      "danceOrder": "C → R → S",
-      "duration": 4.58,
-      "note": "",
-      "durationSeconds": 275,
-      "durationText": "4:35",
-      "sourceEventNo": "50",
-      "priorEventNo": "50",
-      "backNumbers": [
-        "200",
-        "201"
-      ]
-    },
-    {
-      "start": "17:49:10",
-      "no": 128,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Under 15",
-      "division": "Under 15 Couple",
-      "event": "Under 15 CRS",
-      "entries": 1,
-      "danceOrder": "C → R → S",
-      "duration": 4.58,
-      "note": "",
-      "durationSeconds": 275,
-      "durationText": "4:35",
-      "sourceEventNo": 80,
-      "priorEventNo": "169",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "201"
-      ]
-    },
-    {
-      "start": "17:53:45",
-      "no": 129,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Over 19",
-      "division": "Over 19 Solo",
-      "event": "Over 19 Solo Latin CSRJ",
-      "entries": 1,
-      "danceOrder": "C → S → R → J",
-      "duration": 6.08,
-      "note": "",
-      "durationSeconds": 365,
-      "durationText": "6:05",
-      "sourceEventNo": 153,
-      "priorEventNo": "169",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "16"
-      ]
-    },
-    {
-      "start": "17:59:50",
-      "no": 130,
-      "round": "Final",
+      "start": "17:48:50",
+      "no": 123,
+      "round": "Final · Combined",
       "style": "Modern",
-      "section": "Under 15",
-      "division": "Under 15 Couple",
-      "event": "Under 15 WTF",
-      "entries": 1,
-      "danceOrder": "W → T → F",
+      "section": "Mixed Age",
+      "division": "Combined Event",
+      "event": "Under 15 WTF + Under 18 Solo F",
+      "entries": "5",
+      "danceOrder": "F → W → T",
       "duration": 4.58,
-      "note": "",
+      "note": "처음부터 전원 입장. 중간 유입 없음. 각 원래 종목은 별도 심사·별도 결과.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": 101,
-      "priorEventNo": "101",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
+      "sourceEventNo": "101",
+      "priorEventNo": "122",
+      "exitGuide": "F: 전원 함께 진행 → Under 18 Solo F 선수 퇴장 → Under 15 WTF 선수만 W → T 진행 후 종료.",
       "backNumbers": [
-        "201"
-      ]
+        "201",
+        "12",
+        "120",
+        "122",
+        "124"
+      ],
+      "sourceEventNos": "101 / 117"
     },
     {
-      "start": "18:04:25",
-      "no": 131,
-      "round": "Final",
-      "style": "Modern",
-      "section": "Pro-Am",
-      "division": "Pro-Am Couple",
-      "event": "Pro-Am Standard 3 Dance",
-      "entries": 1,
-      "danceOrder": "W → T → F",
-      "duration": 4.58,
-      "note": "",
-      "durationSeconds": 275,
-      "durationText": "4:35",
-      "sourceEventNo": 200,
-      "priorEventNo": "101",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "212"
-      ]
-    },
-    {
-      "start": "18:09:00",
-      "no": 132,
+      "start": "17:53:25",
+      "no": 124,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3175,7 +3064,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "87",
-      "priorEventNo": "124",
+      "priorEventNo": "123",
       "backNumbers": [
         "90",
         "91",
@@ -3186,8 +3075,8 @@
       ]
     },
     {
-      "start": "18:10:35",
-      "no": 133,
+      "start": "17:55:00",
+      "no": 125,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3200,7 +3089,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "90",
-      "priorEventNo": "125",
+      "priorEventNo": "124",
       "backNumbers": [
         "90",
         "91",
@@ -3212,8 +3101,8 @@
       ]
     },
     {
-      "start": "18:12:10",
-      "no": 134,
+      "start": "17:56:35",
+      "no": 126,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3226,7 +3115,7 @@
       "durationSeconds": 95,
       "durationText": "1:35",
       "sourceEventNo": "94",
-      "priorEventNo": "126",
+      "priorEventNo": "125",
       "backNumbers": [
         "90",
         "91",
@@ -3237,8 +3126,8 @@
       ]
     },
     {
-      "start": "18:13:45",
-      "no": 135,
+      "start": "17:58:10",
+      "no": 127,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3251,7 +3140,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "96",
-      "priorEventNo": "127",
+      "priorEventNo": "126",
       "backNumbers": [
         "90",
         "91",
@@ -3262,8 +3151,8 @@
       ]
     },
     {
-      "start": "18:16:50",
-      "no": 136,
+      "start": "18:01:15",
+      "no": 128,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3276,7 +3165,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "97",
-      "priorEventNo": "128",
+      "priorEventNo": "127",
       "backNumbers": [
         "90",
         "91",
@@ -3287,8 +3176,8 @@
       ]
     },
     {
-      "start": "18:19:55",
-      "no": 137,
+      "start": "18:04:20",
+      "no": 129,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3301,7 +3190,7 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "98",
-      "priorEventNo": "129",
+      "priorEventNo": "128",
       "backNumbers": [
         "90",
         "91",
@@ -3312,8 +3201,8 @@
       ]
     },
     {
-      "start": "18:24:30",
-      "no": 138,
+      "start": "18:08:55",
+      "no": 130,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3326,7 +3215,7 @@
       "durationSeconds": 365,
       "durationText": "6:05",
       "sourceEventNo": "99",
-      "priorEventNo": "130",
+      "priorEventNo": "129",
       "backNumbers": [
         "90",
         "91",
@@ -3338,8 +3227,8 @@
       ]
     },
     {
-      "start": "18:30:35",
-      "no": 139,
+      "start": "18:15:00",
+      "no": 131,
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -3352,7 +3241,7 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "100",
-      "priorEventNo": "131",
+      "priorEventNo": "130",
       "backNumbers": [
         "90",
         "91",
@@ -3364,119 +3253,8 @@
       ]
     },
     {
-      "start": "18:35:10",
-      "no": 140,
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo F",
-      "entries": "4",
-      "danceOrder": "F",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "117",
-      "priorEventNo": "132",
-      "backNumbers": [
-        "12",
-        "120",
-        "122",
-        "124"
-      ]
-    },
-    {
-      "start": "18:36:45",
-      "no": 141,
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo T",
-      "entries": "4",
-      "danceOrder": "T",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "124",
-      "priorEventNo": "133",
-      "backNumbers": [
-        "12",
-        "120",
-        "121",
-        "122"
-      ]
-    },
-    {
-      "start": "18:38:20",
-      "no": 142,
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo W",
-      "entries": "4",
-      "danceOrder": "W",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "125",
-      "priorEventNo": "134",
-      "backNumbers": [
-        "12",
-        "120",
-        "121",
-        "124"
-      ]
-    },
-    {
-      "start": "18:39:55",
-      "no": 143,
-      "round": "Final",
-      "style": "Other",
-      "section": "Senior",
-      "division": "Senior Couple",
-      "event": "Senior 50 CR",
-      "entries": 1,
-      "danceOrder": "C → R",
-      "duration": 3.08,
-      "note": "",
-      "durationSeconds": 185,
-      "durationText": "3:05",
-      "sourceEventNo": 180,
-      "priorEventNo": "180",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "210"
-      ]
-    },
-    {
-      "start": "18:43:00",
-      "no": 144,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Mania",
-      "division": "Mania Couple",
-      "event": "Mania Latin R",
-      "entries": 1,
-      "danceOrder": "R",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": 192,
-      "priorEventNo": "180",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "213"
-      ]
-    },
-    {
-      "start": "18:44:35",
-      "no": 145,
+      "start": "18:19:35",
+      "no": 132,
       "round": "Final",
       "style": "Latin",
       "section": "Mania",
@@ -3489,7 +3267,7 @@
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "190",
-      "priorEventNo": "135",
+      "priorEventNo": "131",
       "exitGuide": "",
       "backNumbers": [
         "210",
@@ -3498,8 +3276,8 @@
       ]
     },
     {
-      "start": "18:47:40",
-      "no": 146,
+      "start": "18:22:40",
+      "no": 133,
       "round": "Final",
       "style": "Latin",
       "section": "Mania",
@@ -3512,7 +3290,7 @@
       "durationSeconds": 275,
       "durationText": "4:35",
       "sourceEventNo": "191",
-      "priorEventNo": "135",
+      "priorEventNo": "132",
       "exitGuide": "",
       "backNumbers": [
         "210",
@@ -3522,50 +3300,8 @@
       ]
     },
     {
-      "start": "18:52:15",
-      "no": 147,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Pro-Am",
-      "division": "Pro-Am Couple",
-      "event": "Pro-Am Latin R",
-      "entries": 1,
-      "danceOrder": "R",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": 202,
-      "priorEventNo": "201",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "213"
-      ]
-    },
-    {
-      "start": "18:53:50",
-      "no": 148,
-      "round": "Final",
-      "style": "Latin",
-      "section": "Pro-Am",
-      "division": "Pro-Am Couple",
-      "event": "Pro-Am Latin CR",
-      "entries": 1,
-      "danceOrder": "C → R",
-      "duration": 3.08,
-      "note": "",
-      "durationSeconds": 185,
-      "durationText": "3:05",
-      "sourceEventNo": 201,
-      "priorEventNo": "201",
-      "exitGuide": "독립 EVENT — 해당 종목 선수만 입장하여 진행 후 전원 퇴장",
-      "backNumbers": [
-        "216"
-      ]
-    },
-    {
-      "start": "18:56:55",
-      "no": 149,
+      "start": "18:27:15",
+      "no": 134,
       "round": "Semi Final",
       "style": "Latin",
       "section": "Amateur",
@@ -3578,7 +3314,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "222",
-      "priorEventNo": "166",
+      "priorEventNo": "133",
       "backNumbers": [
         "9",
         "10",
@@ -3597,8 +3333,8 @@
       ]
     },
     {
-      "start": "18:58:20",
-      "no": 150,
+      "start": "18:28:40",
+      "no": 135,
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 18",
@@ -3611,7 +3347,7 @@
       "durationSeconds": 85,
       "durationText": "1:25",
       "sourceEventNo": "116",
-      "priorEventNo": "153",
+      "priorEventNo": "134",
       "backNumbers": [
         "10",
         "11",
@@ -3625,8 +3361,8 @@
       ]
     },
     {
-      "start": "18:59:45",
-      "no": 151,
+      "start": "18:30:05",
+      "no": 136,
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -3639,7 +3375,7 @@
       "durationSeconds": 145,
       "durationText": "2:25",
       "sourceEventNo": "35",
-      "priorEventNo": "112",
+      "priorEventNo": "135",
       "exitGuide": "W → T 진행 후 해당 종목 종료 선수 퇴장",
       "sourceEventNos": "35 / 127",
       "backNumbers": [
@@ -3652,8 +3388,8 @@
       ]
     },
     {
-      "start": "19:02:10",
-      "no": 152,
+      "start": "18:32:30",
+      "no": 137,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -3666,12 +3402,12 @@
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "110",
-      "priorEventNo": "83",
+      "priorEventNo": "136",
       "backNumbers": []
     },
     {
-      "start": "19:09:45",
-      "no": 153,
+      "start": "18:40:05",
+      "no": 138,
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -3684,12 +3420,12 @@
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "116",
-      "priorEventNo": "138",
+      "priorEventNo": "137",
       "backNumbers": []
     },
     {
-      "start": "19:17:20",
-      "no": 154,
+      "start": "18:47:40",
+      "no": 139,
       "round": "Final",
       "style": "Latin",
       "section": "Amateur",
@@ -3702,12 +3438,12 @@
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "222",
-      "priorEventNo": "137",
+      "priorEventNo": "138",
       "backNumbers": []
     },
     {
-      "start": "19:24:55",
-      "no": 155,
+      "start": "18:55:15",
+      "no": 140,
       "round": "Grand Final",
       "style": "Latin",
       "section": "Amateur",
@@ -3720,12 +3456,11 @@
       "durationSeconds": 455,
       "durationText": "7:35",
       "sourceEventNo": "221",
-      "priorEventNo": "167",
+      "priorEventNo": "139",
       "backNumbers": []
     },
     {
-      "start": "19:32:30",
-      "no": "",
+      "start": "19:02:50",
       "round": "",
       "style": "",
       "section": "",
@@ -3737,13 +3472,10 @@
       "note": "Finals awards on stage",
       "durationSeconds": 1200,
       "durationText": "20:00",
-      "sourceEventNo": "",
-      "priorEventNo": "",
       "backNumbers": []
     },
     {
-      "start": "19:52:30",
-      "no": "",
+      "start": "19:22:50",
       "round": "",
       "style": "",
       "section": "",
@@ -3755,11 +3487,9 @@
       "note": "",
       "durationSeconds": 600,
       "durationText": "10:00",
-      "sourceEventNo": "",
-      "priorEventNo": "",
       "backNumbers": []
     }
   ],
   "projectedStart": "11:30",
-  "projectedFinish": "20:02:30"
+  "projectedFinish": "19:32:50"
 }
