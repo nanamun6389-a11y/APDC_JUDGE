@@ -1804,18 +1804,20 @@
       "style": "Modern",
       "section": "Over 19",
       "division": "Over 19 Solo",
-      "event": "Over 19 Solo T",
-      "entries": "1",
-      "danceOrder": "T",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
+      "event": "Over 19 Solo T + Under 18 Solo Q",
+      "entries": "T 1 / Q 2",
+      "danceOrder": "T → Q",
+      "duration": 3.08,
+      "note": "Combined event; original judging/results remain separate.",
+      "durationSeconds": 185,
+      "durationText": "3:05",
       "sourceEventNo": "103",
-      "priorEventNo": "101"
+      "priorEventNo": "101",
+      "sourceEventNos": "148 / 120",
+      "exitGuide": "T: Back 23 진행 후 퇴장 → Q: Back 12, 120 진행 후 종료"
     },
     {
-      "start": "16:50",
+      "start": "16:51:30",
       "no": "106",
       "round": "Final",
       "style": "Latin",
@@ -1832,24 +1834,26 @@
       "priorEventNo": "92"
     },
     {
-      "start": "16:51:35",
+      "start": "16:53:05",
       "no": "107",
       "round": "Final",
       "style": "Modern",
       "section": "Over 19",
       "division": "Over 19 Solo",
-      "event": "Over 19 Solo W",
-      "entries": "2",
-      "danceOrder": "W",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
+      "event": "Over 19 Solo W + Under 12 WTF",
+      "entries": "W 2 / Under 12 WTF 2",
+      "danceOrder": "W → T → F",
+      "duration": 4.58,
+      "note": "Combined residual event; original judging/results remain separate.",
+      "durationSeconds": 275,
+      "durationText": "4:35",
       "sourceEventNo": "105",
-      "priorEventNo": "103"
+      "priorEventNo": "103",
+      "sourceEventNos": "149 / 71",
+      "exitGuide": "W: Back 22, 23 + Couple 200, 201 함께 진행 → Over 19 선수 퇴장 → Couple 200, 201은 T → F까지 잔류"
     },
     {
-      "start": "16:53:10",
+      "start": "16:57:40",
       "no": "108",
       "round": "Final",
       "style": "Modern",
@@ -1866,7 +1870,7 @@
       "priorEventNo": "102"
     },
     {
-      "start": "16:54:45",
+      "start": "16:59:15",
       "no": "109",
       "round": "Final",
       "style": "Modern",
@@ -1883,7 +1887,7 @@
       "priorEventNo": "104"
     },
     {
-      "start": "16:56:20",
+      "start": "17:00:50",
       "no": "110",
       "round": "Final · Combined",
       "style": "Modern",
@@ -1901,7 +1905,7 @@
       "exitGuide": "W/T/F 종료 → 전원 잔류 | Q 종료 → 남은 선수 전원 퇴장"
     },
     {
-      "start": "17:01:05",
+      "start": "17:05:35",
       "no": "111",
       "round": "Final · Combined",
       "style": "Modern",
@@ -1919,7 +1923,7 @@
       "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장"
     },
     {
-      "start": "17:04:40",
+      "start": "17:09:10",
       "no": "112",
       "round": "Final · Combined",
       "style": "Modern",
@@ -1937,7 +1941,7 @@
       "exitGuide": "W → T → Q 진행 후 해당 종목 종료 선수 퇴장"
     },
     {
-      "start": "17:08:45",
+      "start": "17:13:15",
       "no": "113",
       "round": "Final",
       "style": "Modern",
@@ -1954,25 +1958,8 @@
       "priorEventNo": "108"
     },
     {
-      "start": "17:10:20",
+      "start": "17:14:50",
       "no": "114",
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 18",
-      "division": "Under 18 Solo",
-      "event": "Under 18 Solo Q",
-      "entries": "2",
-      "danceOrder": "Q",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "112",
-      "priorEventNo": "110"
-    },
-    {
-      "start": "17:11:55",
-      "no": "115",
       "round": "Final",
       "style": "Modern",
       "section": "Under 10",
@@ -1988,8 +1975,8 @@
       "priorEventNo": "109"
     },
     {
-      "start": "17:13:30",
-      "no": "116",
+      "start": "17:16:25",
+      "no": "115",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2006,8 +1993,8 @@
       "exitGuide": "W → Q 진행 후 해당 종목 종료 선수 퇴장"
     },
     {
-      "start": "17:15:55",
-      "no": "117",
+      "start": "17:18:50",
+      "no": "116",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Mixed Age",
@@ -2024,8 +2011,8 @@
       "exitGuide": "C 종료 → 전원 잔류 | J 종료 → 남은 선수 전원 퇴장"
     },
     {
-      "start": "17:18:20",
-      "no": "118",
+      "start": "17:21:15",
+      "no": "117",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2041,8 +2028,8 @@
       "priorEventNo": "115"
     },
     {
-      "start": "17:19:55",
-      "no": "119",
+      "start": "17:22:50",
+      "no": "118",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2058,8 +2045,8 @@
       "priorEventNo": "116"
     },
     {
-      "start": "17:21:30",
-      "no": "120",
+      "start": "17:24:25",
+      "no": "119",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2075,8 +2062,8 @@
       "priorEventNo": "117"
     },
     {
-      "start": "17:23:05",
-      "no": "121",
+      "start": "17:26",
+      "no": "120",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2092,8 +2079,8 @@
       "priorEventNo": "118"
     },
     {
-      "start": "17:24:40",
-      "no": "122",
+      "start": "17:27:35",
+      "no": "121",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2109,8 +2096,8 @@
       "priorEventNo": "119"
     },
     {
-      "start": "17:27:45",
-      "no": "123",
+      "start": "17:30:40",
+      "no": "122",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2126,8 +2113,8 @@
       "priorEventNo": "120"
     },
     {
-      "start": "17:30:50",
-      "no": "124",
+      "start": "17:33:45",
+      "no": "123",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2143,8 +2130,8 @@
       "priorEventNo": "121"
     },
     {
-      "start": "17:35:25",
-      "no": "125",
+      "start": "17:38:20",
+      "no": "124",
       "round": "Final",
       "style": "Modern",
       "section": "Under 12",
@@ -2160,8 +2147,8 @@
       "priorEventNo": "122"
     },
     {
-      "start": "17:40",
-      "no": "126",
+      "start": "17:42:55",
+      "no": "125",
       "round": "Final",
       "style": "Latin",
       "section": "Under 12",
@@ -2177,8 +2164,8 @@
       "priorEventNo": "50"
     },
     {
-      "start": "17:44:35",
-      "no": "127",
+      "start": "17:47:30",
+      "no": "126",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Under 15 + Over 19",
@@ -2199,46 +2186,27 @@
       "exitGuide": "S 종료 → Wong Tsun Yin & Chin Choi Ni Charlie 퇴장 | MinJi BAEK만 J 진행 후 종료"
     },
     {
-      "start": "17:49:20",
-      "no": "128",
-      "round": "Final",
-      "style": "Modern",
-      "section": "Under 12",
-      "division": "Under 12 Couple",
-      "event": "Under 12 WTF",
-      "entries": "2",
-      "danceOrder": "W → T → F",
-      "duration": 4.58,
-      "note": "",
-      "durationSeconds": 275,
-      "durationText": "4:35",
-      "sourceEventNos": "166-125",
-      "priorEventNo": "71",
-      "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장",
-      "sourceEventNo": "71"
-    },
-    {
-      "start": "17:53:55",
-      "no": "129",
+      "start": "17:52:15",
+      "no": "127",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
       "division": "Under 15 Couple",
-      "event": "Under 15 WTF",
-      "entries": "1",
+      "event": "Under 15 WTF + Pro-Am Standard 3 Dance",
+      "entries": "Under 15 WTF 1 / Pro-Am Standard 1",
       "danceOrder": "W → T → F",
       "duration": 4.58,
-      "note": "",
+      "note": "Combined event; original judging/results remain separate.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNos": "166-125",
+      "sourceEventNos": "101 / 181",
       "priorEventNo": "101",
-      "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장",
+      "exitGuide": "Back 201 + Back 212 함께 W → T → F 진행. 심사와 결과는 각 종목별 별도.",
       "sourceEventNo": "101"
     },
     {
-      "start": "17:58:30",
-      "no": "130",
+      "start": "17:56:50",
+      "no": "128",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2254,8 +2222,8 @@
       "priorEventNo": "124"
     },
     {
-      "start": "18:00:05",
-      "no": "131",
+      "start": "17:58:25",
+      "no": "129",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2271,8 +2239,8 @@
       "priorEventNo": "125"
     },
     {
-      "start": "18:01:40",
-      "no": "132",
+      "start": "18:00",
+      "no": "130",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2288,8 +2256,8 @@
       "priorEventNo": "126"
     },
     {
-      "start": "18:03:15",
-      "no": "133",
+      "start": "18:01:35",
+      "no": "131",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2305,8 +2273,8 @@
       "priorEventNo": "127"
     },
     {
-      "start": "18:06:20",
-      "no": "134",
+      "start": "18:04:40",
+      "no": "132",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2322,8 +2290,8 @@
       "priorEventNo": "128"
     },
     {
-      "start": "18:09:25",
-      "no": "135",
+      "start": "18:07:45",
+      "no": "133",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2339,8 +2307,8 @@
       "priorEventNo": "129"
     },
     {
-      "start": "18:14",
-      "no": "136",
+      "start": "18:12:20",
+      "no": "134",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2356,8 +2324,8 @@
       "priorEventNo": "130"
     },
     {
-      "start": "18:20:05",
-      "no": "137",
+      "start": "18:18:25",
+      "no": "135",
       "round": "Final",
       "style": "Modern",
       "section": "Under 15",
@@ -2373,8 +2341,8 @@
       "priorEventNo": "131"
     },
     {
-      "start": "18:24:40",
-      "no": "138",
+      "start": "18:23",
+      "no": "136",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2390,8 +2358,8 @@
       "priorEventNo": "132"
     },
     {
-      "start": "18:26:15",
-      "no": "139",
+      "start": "18:24:35",
+      "no": "137",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2407,8 +2375,8 @@
       "priorEventNo": "133"
     },
     {
-      "start": "18:27:50",
-      "no": "140",
+      "start": "18:26:10",
+      "no": "138",
       "round": "Final",
       "style": "Modern",
       "section": "Under 18",
@@ -2424,43 +2392,27 @@
       "priorEventNo": "134"
     },
     {
-      "start": "18:29:25",
-      "no": "141",
+      "start": "18:27:45",
+      "no": "139",
       "round": "Final",
       "style": "Other",
       "section": "Senior",
       "division": "Senior Couple",
-      "event": "Senior 50 CR",
-      "entries": "1",
+      "event": "Senior 50 CR + Mania Latin R",
+      "entries": "Senior CR 1 / Mania R 1",
       "danceOrder": "C → R",
       "duration": 3.08,
-      "note": "",
+      "note": "Combined residual event; original judging/results remain separate.",
       "durationSeconds": 185,
       "durationText": "3:05",
       "sourceEventNo": "180",
-      "priorEventNo": "180"
+      "priorEventNo": "180",
+      "sourceEventNos": "180 / 192",
+      "exitGuide": "C: Back 210 진행 → R에서 Back 213 합류 → R 종료 후 모두 퇴장"
     },
     {
-      "start": "18:32:30",
-      "no": "142",
-      "round": "Final",
-      "style": "Latin",
-      "section": "Mania",
-      "division": "Mania Couple",
-      "event": "Mania Latin R",
-      "entries": "R 1 / CR 3 / CRS 3",
-      "danceOrder": "R",
-      "duration": 1.58,
-      "note": "",
-      "durationSeconds": 95,
-      "durationText": "1:35",
-      "sourceEventNo": "138",
-      "priorEventNo": "135",
-      "exitGuide": ""
-    },
-    {
-      "start": "18:34:05",
-      "no": "143",
+      "start": "18:30:50",
+      "no": "140",
       "round": "Final",
       "style": "Latin",
       "section": "Mania",
@@ -2477,8 +2429,8 @@
       "exitGuide": ""
     },
     {
-      "start": "18:37:10",
-      "no": "144",
+      "start": "18:33:55",
+      "no": "141",
       "round": "Final",
       "style": "Latin",
       "section": "Mania",
@@ -2495,8 +2447,8 @@
       "exitGuide": ""
     },
     {
-      "start": "18:41:45",
-      "no": "145",
+      "start": "18:38:30",
+      "no": "142",
       "round": "Final · Combined",
       "style": "Latin",
       "section": "Pro-Am",
@@ -2513,25 +2465,8 @@
       "exitGuide": "R 종료 → DaRae KIM & SuIm CHAE 퇴장 | Melissa & HyunHyuk SHIN만 C 진행 후 종료"
     },
     {
-      "start": "18:44:10",
-      "no": "146",
-      "round": "Final",
-      "style": "Modern",
-      "section": "Pro-Am",
-      "division": "Pro-Am Couple",
-      "event": "Pro-Am Standard 3 Dance",
-      "entries": "1",
-      "danceOrder": "W → T → F",
-      "duration": 4.58,
-      "note": "",
-      "durationSeconds": 275,
-      "durationText": "4:35",
-      "sourceEventNo": "139",
-      "priorEventNo": "136"
-    },
-    {
-      "start": "18:48:45",
-      "no": "147",
+      "start": "18:40:55",
+      "no": "143",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Amateur",
@@ -2547,8 +2482,8 @@
       "priorEventNo": "166"
     },
     {
-      "start": "18:50:10",
-      "no": "148",
+      "start": "18:42:20",
+      "no": "144",
       "round": "Semi Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2564,8 +2499,8 @@
       "priorEventNo": "153"
     },
     {
-      "start": "18:51:35",
-      "no": "149",
+      "start": "18:43:45",
+      "no": "145",
       "round": "Final · Combined",
       "style": "Modern",
       "section": "Mixed Age",
@@ -2582,8 +2517,8 @@
       "exitGuide": "W → T 진행 후 해당 종목 종료 선수 퇴장"
     },
     {
-      "start": "18:54",
-      "no": "150",
+      "start": "18:46:10",
+      "no": "146",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2599,8 +2534,8 @@
       "priorEventNo": "83"
     },
     {
-      "start": "19:01:35",
-      "no": "151",
+      "start": "18:53:45",
+      "no": "147",
       "round": "Final",
       "style": "Latin",
       "section": "Under 18",
@@ -2616,8 +2551,8 @@
       "priorEventNo": "138"
     },
     {
-      "start": "19:09:10",
-      "no": "152",
+      "start": "19:01:20",
+      "no": "148",
       "round": "Final",
       "style": "Latin",
       "section": "Amateur",
@@ -2633,8 +2568,8 @@
       "priorEventNo": "137"
     },
     {
-      "start": "19:16:45",
-      "no": "153",
+      "start": "19:08:55",
+      "no": "149",
       "round": "Grand Final",
       "style": "Latin",
       "section": "Amateur",
@@ -2650,7 +2585,7 @@
       "priorEventNo": "167"
     },
     {
-      "start": "19:24:20",
+      "start": "19:16:30",
       "no": "",
       "round": "",
       "style": "",
@@ -2667,7 +2602,7 @@
       "priorEventNo": ""
     },
     {
-      "start": "19:44:20",
+      "start": "19:36:30",
       "no": "",
       "round": "",
       "style": "",
@@ -2685,5 +2620,5 @@
     }
   ],
   "projectedStart": "11:30",
-  "projectedFinish": "19:54:20"
+  "projectedFinish": "19:46:30"
 }
