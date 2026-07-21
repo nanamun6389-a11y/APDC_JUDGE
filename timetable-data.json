@@ -827,6 +827,23 @@
       "priorEventNo": "47"
     },
     {
+      "start": "13:49:15",
+      "no": "",
+      "round": "",
+      "style": "",
+      "section": "",
+      "division": "",
+      "event": "Break",
+      "entries": "",
+      "danceOrder": "",
+      "duration": 30.0,
+      "note": "",
+      "durationSeconds": 1800,
+      "durationText": "30:00",
+      "sourceEventNo": "",
+      "priorEventNo": ""
+    },
+    {
       "start": "14:19:15",
       "no": "49",
       "round": "",
