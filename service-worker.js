@@ -1,5 +1,7 @@
-const CACHE_NAME = 'apdc-search-pwa-v1';
+const CACHE_NAME = 'apdc-judge-timetable-v4';
 const APP_SHELL = [
+  "./admin.html",
+  "./admin.js",
   "./analytics.js",
   "./app.js",
   "./event-settings.json",

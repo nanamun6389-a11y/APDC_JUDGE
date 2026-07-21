@@ -305,6 +305,7 @@ function ttmRecalculate(){
   const [h,m]=String(ttmStart.value||'11:30').split(':').map(Number);let sec=(h||0)*3600+(m||0)*60;
   ttmRows.forEach(r=>{r.start=ttmClock(sec);r.durationSeconds=ttmSeconds(r);r.duration=+(r.durationSeconds/60).toFixed(3);r.durationText=ttmFormat(r.durationSeconds);sec+=r.durationSeconds;});
   ttmRender();
+  ttmLocalSave();
 }
 function ttmOpen(i){
   ttmEditIndex=i;const r=i>=0?ttmRows[i]:{no:'',round:'Final',event:'New Event',danceOrder:'',entries:'',duration:1.25,durationSeconds:75,durationText:'1:15'};
@@ -318,13 +319,60 @@ function ttmApplyEdit(){
   Object.assign(base,{no:document.getElementById('ttmNo').value.trim(),round:document.getElementById('ttmRound').value,event:document.getElementById('ttmEvent').value.trim(),danceOrder:document.getElementById('ttmDance').value.trim(),entries:document.getElementById('ttmEntries').value.trim(),duration:dur,durationSeconds:Math.round(dur*60),durationText:ttmFormat(Math.round(dur*60))});
   if(ttmEditIndex<0)ttmRows.push(base);ttmRecalculate();
 }
+const TTM_LOCAL_KEY='apdc_timetable_manager_backup_v4';
+function ttmNormalizeRows(value){
+  if(Array.isArray(value)) return value.filter(Boolean);
+  if(value && typeof value==='object'){
+    return Object.keys(value).sort((a,b)=>Number(a)-Number(b)).map(k=>value[k]).filter(Boolean);
+  }
+  return [];
+}
+function ttmLocalSave(){
+  try{localStorage.setItem(TTM_LOCAL_KEY,JSON.stringify({startTime:ttmStart?.value||'11:30',rows:ttmRows,updatedAt:Date.now()}));}catch(e){console.warn('Local timetable backup failed',e);}
+}
+function ttmLocalLoad(){
+  try{
+    const v=JSON.parse(localStorage.getItem(TTM_LOCAL_KEY)||'null');
+    const rows=ttmNormalizeRows(v?.rows);
+    return rows.length?{startTime:v.startTime,rows}:null;
+  }catch(e){return null;}
+}
 async function ttmLoad(){
+  if(!ttmList) return;
+  ttmMessage.textContent='LOADING...';
+  let loaded=null;
   try{
     const saved=await get(ref(db,'timetableOverride'));
-    if(saved.exists()&&Array.isArray(saved.val()?.rows)){ttmRows=saved.val().rows;ttmStart.value=saved.val().startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';}
-    else{const res=await fetch('timetable-data.json',{cache:'no-store'});const data=await res.json();ttmRows=data.rows||[];ttmStart.value=ttmRows[0]?.start?.slice(0,5)||'11:30';}
+    if(saved.exists()){
+      const v=saved.val()||{};
+      const rows=ttmNormalizeRows(v.rows);
+      if(rows.length) loaded={startTime:v.startTime,rows};
+    }
+  }catch(e){console.warn('Firebase timetable load failed',e);}
+
+  if(!loaded) loaded=ttmLocalLoad();
+
+  if(!loaded){
+    try{
+      const res=await fetch('timetable-data.json?ttm=v4',{cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data=await res.json();
+      const rows=ttmNormalizeRows(data.rows);
+      if(rows.length) loaded={startTime:rows[0]?.start?.slice(0,5)||'11:30',rows};
+    }catch(e){console.error('Default timetable load failed',e);}
+  }
+
+  if(loaded?.rows?.length){
+    ttmRows=loaded.rows;
+    ttmStart.value=loaded.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
     ttmRender();
-  }catch(e){console.error(e);ttmMessage.textContent='TIMETABLE LOAD ERROR';}
+    ttmLocalSave();
+    ttmMessage.textContent='';
+  }else{
+    ttmRows=[];
+    ttmRender();
+    ttmMessage.textContent='TIMETABLE LOAD ERROR · REFRESH';
+  }
 }
 document.getElementById('ttmAdd')?.addEventListener('click',()=>ttmOpen(-1));
 document.getElementById('ttmRecalc')?.addEventListener('click',ttmRecalculate);
@@ -333,6 +381,7 @@ document.getElementById('ttmApply')?.addEventListener('click',e=>{e.preventDefau
 document.getElementById('ttmSave')?.addEventListener('click',async()=>{
   try{
     ttmRecalculate();
+    ttmLocalSave();
     await set(ref(db,'timetableOverride'),{startTime:ttmStart.value,rows:ttmRows,updatedAt:Date.now()});
 
     // Keep LIVE in sync immediately, even when the MC page is not open.
