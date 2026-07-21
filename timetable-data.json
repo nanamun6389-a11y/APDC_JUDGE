@@ -24,7 +24,7 @@
       "note": "",
       "durationSeconds": 600,
       "durationText": "10:00",
-      "sourceEventNo": "143",
+      "sourceEventNo": "10",
       "priorEventNo": "140"
     },
     {
@@ -41,7 +41,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "2",
+      "sourceEventNo": "52",
       "priorEventNo": "2"
     },
     {
@@ -58,7 +58,7 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "3",
+      "sourceEventNo": "54",
       "priorEventNo": "3"
     },
     {
@@ -75,7 +75,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "4",
+      "sourceEventNo": "61",
       "priorEventNo": "4"
     },
     {
@@ -92,7 +92,7 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "5",
+      "sourceEventNo": "62",
       "priorEventNo": "5"
     },
     {
@@ -109,7 +109,7 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "6",
+      "sourceEventNo": "55",
       "priorEventNo": "6"
     },
     {
@@ -126,7 +126,7 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "7",
+      "sourceEventNo": "56",
       "priorEventNo": "7"
     },
     {
@@ -143,7 +143,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "8",
+      "sourceEventNo": "81",
       "priorEventNo": "8"
     },
     {
@@ -160,7 +160,7 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "9",
+      "sourceEventNo": "83",
       "priorEventNo": "9"
     },
     {
@@ -177,7 +177,7 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "10",
+      "sourceEventNo": "84",
       "priorEventNo": "10"
     },
     {
@@ -194,7 +194,7 @@
       "note": "",
       "durationSeconds": 285,
       "durationText": "4:45",
-      "sourceEventNo": "11",
+      "sourceEventNo": "86",
       "priorEventNo": "11"
     },
     {
@@ -211,7 +211,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "12",
+      "sourceEventNo": "91",
       "priorEventNo": "12"
     },
     {
@@ -228,7 +228,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "13",
+      "sourceEventNo": "21",
       "priorEventNo": "13"
     },
     {
@@ -245,7 +245,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "14",
+      "sourceEventNo": "29",
       "priorEventNo": "14"
     },
     {
@@ -262,7 +262,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "15",
+      "sourceEventNo": "58",
       "priorEventNo": "15"
     },
     {
@@ -279,7 +279,7 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "16",
+      "sourceEventNo": "23",
       "priorEventNo": "16"
     },
     {
@@ -296,7 +296,7 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "17",
+      "sourceEventNo": "85",
       "priorEventNo": "17"
     },
     {
@@ -313,7 +313,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "18",
+      "sourceEventNo": "52",
       "priorEventNo": "18"
     },
     {
@@ -330,7 +330,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "19",
+      "sourceEventNo": "54",
       "priorEventNo": "19"
     },
     {
@@ -347,7 +347,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "20",
+      "sourceEventNo": "61",
       "priorEventNo": "20"
     },
     {
@@ -364,7 +364,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "21",
+      "sourceEventNo": "62",
       "priorEventNo": "21"
     },
     {
@@ -381,7 +381,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "22",
+      "sourceEventNo": "63",
       "priorEventNo": "22"
     },
     {
@@ -398,7 +398,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "23",
+      "sourceEventNo": "55",
       "priorEventNo": "23"
     },
     {
@@ -415,7 +415,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "48",
+      "sourceEventNo": "220",
       "priorEventNo": "48"
     },
     {
@@ -432,7 +432,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "24",
+      "sourceEventNo": "56",
       "priorEventNo": "24"
     },
     {
@@ -449,7 +449,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "25",
+      "sourceEventNo": "81",
       "priorEventNo": "25"
     },
     {
@@ -466,7 +466,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "26",
+      "sourceEventNo": "83",
       "priorEventNo": "26"
     },
     {
@@ -483,7 +483,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "27",
+      "sourceEventNo": "84",
       "priorEventNo": "27"
     },
     {
@@ -500,7 +500,7 @@
       "note": "",
       "durationSeconds": 325,
       "durationText": "5:25",
-      "sourceEventNo": "28",
+      "sourceEventNo": "86",
       "priorEventNo": "28"
     },
     {
@@ -517,7 +517,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "29",
+      "sourceEventNo": "91",
       "priorEventNo": "29"
     },
     {
@@ -534,7 +534,7 @@
       "note": "",
       "durationSeconds": 75,
       "durationText": "1:15",
-      "sourceEventNo": "144",
+      "sourceEventNo": "26",
       "priorEventNo": "141"
     },
     {
@@ -551,7 +551,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "30",
+      "sourceEventNo": "21",
       "priorEventNo": "30"
     },
     {
@@ -568,7 +568,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "32",
+      "sourceEventNo": "58",
       "priorEventNo": "32"
     },
     {
@@ -585,7 +585,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "33",
+      "sourceEventNo": "88",
       "priorEventNo": "33"
     },
     {
@@ -602,7 +602,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "31",
+      "sourceEventNo": "29",
       "priorEventNo": "31"
     },
     {
@@ -619,7 +619,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "35",
+      "sourceEventNo": "85",
       "priorEventNo": "35"
     },
     {
@@ -636,7 +636,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "36",
+      "sourceEventNo": "59",
       "priorEventNo": "36"
     },
     {
@@ -653,7 +653,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "37",
+      "sourceEventNo": "89",
       "priorEventNo": "37"
     },
     {
@@ -670,7 +670,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "38",
+      "sourceEventNo": "92",
       "priorEventNo": "38"
     },
     {
@@ -687,7 +687,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "39",
+      "sourceEventNo": "93",
       "priorEventNo": "39"
     },
     {
@@ -704,7 +704,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "34",
+      "sourceEventNo": "23",
       "priorEventNo": "34"
     },
     {
@@ -721,7 +721,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "40",
+      "sourceEventNo": "22",
       "priorEventNo": "40"
     },
     {
@@ -738,7 +738,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "41",
+      "sourceEventNo": "24",
       "priorEventNo": "41"
     },
     {
@@ -755,7 +755,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "42",
+      "sourceEventNo": "26",
       "priorEventNo": "42"
     },
     {
@@ -772,7 +772,7 @@
       "note": "",
       "durationSeconds": 165,
       "durationText": "2:45",
-      "sourceEventNo": "43",
+      "sourceEventNo": "30",
       "priorEventNo": "43"
     },
     {
@@ -789,7 +789,7 @@
       "note": "",
       "durationSeconds": 405,
       "durationText": "6:45",
-      "sourceEventNo": "45",
+      "sourceEventNo": "142",
       "priorEventNo": "45"
     },
     {
@@ -806,7 +806,7 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "46",
+      "sourceEventNo": "143",
       "priorEventNo": "46"
     },
     {
@@ -823,7 +823,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "47",
+      "sourceEventNo": "95",
       "priorEventNo": "47"
     },
     {
@@ -891,7 +891,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "142",
+      "sourceEventNo": "223",
       "priorEventNo": "139"
     },
     {
@@ -908,7 +908,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "51",
+      "sourceEventNo": "52",
       "priorEventNo": "51"
     },
     {
@@ -925,7 +925,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "52",
+      "sourceEventNo": "54",
       "priorEventNo": "52"
     },
     {
@@ -942,7 +942,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "53",
+      "sourceEventNo": "61",
       "priorEventNo": "53"
     },
     {
@@ -959,7 +959,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "54",
+      "sourceEventNo": "55",
       "priorEventNo": "54"
     },
     {
@@ -976,7 +976,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "55",
+      "sourceEventNo": "56",
       "priorEventNo": "55"
     },
     {
@@ -993,7 +993,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "56",
+      "sourceEventNo": "81",
       "priorEventNo": "56"
     },
     {
@@ -1010,7 +1010,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "57",
+      "sourceEventNo": "83",
       "priorEventNo": "57"
     },
     {
@@ -1027,7 +1027,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "58",
+      "sourceEventNo": "84",
       "priorEventNo": "58"
     },
     {
@@ -1044,7 +1044,7 @@
       "note": "",
       "durationSeconds": 365,
       "durationText": "6:05",
-      "sourceEventNo": "59",
+      "sourceEventNo": "86",
       "priorEventNo": "59"
     },
     {
@@ -1061,7 +1061,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "60",
+      "sourceEventNo": "91",
       "priorEventNo": "60"
     },
     {
@@ -1078,7 +1078,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "44",
+      "sourceEventNo": "31",
       "priorEventNo": "44"
     },
     {
@@ -1095,7 +1095,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "61",
+      "sourceEventNo": "21",
       "priorEventNo": "61"
     },
     {
@@ -1112,7 +1112,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "63",
+      "sourceEventNo": "58",
       "priorEventNo": "63"
     },
     {
@@ -1129,7 +1129,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "64",
+      "sourceEventNo": "62",
       "priorEventNo": "64"
     },
     {
@@ -1146,7 +1146,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "65",
+      "sourceEventNo": "63",
       "priorEventNo": "65"
     },
     {
@@ -1163,7 +1163,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "66",
+      "sourceEventNo": "88",
       "priorEventNo": "66"
     },
     {
@@ -1180,7 +1180,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "62",
+      "sourceEventNo": "29",
       "priorEventNo": "62"
     },
     {
@@ -1197,7 +1197,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "68",
+      "sourceEventNo": "85",
       "priorEventNo": "68"
     },
     {
@@ -1214,7 +1214,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "69",
+      "sourceEventNo": "59",
       "priorEventNo": "69"
     },
     {
@@ -1231,7 +1231,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "174",
+      "sourceEventNo": "221",
       "priorEventNo": "164"
     },
     {
@@ -1248,7 +1248,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "70",
+      "sourceEventNo": "89",
       "priorEventNo": "70"
     },
     {
@@ -1265,7 +1265,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "71",
+      "sourceEventNo": "92",
       "priorEventNo": "71"
     },
     {
@@ -1282,7 +1282,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "72",
+      "sourceEventNo": "93",
       "priorEventNo": "72"
     },
     {
@@ -1299,7 +1299,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "67",
+      "sourceEventNo": "23",
       "priorEventNo": "67"
     },
     {
@@ -1316,7 +1316,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "73",
+      "sourceEventNo": "22",
       "priorEventNo": "73"
     },
     {
@@ -1333,7 +1333,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "74",
+      "sourceEventNo": "24",
       "priorEventNo": "74"
     },
     {
@@ -1350,7 +1350,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "75",
+      "sourceEventNo": "26",
       "priorEventNo": "75"
     },
     {
@@ -1367,7 +1367,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "76",
+      "sourceEventNo": "30",
       "priorEventNo": "76"
     },
     {
@@ -1384,7 +1384,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "78",
+      "sourceEventNo": "166",
       "priorEventNo": "78"
     },
     {
@@ -1401,7 +1401,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "79",
+      "sourceEventNo": "142",
       "priorEventNo": "79"
     },
     {
@@ -1418,7 +1418,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "80",
+      "sourceEventNo": "143",
       "priorEventNo": "80"
     },
     {
@@ -1435,7 +1435,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "81",
+      "sourceEventNo": "95",
       "priorEventNo": "81"
     },
     {
@@ -1452,7 +1452,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "82",
+      "sourceEventNo": "168",
       "priorEventNo": "82",
       "exitGuide": "C → S → R 진행 후 해당 종목 종료 선수 퇴장"
     },
@@ -1470,7 +1470,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "156",
+      "sourceEventNo": "110",
       "priorEventNo": "152"
     },
     {
@@ -1487,7 +1487,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "84",
+      "sourceEventNo": "111",
       "priorEventNo": "84"
     },
     {
@@ -1504,7 +1504,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "85",
+      "sourceEventNo": "113",
       "priorEventNo": "85"
     },
     {
@@ -1521,7 +1521,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "86",
+      "sourceEventNo": "114",
       "priorEventNo": "86"
     },
     {
@@ -1538,7 +1538,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "87",
+      "sourceEventNo": "115",
       "priorEventNo": "87"
     },
     {
@@ -1555,9 +1555,9 @@
       "note": "Combined event; original judging/results remain separate.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "88",
+      "sourceEventNo": "118",
       "priorEventNo": "88",
-      "sourceEventNos": "120 / 172",
+      "sourceEventNos": "118 / 167",
       "exitGuide": "C → R: Back 36 진행 → J에서 Back 12, 120, 125 합류 → J 종료 후 전체 퇴장"
     },
     {
@@ -1574,7 +1574,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "89",
+      "sourceEventNo": "119",
       "priorEventNo": "89"
     },
     {
@@ -1591,7 +1591,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "90",
+      "sourceEventNo": "121",
       "priorEventNo": "90"
     },
     {
@@ -1608,7 +1608,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "91",
+      "sourceEventNo": "123",
       "priorEventNo": "91"
     },
     {
@@ -1625,7 +1625,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "77",
+      "sourceEventNo": "31",
       "priorEventNo": "77"
     },
     {
@@ -1642,7 +1642,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "93",
+      "sourceEventNo": "165",
       "priorEventNo": "93"
     },
     {
@@ -1661,7 +1661,7 @@
       "durationText": "3:05",
       "sourceEventNo": "140",
       "priorEventNo": "97",
-      "sourceEventNos": "151 / 152",
+      "sourceEventNos": "140 / 145",
       "exitGuide": "C: Back 22 진행 후 퇴장 → R: Back 23 입장 후 진행"
     },
     {
@@ -1678,7 +1678,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "95",
+      "sourceEventNo": "169",
       "priorEventNo": "95"
     },
     {
@@ -1695,7 +1695,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "96",
+      "sourceEventNo": "170",
       "priorEventNo": "96"
     },
     {
@@ -1712,7 +1712,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "98",
+      "sourceEventNo": "141",
       "priorEventNo": "97"
     },
     {
@@ -1729,7 +1729,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "99",
+      "sourceEventNo": "144",
       "priorEventNo": "98"
     },
     {
@@ -1746,7 +1746,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "101",
+      "sourceEventNo": "147",
       "priorEventNo": "99"
     },
     {
@@ -1763,9 +1763,10 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "102",
+      "sourceEventNo": "146",
       "priorEventNo": "100",
-      "exitGuide": "R 종료 → 전원 잔류 | J 종료 → 남은 선수 전원 퇴장"
+      "exitGuide": "R 종료 → 전원 잔류 | J 종료 → 남은 선수 전원 퇴장",
+      "sourceEventNos": "146 / 122"
     },
     {
       "start": "16:46:45",
@@ -1781,7 +1782,7 @@
       "note": "Combined event; original judging/results remain separate.",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "103",
+      "sourceEventNo": "148",
       "priorEventNo": "101",
       "sourceEventNos": "148 / 120",
       "exitGuide": "T: Back 23 진행 후 퇴장 → Q: Back 12, 120 진행 후 종료"
@@ -1800,7 +1801,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "92",
+      "sourceEventNo": "27",
       "priorEventNo": "92"
     },
     {
@@ -1817,7 +1818,7 @@
       "note": "Combined residual event; original judging/results remain separate.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "105",
+      "sourceEventNo": "149",
       "priorEventNo": "103",
       "sourceEventNos": "149 / 71",
       "exitGuide": "W: Back 22, 23 + Couple 200, 201 함께 진행 → Over 19 선수 퇴장 → Couple 200, 201은 T → F까지 잔류"
@@ -1836,7 +1837,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "104",
+      "sourceEventNo": "32",
       "priorEventNo": "102"
     },
     {
@@ -1853,7 +1854,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "106",
+      "sourceEventNo": "33",
       "priorEventNo": "104"
     },
     {
@@ -1870,9 +1871,10 @@
       "note": "",
       "durationSeconds": 285,
       "durationText": "4:45",
-      "sourceEventNo": "108",
+      "sourceEventNo": "151",
       "priorEventNo": "106",
-      "exitGuide": "W/T/F 종료 → 전원 잔류 | Q 종료 → 남은 선수 전원 퇴장"
+      "exitGuide": "W/T/F 종료 → 전원 잔류 | Q 종료 → 남은 선수 전원 퇴장",
+      "sourceEventNos": "151 / 69 / 129"
     },
     {
       "start": "17:03:55",
@@ -1888,9 +1890,10 @@
       "note": "",
       "durationSeconds": 215,
       "durationText": "3:35",
-      "sourceEventNo": "107",
+      "sourceEventNo": "150",
       "priorEventNo": "105",
-      "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장"
+      "exitGuide": "W → T → F 진행 후 해당 종목 종료 선수 퇴장",
+      "sourceEventNos": "150 / 36 / 128"
     },
     {
       "start": "17:07:30",
@@ -1906,9 +1909,10 @@
       "note": "",
       "durationSeconds": 245,
       "durationText": "4:05",
-      "sourceEventNo": "109",
+      "sourceEventNo": "152",
       "priorEventNo": "107",
-      "exitGuide": "W → T → Q 진행 후 해당 종목 종료 선수 퇴장"
+      "exitGuide": "W → T → Q 진행 후 해당 종목 종료 선수 퇴장",
+      "sourceEventNos": "152 / 37 / 130"
     },
     {
       "start": "17:11:35",
@@ -1924,7 +1928,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "110",
+      "sourceEventNo": "25",
       "priorEventNo": "108"
     },
     {
@@ -1941,7 +1945,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "111",
+      "sourceEventNo": "28",
       "priorEventNo": "109"
     },
     {
@@ -1958,9 +1962,10 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "113",
+      "sourceEventNo": "34",
       "priorEventNo": "111",
-      "exitGuide": "W → Q 진행 후 해당 종목 종료 선수 퇴장"
+      "exitGuide": "W → Q 진행 후 해당 종목 종료 선수 퇴장",
+      "sourceEventNos": "34 / 126"
     },
     {
       "start": "17:17:10",
@@ -1976,9 +1981,10 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "116",
+      "sourceEventNo": "53",
       "priorEventNo": "114",
-      "exitGuide": "C 종료 → 전원 잔류 | J 종료 → 남은 선수 전원 퇴장"
+      "exitGuide": "C 종료 → 전원 잔류 | J 종료 → 남은 선수 전원 퇴장",
+      "sourceEventNos": "53 / 82 / 112"
     },
     {
       "start": "17:19:35",
@@ -1994,7 +2000,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "117",
+      "sourceEventNo": "57",
       "priorEventNo": "115"
     },
     {
@@ -2011,7 +2017,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "118",
+      "sourceEventNo": "60",
       "priorEventNo": "116"
     },
     {
@@ -2028,7 +2034,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "119",
+      "sourceEventNo": "64",
       "priorEventNo": "117"
     },
     {
@@ -2045,7 +2051,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "120",
+      "sourceEventNo": "65",
       "priorEventNo": "118"
     },
     {
@@ -2062,7 +2068,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "121",
+      "sourceEventNo": "66",
       "priorEventNo": "119"
     },
     {
@@ -2079,7 +2085,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "122",
+      "sourceEventNo": "67",
       "priorEventNo": "120"
     },
     {
@@ -2096,7 +2102,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "123",
+      "sourceEventNo": "68",
       "priorEventNo": "121"
     },
     {
@@ -2113,7 +2119,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "124",
+      "sourceEventNo": "70",
       "priorEventNo": "122"
     },
     {
@@ -2153,7 +2159,8 @@
         "80",
         "169"
       ],
-      "exitGuide": "S 종료 → Wong Tsun Yin & Chin Choi Ni Charlie 퇴장 | MinJi BAEK만 J 진행 후 종료"
+      "exitGuide": "S 종료 → Wong Tsun Yin & Chin Choi Ni Charlie 퇴장 | MinJi BAEK만 J 진행 후 종료",
+      "sourceEventNos": "80 / 153"
     },
     {
       "start": "17:50:35",
@@ -2169,7 +2176,7 @@
       "note": "Combined event; original judging/results remain separate.",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNos": "101 / 181",
+      "sourceEventNos": "101 / 200",
       "priorEventNo": "101",
       "exitGuide": "Back 201 + Back 212 함께 W → T → F 진행. 심사와 결과는 각 종목별 별도.",
       "sourceEventNo": "101"
@@ -2188,7 +2195,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "126",
+      "sourceEventNo": "87",
       "priorEventNo": "124"
     },
     {
@@ -2205,7 +2212,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "127",
+      "sourceEventNo": "90",
       "priorEventNo": "125"
     },
     {
@@ -2222,7 +2229,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "128",
+      "sourceEventNo": "94",
       "priorEventNo": "126"
     },
     {
@@ -2239,7 +2246,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "129",
+      "sourceEventNo": "96",
       "priorEventNo": "127"
     },
     {
@@ -2256,7 +2263,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "130",
+      "sourceEventNo": "97",
       "priorEventNo": "128"
     },
     {
@@ -2273,7 +2280,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "131",
+      "sourceEventNo": "98",
       "priorEventNo": "129"
     },
     {
@@ -2290,7 +2297,7 @@
       "note": "",
       "durationSeconds": 365,
       "durationText": "6:05",
-      "sourceEventNo": "132",
+      "sourceEventNo": "99",
       "priorEventNo": "130"
     },
     {
@@ -2307,7 +2314,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "133",
+      "sourceEventNo": "100",
       "priorEventNo": "131"
     },
     {
@@ -2324,7 +2331,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "134",
+      "sourceEventNo": "117",
       "priorEventNo": "132"
     },
     {
@@ -2341,7 +2348,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "135",
+      "sourceEventNo": "124",
       "priorEventNo": "133"
     },
     {
@@ -2358,7 +2365,7 @@
       "note": "",
       "durationSeconds": 95,
       "durationText": "1:35",
-      "sourceEventNo": "136",
+      "sourceEventNo": "125",
       "priorEventNo": "134"
     },
     {
@@ -2394,7 +2401,7 @@
       "note": "",
       "durationSeconds": 185,
       "durationText": "3:05",
-      "sourceEventNo": "138",
+      "sourceEventNo": "190",
       "priorEventNo": "135",
       "exitGuide": ""
     },
@@ -2412,7 +2419,7 @@
       "note": "",
       "durationSeconds": 275,
       "durationText": "4:35",
-      "sourceEventNo": "138",
+      "sourceEventNo": "191",
       "priorEventNo": "135",
       "exitGuide": ""
     },
@@ -2432,7 +2439,8 @@
       "durationText": "2:25",
       "sourceEventNo": "202",
       "priorEventNo": "201",
-      "exitGuide": "R 종료 → DaRae KIM & SuIm CHAE 퇴장 | Melissa & HyunHyuk SHIN만 C 진행 후 종료"
+      "exitGuide": "R 종료 → DaRae KIM & SuIm CHAE 퇴장 | Melissa & HyunHyuk SHIN만 C 진행 후 종료",
+      "sourceEventNos": "202 / 201"
     },
     {
       "start": "18:39:15",
@@ -2448,7 +2456,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "176",
+      "sourceEventNo": "222",
       "priorEventNo": "166"
     },
     {
@@ -2465,7 +2473,7 @@
       "note": "",
       "durationSeconds": 85,
       "durationText": "1:25",
-      "sourceEventNo": "158",
+      "sourceEventNo": "116",
       "priorEventNo": "153"
     },
     {
@@ -2482,9 +2490,10 @@
       "note": "",
       "durationSeconds": 145,
       "durationText": "2:25",
-      "sourceEventNo": "114",
+      "sourceEventNo": "35",
       "priorEventNo": "112",
-      "exitGuide": "W → T 진행 후 해당 종목 종료 선수 퇴장"
+      "exitGuide": "W → T 진행 후 해당 종목 종료 선수 퇴장",
+      "sourceEventNos": "35 / 127"
     },
     {
       "start": "18:44:30",
@@ -2500,7 +2509,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "83",
+      "sourceEventNo": "110",
       "priorEventNo": "83"
     },
     {
@@ -2517,7 +2526,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "141",
+      "sourceEventNo": "116",
       "priorEventNo": "138"
     },
     {
@@ -2534,7 +2543,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "140",
+      "sourceEventNo": "222",
       "priorEventNo": "137"
     },
     {
@@ -2551,7 +2560,7 @@
       "note": "",
       "durationSeconds": 455,
       "durationText": "7:35",
-      "sourceEventNo": "177",
+      "sourceEventNo": "221",
       "priorEventNo": "167"
     },
     {
