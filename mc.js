@@ -183,12 +183,82 @@ function renderTimetableRow(){
   renderRangeButtons();
   progress();
 }
-async function loadTimetable(){try{const [tr,pr]=await Promise.all([fetch("timetable-data.json?v=20260722-reordered-1130-v2",{cache:"no-store"}),fetch("players.json?v=20260721-mc-v6",{cache:"no-store"})]);const d=await tr.json();TT=d.rows||[];try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}renderTimetableRow();await publishLiveStatus();onValue(ref(db,"timetableOverride"),async snap=>{const v=snap.val();if(v&&Array.isArray(v.rows)&&v.rows.length){const current=TT[ttIndex];TT=v.rows;ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));if(current?.no){let found=TT.findIndex(r=>String(r.no||"")===String(current.no||""));if(found<0)found=TT.findIndex(r=>String(r.event||"")===String(current.event||""));if(found>=0)ttIndex=found;}renderTimetableRow();await publishLiveStatus();}})}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
+async function loadTimetable(){
+  try{
+    const [tr,pr]=await Promise.all([
+      fetch("timetable-data.json?v=20260722-single-state-v6",{cache:"no-store"}),
+      fetch("players.json?v=20260721-mc-v6",{cache:"no-store"})
+    ]);
+    const d=await tr.json();
+    TT=d.rows||[];
+    try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}
+
+    // Apply saved timetable first, when present.
+    try{
+      const ov=await get(ref(db,"timetableOverride"));
+      const v=ov.val();
+      if(v&&Array.isArray(v.rows)&&v.rows.length)TT=v.rows;
+    }catch(_){ }
+
+    // Restore the ONE shared running-order position.
+    try{
+      const st=await get(ref(db,"runningOrderState"));
+      const v=st.val()||{};
+      if(Number.isInteger(Number(v.index))) ttIndex=Math.max(0,Math.min(Number(v.index),TT.length-1));
+      else if(v.eventNo){
+        const found=TT.findIndex(r=>String(r.no||"")===String(v.eventNo));
+        if(found>=0)ttIndex=found;
+      }
+    }catch(_){ }
+
+    renderTimetableRow();
+    await publishLiveStatus();
+
+    onValue(ref(db,"timetableOverride"),async snap=>{
+      const v=snap.val();
+      if(v&&Array.isArray(v.rows)&&v.rows.length){
+        const stateSnap=await get(ref(db,"runningOrderState"));
+        const state=stateSnap.val()||{};
+        TT=v.rows;
+        let found=-1;
+        if(state.eventNo)found=TT.findIndex(r=>String(r.no||"")===String(state.eventNo));
+        if(found<0&&Number.isInteger(Number(state.index)))found=Number(state.index);
+        ttIndex=Math.max(0,Math.min(found>=0?found:0,TT.length-1));
+        renderTimetableRow();
+        await publishLiveStatus();
+      }
+    });
+
+    // Any other MC/control page changing the shared position updates this MC too.
+    onValue(ref(db,"runningOrderState"),snap=>{
+      const v=snap.val()||{};
+      let idx=Number(v.index);
+      if(!Number.isInteger(idx)&&v.eventNo)idx=TT.findIndex(r=>String(r.no||"")===String(v.eventNo));
+      if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
+        ttIndex=idx;
+        renderTimetableRow();
+      }
+    });
+  }catch(e){
+    console.error(e);
+    ttMeta.textContent="Timetable could not be loaded.";
+  }
+}
 async function publishLiveStatus(){
   if(!TT.length)return;
   const current=TT[ttIndex]||{};
   const onDeck=TT[ttIndex+1]||{};
   const next=TT[ttIndex+2]||{};
+  const updatedAt=Date.now();
+  // ONE shared source of truth for MC + LIVE.
+  await set(ref(db,"runningOrderState"),{
+    index:ttIndex,
+    eventNo:current.no||"",
+    event:current.event||"",
+    round:current.round||"",
+    updatedAt
+  });
+  // Keep legacy floorStatus in sync for older pages.
   await set(ref(db,"floorStatus"),{
     now:current.event|| (current.no?`EVENT ${current.no}`:"WAITING"),
     eventNo:current.no||"",
@@ -196,7 +266,7 @@ async function publishLiveStatus(){
     next:next.event|| (next.no?`EVENT ${next.no}`:"—"),
     round:current.round||"",
     danceOrder:current.danceOrder||"",
-    updatedAt:Date.now()
+    updatedAt
   });
 }
 firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};

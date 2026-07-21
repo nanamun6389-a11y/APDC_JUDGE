@@ -394,6 +394,8 @@ document.getElementById('ttmSave')?.addEventListener('click',async()=>{
     const current=ttmRows[idx]||{};
     const onDeck=ttmRows[idx+1]||{};
     const next=ttmRows[idx+2]||{};
+    const syncUpdatedAt=Date.now();
+    await set(ref(db,'runningOrderState'),{index:idx,eventNo:current.no||'',event:current.event||'',round:current.round||'',updatedAt:syncUpdatedAt});
     await set(ref(db,'floorStatus'),{
       now:current.event||(current.no?`EVENT ${current.no}`:'WAITING'),
       eventNo:current.no||'',
@@ -401,7 +403,7 @@ document.getElementById('ttmSave')?.addEventListener('click',async()=>{
       next:next.event||(next.no?`EVENT ${next.no}`:'—'),
       round:current.round||'',
       danceOrder:current.danceOrder||'',
-      updatedAt:Date.now()
+      updatedAt:syncUpdatedAt
     });
 
     ttmMessage.textContent='SAVED & LIVE UPDATED';
