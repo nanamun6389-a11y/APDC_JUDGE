@@ -183,7 +183,8 @@ function renderTimetableRow(){
   renderRangeButtons();
   progress();
 }
-async function loadTimetable(){try{const [tr,pr]=await Promise.all([fetch("timetable-data.json?v=20260722-reordered-1130-v2",{cache:"no-store"}),fetch("players.json?v=20260721-mc-v6",{cache:"no-store"})]);const d=await tr.json();TT=d.rows||[];try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}renderTimetableRow();await publishLiveStatus()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
+async function loadTimetable(){try{const [tr,pr,saved]=await Promise.all([fetch("timetable-data.json?v=20260722-reordered-1130-v2",{cache:"no-store"}),fetch("players.json?v=20260721-mc-v6",{cache:"no-store"}),get(ref(db,"timetable/current"))]);const d=await tr.json();const online=saved.val();TT=(online&&Array.isArray(online.rows)&&online.rows.length)?online.rows:(d.rows||[]);try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}ttIndex=Math.max(0,Math.min(ttIndex,Math.max(0,TT.length-1)));renderTimetableRow();await publishLiveStatus()}catch(e){console.error(e);ttMeta.textContent="Timetable could not be loaded."}}
+onValue(ref(db,"timetable/current"),snap=>{const v=snap.val();if(!v||!Array.isArray(v.rows)||!v.rows.length)return;TT=v.rows;ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));renderTimetableRow();});
 async function publishLiveStatus(){
   if(!TT.length)return;
   const current=TT[ttIndex]||{};

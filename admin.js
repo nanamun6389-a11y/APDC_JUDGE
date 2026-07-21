@@ -254,6 +254,87 @@ const sponsorNameInput=document.getElementById("sponsorNameInput"),sponsorUrlInp
 document.getElementById("addSponsorBtn")?.addEventListener("click",async()=>{const name=sponsorNameInput.value.trim(),url=sponsorUrlInput.value.trim();if(!url){sponsorMessage.textContent="ENTER LOGO URL";return}const key=`sponsor_${Date.now()}`;await set(ref(db,`sponsors/${key}`),{name:name||"Sponsor",url,active:true,createdAt:Date.now()});sponsorNameInput.value="";sponsorUrlInput.value="";sponsorMessage.textContent="LOGO ADDED"});
 onValue(ref(db,"sponsors"),s=>{const rows=Object.entries(s.val()||{});sponsorList.innerHTML=rows.length?rows.map(([key,x])=>`<div class="sponsor-admin-row"><img src="${x.url}" alt=""><span>${x.name||"Sponsor"}</span><button data-remove-sponsor="${key}">REMOVE</button></div>`).join(""):'<div class="message">NO SPONSOR LOGOS</div>';sponsorList.querySelectorAll("[data-remove-sponsor]").forEach(b=>b.onclick=async()=>{if(confirm("Remove this sponsor logo?"))await remove(ref(db,`sponsors/${b.dataset.removeSponsor}`))})});
 
+
+// ===== TIMETABLE MANAGER =====
+const ttmRowsHost=document.getElementById("ttmRows");
+const ttmStartTime=document.getElementById("ttmStartTime");
+const ttmMessage=document.getElementById("ttmMessage");
+let ttmRows=[];
+let ttmMeta={};
+
+function ttmEsc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
+function ttmIsCompetitionRow(row){return String(row.no||"").trim()!=="";}
+function ttmSecondsText(sec){sec=Math.max(0,Math.round(Number(sec)||0));const m=Math.floor(sec/60),s=sec%60;return `${m}:${String(s).padStart(2,"0")}`;}
+function ttmStartToSeconds(v){const m=/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(String(v||""));return m?(+m[1]*3600)+(+m[2]*60)+(+m[3]||0):0;}
+function ttmSecondsToClock(sec){sec=((sec%86400)+86400)%86400;const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;return s?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;}
+function ttmNormalize(row={}){
+  const seconds=Math.max(0,Math.round(Number(row.durationSeconds ?? (Number(row.duration)||0)*60)||0));
+  return {
+    start:String(row.start||""), no:String(row.no??""), round:String(row.round||"Final"), style:String(row.style||""),
+    section:String(row.section||""), division:String(row.division||""), event:String(row.event||""), entries:String(row.entries??""),
+    danceOrder:String(row.danceOrder||""), duration:seconds/60, note:String(row.note||""), durationSeconds:seconds,
+    durationText:String(row.durationText||ttmSecondsText(seconds)), sourceEventNo:String(row.sourceEventNo??""),
+    ...(Array.isArray(row.backNumbers)?{backNumbers:row.backNumbers}:{}), ...(Array.isArray(row.sourceEvents)?{sourceEvents:row.sourceEvents}:{})
+  };
+}
+function ttmReadCard(card){
+  const i=Number(card.dataset.index), old=ttmRows[i]||{};
+  const seconds=Math.max(0,Math.round(Number(card.querySelector('[data-f="durationSeconds"]').value)||0));
+  ttmRows[i]={...old,
+    start:card.querySelector('[data-f="start"]').value.trim(), no:card.querySelector('[data-f="no"]').value.trim(),
+    round:card.querySelector('[data-f="round"]').value, style:card.querySelector('[data-f="style"]').value.trim(),
+    section:card.querySelector('[data-f="section"]').value.trim(), division:card.querySelector('[data-f="division"]').value.trim(),
+    event:card.querySelector('[data-f="event"]').value.trim(), entries:card.querySelector('[data-f="entries"]').value.trim(),
+    danceOrder:card.querySelector('[data-f="danceOrder"]').value.trim(), note:card.querySelector('[data-f="note"]').value.trim(),
+    durationSeconds:seconds,duration:seconds/60,durationText:ttmSecondsText(seconds)
+  };
+}
+function ttmSyncAllCards(){ttmRowsHost?.querySelectorAll('.ttm-card').forEach(ttmReadCard);}
+function ttmRender(){
+  if(!ttmRowsHost)return;
+  ttmRowsHost.innerHTML=ttmRows.map((r,i)=>`<article class="ttm-card" data-index="${i}">
+    <div class="ttm-head"><strong>${r.no?`EVENT ${ttmEsc(r.no)}`:"NON-EVENT"}</strong><span>${ttmEsc(r.start||"—")}</span><div class="ttm-move"><button type="button" data-move="-1">↑</button><button type="button" data-move="1">↓</button><button type="button" data-delete="1" class="danger">DELETE</button></div></div>
+    <div class="ttm-grid">
+      <label>START<input data-f="start" value="${ttmEsc(r.start)}" placeholder="11:30"></label>
+      <label>EVENT NO.<input data-f="no" inputmode="numeric" value="${ttmEsc(r.no)}" placeholder="blank = non-event"></label>
+      <label>ROUND<select data-f="round">${["Quarter Final","Semi Final","Final","Grand Final","Opening","Break","Awards","Other"].map(x=>`<option ${String(r.round)===x?"selected":""}>${x}</option>`).join("")}</select></label>
+      <label>DURATION (SEC)<input data-f="durationSeconds" type="number" min="0" value="${Number(r.durationSeconds)||0}"></label>
+      <label>SECTION<input data-f="section" value="${ttmEsc(r.section)}"></label>
+      <label>DIVISION<input data-f="division" value="${ttmEsc(r.division)}"></label>
+      <label>STYLE<input data-f="style" value="${ttmEsc(r.style)}"></label>
+      <label>ENTRIES<input data-f="entries" inputmode="numeric" value="${ttmEsc(r.entries)}"></label>
+      <label class="ttm-wide">EVENT NAME<input data-f="event" value="${ttmEsc(r.event)}"></label>
+      <label>DANCE<input data-f="danceOrder" value="${ttmEsc(r.danceOrder)}"></label>
+      <label class="ttm-wide">NOTE<input data-f="note" value="${ttmEsc(r.note)}"></label>
+    </div>
+  </article>`).join("");
+  ttmRowsHost.querySelectorAll('[data-move]').forEach(b=>b.onclick=()=>{ttmSyncAllCards();const i=Number(b.closest('.ttm-card').dataset.index),j=i+Number(b.dataset.move);if(j<0||j>=ttmRows.length)return;[ttmRows[i],ttmRows[j]]=[ttmRows[j],ttmRows[i]];ttmRender();});
+  ttmRowsHost.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{ttmSyncAllCards();const i=Number(b.closest('.ttm-card').dataset.index);if(confirm(`Delete ${ttmRows[i]?.event||"this row"}?`)){ttmRows.splice(i,1);ttmRender();}});
+}
+async function ttmLoadOriginal(){const r=await fetch(`timetable-data.json?v=${Date.now()}`,{cache:"no-store"});const d=await r.json();ttmMeta={...d};ttmRows=(d.rows||[]).map(ttmNormalize);ttmStartTime.value=(d.projectedStart||ttmRows[0]?.start||"11:30").slice(0,5);ttmRender();}
+async function ttmLoad(){
+  if(!ttmRowsHost)return;
+  try{
+    const snap=await get(ref(db,"timetable/current"));
+    const saved=snap.val();
+    if(saved&&Array.isArray(saved.rows)&&saved.rows.length){ttmMeta=saved.meta||{};ttmRows=saved.rows.map(ttmNormalize);ttmStartTime.value=(saved.startTime||ttmRows[0]?.start||"11:30").slice(0,5);ttmMessage.textContent="ONLINE TIMETABLE LOADED";ttmRender();}
+    else{await ttmLoadOriginal();ttmMessage.textContent="ORIGINAL TIMETABLE LOADED";}
+  }catch(e){console.error(e);ttmMessage.textContent="TIMETABLE LOAD ERROR";}
+}
+function ttmRecalculate(){
+  ttmSyncAllCards();let cur=ttmStartToSeconds(ttmStartTime.value||ttmRows[0]?.start||"11:30");
+  ttmRows.forEach(r=>{r.start=ttmSecondsToClock(cur);cur+=Math.max(0,Number(r.durationSeconds)||0);});ttmRender();ttmMessage.textContent="TIMES RECALCULATED — SAVE TO PUBLISH";
+}
+function ttmRenumber(){ttmSyncAllCards();let n=1;ttmRows.forEach(r=>{if(ttmIsCompetitionRow(r))r.no=String(n++);});ttmRender();ttmMessage.textContent="EVENT NUMBERS RENUMBERED — SAVE TO PUBLISH";}
+document.getElementById("ttmRecalculateBtn")?.addEventListener("click",ttmRecalculate);
+document.getElementById("ttmRenumberBtn")?.addEventListener("click",ttmRenumber);
+document.getElementById("ttmAddBtn")?.addEventListener("click",()=>{ttmSyncAllCards();ttmRows.push(ttmNormalize({start:"",no:"",round:"Final",style:"",section:"",division:"",event:"New Event",entries:"",danceOrder:"",durationSeconds:75,note:""}));ttmRender();ttmRowsHost.lastElementChild?.scrollIntoView({behavior:"smooth",block:"center"});});
+document.getElementById("ttmSaveBtn")?.addEventListener("click",async()=>{
+  try{ttmSyncAllCards();const payload={version:1,updatedAt:Date.now(),startTime:ttmStartTime.value||ttmRows[0]?.start||"11:30",meta:{title:ttmMeta.title||"APDC 2026 TIMETABLE · JUDGE PROGRAM",summary:ttmMeta.summary||"",rules:ttmMeta.rules||{}},rows:ttmRows.map(ttmNormalize)};await set(ref(db,"timetable/current"),payload);ttmMessage.textContent="SAVED — MC / TIMETABLE UPDATED";}catch(e){console.error(e);ttmMessage.textContent="SAVE ERROR";}
+});
+document.getElementById("ttmRestoreBtn")?.addEventListener("click",async()=>{if(!confirm("Restore the original timetable file and publish it?"))return;await ttmLoadOriginal();await set(ref(db,"timetable/current"),{version:1,updatedAt:Date.now(),startTime:ttmStartTime.value,meta:{title:ttmMeta.title||"",summary:ttmMeta.summary||"",rules:ttmMeta.rules||{}},rows:ttmRows});ttmMessage.textContent="ORIGINAL TIMETABLE RESTORED";});
+ttmLoad();
+
 document.querySelectorAll("[data-admin-tab]").forEach(btn=>{
   btn.addEventListener("click",()=>{
     const tab=btn.dataset.adminTab;

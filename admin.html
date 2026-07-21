@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>APDC Admin</title>
-<link rel="stylesheet" href="style.css?v=20260717-1305">
+<link rel="stylesheet" href="style.css?v=20260722-ttm-v1">
 </head>
 <body>
 <header style="position:relative"><a class="brand brand-link" href="index.html">APDC ADMIN</a><div id="languageHost" class="language-host"></div></header>
@@ -35,6 +35,7 @@
 
 <div class="admin-section-tabs">
   <button type="button" data-admin-tab="event" class="active">EVENT</button>
+  <button type="button" data-admin-tab="timetable">TIMETABLE</button>
   <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
@@ -108,6 +109,26 @@
   <div id="autoAdvanceStatus" class="message">READY</div>
 </section>
 
+
+<section class="timetable-manager admin-tab-panel hidden" data-admin-panel="timetable">
+  <div class="small-label">RUNNING ORDER MANAGEMENT</div>
+  <h2>TIMETABLE MANAGER</h2>
+  <p class="muted">Edit the running order here. Saved changes are shared with MC and the TIMETABLE page.</p>
+
+  <div class="ttm-toolbar">
+    <label>START TIME<input id="ttmStartTime" type="time" value="11:30"></label>
+    <button id="ttmRecalculateBtn" class="light" type="button">RECALCULATE TIMES</button>
+    <button id="ttmRenumberBtn" class="light" type="button">RENUMBER EVENTS</button>
+    <button id="ttmAddBtn" class="dark" type="button">+ ADD ROW</button>
+  </div>
+  <div class="ttm-savebar">
+    <button id="ttmSaveBtn" class="dark" type="button">SAVE TIMETABLE</button>
+    <button id="ttmRestoreBtn" class="light" type="button">RESTORE ORIGINAL FILE</button>
+    <div id="ttmMessage" class="message"></div>
+  </div>
+  <div id="ttmRows" class="ttm-list"></div>
+</section>
+
 <section class="sponsor-admin-card admin-tab-panel hidden" data-admin-panel="sponsor"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
 <label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
 <label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
@@ -140,6 +161,6 @@
 
 </main>
 <script src="i18n.js?v=20260717-1305"></script>
-<script type="module" src="admin.js?v=20260717-1305"></script>
+<script type="module" src="admin.js?v=20260722-ttm-v1"></script>
 </body>
 </html>
