@@ -1,9 +1,14 @@
-# APDC SEARCH V4 — ANALYTICS ADMIN
+# APDC Official V10
 
-Admin URL: search-admin.html
-Password: 0070fill
+Updated:
+- Only one top category menu remains.
+- Duplicate lower and inner category buttons were removed.
+- MC Korean wording uses '심사위원 여러분'.
+- MC Korean script is shorter and more natural.
+- Broadcast Korean captions use short, screen-friendly wording.
+- Existing full translation and language dropdown remain included.
 
-Tracks approximate country/city, searches, player views, section clicks, devices, languages and referrers. IP addresses are not stored.
+Upload every file directly to the root of the APDC_JUDGE repository.
 
 
-Restored search analytics admin files. Under 15 5 Dance renamed CSRJ. Under 18 CSR merged into CRS.
+Update 20260717-1305: Under 18 Solo CSR merged into Under 18 Solo CRS; cache-busting enabled.
