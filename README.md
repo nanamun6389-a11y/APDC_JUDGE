@@ -12,3 +12,9 @@ Upload every file directly to the root of the APDC_JUDGE repository.
 
 
 Update 20260717-1305: Under 18 Solo CSR merged into Under 18 Solo CRS; cache-busting enabled.
+
+
+## V5 TIMETABLE SAFE LOAD
+- Timetable page renders local/default data before Firebase loads.
+- Firebase is connected afterward and saved override replaces the visible table.
+- Prevents blank timetable when Firebase CDN/import is slow or unavailable.

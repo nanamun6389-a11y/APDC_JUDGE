@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apdc-judge-timetable-v4';
+const CACHE_NAME = 'apdc-judge-timetable-v5-safe';
 const APP_SHELL = [
   "./admin.html",
   "./admin.js",
