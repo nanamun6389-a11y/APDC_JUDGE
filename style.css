@@ -277,7 +277,7 @@
 .top-category-nav{display:flex;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #000;background:#fff;position:sticky;top:0;z-index:100}
 .top-category-nav a{flex:0 0 auto;color:#000;text-decoration:none;padding:13px 16px;border-right:1px solid #ddd;font-size:12px;font-weight:900}
 .top-category-nav a:hover,.top-category-nav a:focus{background:#000;color:#fff}
-.admin-section-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0 22px}
+.admin-section-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0 22px}
 .admin-section-tabs button{min-height:44px;border:1px solid #000;background:#fff;font-weight:900}
 .admin-section-tabs button.active{background:#000;color:#fff}
 .system-panel{border-top:2px solid #000;border-bottom:2px solid #000;padding:22px 0}
@@ -455,13 +455,6 @@ main {
 .mc-reference-title{margin-top:14px;font-size:20px;line-height:1.45;font-weight:900;min-height:58px}
 @media(max-width:760px){.mc-script-grid{grid-template-columns:1fr 1fr}.mc-script-text{font-size:18px;min-height:130px}.mc-script-card{padding:12px}}
 @media(max-width:560px){.mc-script-grid{grid-template-columns:1fr}.mc-script-text{min-height:auto}}
-
-/* Timetable Manager */
-.timetable-manager{border-top:2px solid #000;border-bottom:2px solid #000;padding:22px 0;margin-bottom:28px}
-.timetable-manager h2{margin:5px 0 8px;font-size:28px}
-.ttm-toolbar{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:8px;align-items:end;margin:18px 0 10px}
-.ttm-toolbar label{font-size:11px;font-weight:900}.ttm-toolbar input{width:100%;min-height:44px;border:1px solid #000;border-radius:0;padding:0 10px;margin-top:6px}
-.ttm-savebar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.ttm-savebar .message{margin-left:auto}
-.ttm-list{display:grid;gap:10px}.ttm-card{border:1px solid #000;padding:12px;background:#fff}.ttm-head{display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd;padding-bottom:9px;margin-bottom:10px}.ttm-head strong{font-size:15px}.ttm-head>span{font-weight:900;color:#555}.ttm-move{margin-left:auto;display:flex;gap:5px}.ttm-move button{min-width:40px;min-height:34px;padding:5px 9px;border:1px solid #000;background:#fff;color:#000}.ttm-move .danger{background:#9b111e;color:#fff;border-color:#9b111e}
-.ttm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.ttm-grid label{font-size:10px;font-weight:900}.ttm-grid input,.ttm-grid select{width:100%;min-height:40px;border:1px solid #aaa;border-radius:0;padding:0 8px;margin-top:4px;background:#fff}.ttm-wide{grid-column:span 2}
-@media(max-width:760px){.ttm-toolbar{grid-template-columns:1fr 1fr}.ttm-grid{grid-template-columns:1fr 1fr}.ttm-wide{grid-column:span 2}.ttm-head{flex-wrap:wrap}.ttm-move{width:100%;margin-left:0}.ttm-savebar .message{width:100%;margin-left:0}}
+/* SIMPLE TIMETABLE MANAGER */
+.ttm-panel{max-width:980px;margin:20px auto}.ttm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.ttm-head h1{margin:4px 0 0}.ttm-tools{display:grid;grid-template-columns:180px repeat(3,1fr);gap:8px;align-items:end;margin-bottom:12px}.ttm-tools label{font-size:11px;font-weight:800}.ttm-tools input{width:100%;margin-top:5px}.ttm-list{display:grid;gap:8px}.ttm-row{display:grid;grid-template-columns:78px 92px 1fr auto;gap:10px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:12px;padding:11px 12px}.ttm-time{font-weight:900}.ttm-no{font-size:12px;font-weight:900}.ttm-name{min-width:0}.ttm-name strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttm-name span{display:block;color:#777;font-size:11px;margin-top:3px}.ttm-actions{display:flex;gap:4px}.ttm-actions button{padding:7px 9px;min-width:36px}.ttm-dialog{border:0;border-radius:16px;max-width:620px;width:calc(100% - 24px);padding:20px}.ttm-dialog::backdrop{background:rgba(0,0,0,.55)}.ttm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ttm-form-grid label{font-size:11px;font-weight:800}.ttm-form-grid input,.ttm-form-grid select{width:100%;margin-top:5px}.ttm-form-grid .wide{grid-column:1/-1}.ttm-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:700px){.ttm-tools{grid-template-columns:1fr 1fr}.ttm-tools label{grid-column:1/-1}.ttm-row{grid-template-columns:64px 72px 1fr}.ttm-actions{grid-column:1/-1;justify-content:flex-end}.ttm-form-grid{grid-template-columns:1fr}.ttm-form-grid .wide{grid-column:auto}}
