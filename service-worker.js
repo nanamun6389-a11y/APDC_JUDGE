@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apdc-judge-single-state-v6';
+const CACHE_NAME = 'apdc-judge-running-order-v7';
 const APP_SHELL = [
   "./admin.html",
   "./admin.js",

@@ -182,12 +182,13 @@ function renderTimetableRow(){
   prevBtn.disabled=ttIndex===0;nextBtn.disabled=ttIndex===TT.length-1;firstBtn.disabled=ttIndex===0;lastBtn.disabled=ttIndex===TT.length-1;
   renderRangeButtons();
   progress();
+  if(typeof renderMcUpcoming==="function")renderMcUpcoming();
 }
 async function loadTimetable(){
   try{
     const [tr,pr]=await Promise.all([
-      fetch("timetable-data.json?v=20260722-single-state-v6",{cache:"no-store"}),
-      fetch("players.json?v=20260721-mc-v6",{cache:"no-store"})
+      fetch("timetable-data.json?v=20260722-single-state-v7",{cache:"no-store"}),
+      fetch("players.json?v=20260721-mc-v7",{cache:"no-store"})
     ]);
     const d=await tr.json();
     TT=d.rows||[];
@@ -200,15 +201,11 @@ async function loadTimetable(){
       if(v&&Array.isArray(v.rows)&&v.rows.length)TT=v.rows;
     }catch(_){ }
 
-    // Restore the ONE shared running-order position.
+    // Restore the single shared running-order index.
     try{
-      const st=await get(ref(db,"runningOrderState"));
-      const v=st.val()||{};
-      if(Number.isInteger(Number(v.index))) ttIndex=Math.max(0,Math.min(Number(v.index),TT.length-1));
-      else if(v.eventNo){
-        const found=TT.findIndex(r=>String(r.no||"")===String(v.eventNo));
-        if(found>=0)ttIndex=found;
-      }
+      const st=await get(ref(db,"runningOrder/currentIndex"));
+      const idx=Number(st.val());
+      if(Number.isInteger(idx)) ttIndex=Math.max(0,Math.min(idx,TT.length-1));
     }catch(_){ }
 
     renderTimetableRow();
@@ -217,23 +214,18 @@ async function loadTimetable(){
     onValue(ref(db,"timetableOverride"),async snap=>{
       const v=snap.val();
       if(v&&Array.isArray(v.rows)&&v.rows.length){
-        const stateSnap=await get(ref(db,"runningOrderState"));
-        const state=stateSnap.val()||{};
+        const stateSnap=await get(ref(db,"runningOrder/currentIndex"));
         TT=v.rows;
-        let found=-1;
-        if(state.eventNo)found=TT.findIndex(r=>String(r.no||"")===String(state.eventNo));
-        if(found<0&&Number.isInteger(Number(state.index)))found=Number(state.index);
-        ttIndex=Math.max(0,Math.min(found>=0?found:0,TT.length-1));
+        const idx=Number(stateSnap.val());
+        ttIndex=Math.max(0,Math.min(Number.isInteger(idx)?idx:0,TT.length-1));
         renderTimetableRow();
         await publishLiveStatus();
       }
     });
 
-    // Any other MC/control page changing the shared position updates this MC too.
-    onValue(ref(db,"runningOrderState"),snap=>{
-      const v=snap.val()||{};
-      let idx=Number(v.index);
-      if(!Number.isInteger(idx)&&v.eventNo)idx=TT.findIndex(r=>String(r.no||"")===String(v.eventNo));
+    // Any page changing the one shared index updates this MC.
+    onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+      const idx=Number(snap.val());
       if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
         ttIndex=idx;
         renderTimetableRow();
@@ -250,15 +242,12 @@ async function publishLiveStatus(){
   const onDeck=TT[ttIndex+1]||{};
   const next=TT[ttIndex+2]||{};
   const updatedAt=Date.now();
-  // ONE shared source of truth for MC + LIVE.
-  await set(ref(db,"runningOrderState"),{
-    index:ttIndex,
-    eventNo:current.no||"",
-    event:current.event||"",
-    round:current.round||"",
-    updatedAt
-  });
-  // Keep legacy floorStatus in sync for older pages.
+
+  // THE ONLY SOURCE OF TRUTH FOR POSITION.
+  await set(ref(db,"runningOrder/currentIndex"),ttIndex);
+  await set(ref(db,"runningOrder/updatedAt"),updatedAt);
+
+  // Legacy mirror only. LIVE no longer reads this.
   await set(ref(db,"floorStatus"),{
     now:current.event|| (current.no?`EVENT ${current.no}`:"WAITING"),
     eventNo:current.no||"",
@@ -278,7 +267,13 @@ function progress(){const t=TT.length||order.length;const d=TT.length?ttIndex:(a
 let submissionUnsub=null;
 async function watch(active){if(submissionUnsub){submissionUnsub();submissionUnsub=null}if(!active||!active.eventKey)return;const e=enc(active.eventKey),s=await get(ref(db,`eventSettings/${e}`)),assigned=s.val()?.assignedJudges||[];submissionUnsub=onValue(ref(db,`submissions/${e}_${active.round||"final"}`),snap=>{const v=snap.val()||{},done=assigned.filter(c=>v[c]),wait=assigned.filter(c=>!v[c]);document.getElementById("mcJudgeCount").textContent=`${done.length} / ${assigned.length} DONE`;document.getElementById("mcWaitingJudges").textContent=wait.length?`Waiting for Judges: ${wait.join(", ")}`:"JUDGES ARE DONE."})}
 onValue(ref(db,"activeEvent"),snap=>{active=snap.val();if(!active){if(!TT.length){nowEl.textContent="WAITING";roundEl.textContent="";setScripts()}return}if(!TT.length){nowEl.textContent=active.label||"";roundEl.textContent=rtext(active.round);setScripts();progress()}watch(active)});
-onValue(ref(db,"floorStatus"),snap=>{const v=snap.val()||{};document.getElementById("mcOnDeck").textContent=v.onDeck||"—";document.getElementById("mcNext").textContent=v.next||"—"});
+function renderMcUpcoming(){
+  const d=TT[ttIndex+1]||{},n=TT[ttIndex+2]||{};
+  const dEl=document.getElementById("mcOnDeck"),nEl=document.getElementById("mcNext");
+  if(dEl)dEl.textContent=d.event||"—";
+  if(nEl)nEl.textContent=n.event||"—";
+}
+onValue(ref(db,"runningOrder/currentIndex"),()=>renderMcUpcoming());
 document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent);b.textContent="COPIED";setTimeout(()=>b.textContent="COPY",800)});
 document.querySelectorAll(".quick-line-grid button").forEach(b=>b.onclick=()=>{
   if(b.dataset.backNumber){
