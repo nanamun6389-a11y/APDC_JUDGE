@@ -330,6 +330,37 @@ document.getElementById('ttmAdd')?.addEventListener('click',()=>ttmOpen(-1));
 document.getElementById('ttmRecalc')?.addEventListener('click',ttmRecalculate);
 document.getElementById('ttmRenumber')?.addEventListener('click',()=>{let n=1;ttmRows.forEach(r=>{const text=`${r.round||''} ${r.event||''}`.toLowerCase();const non=/break|opening|award|closing|judge|photo/.test(text);r.no=non?'':String(n++);});ttmRender();});
 document.getElementById('ttmApply')?.addEventListener('click',e=>{e.preventDefault();ttmApplyEdit();ttmDialog.close();});
-document.getElementById('ttmSave')?.addEventListener('click',async()=>{ttmRecalculate();await set(ref(db,'timetableOverride'),{startTime:ttmStart.value,rows:ttmRows,updatedAt:Date.now()});ttmMessage.textContent='SAVED';setTimeout(()=>ttmMessage.textContent='',1500);});
+document.getElementById('ttmSave')?.addEventListener('click',async()=>{
+  try{
+    ttmRecalculate();
+    await set(ref(db,'timetableOverride'),{startTime:ttmStart.value,rows:ttmRows,updatedAt:Date.now()});
+
+    // Keep LIVE in sync immediately, even when the MC page is not open.
+    const floorSnap=await get(ref(db,'floorStatus'));
+    const floor=floorSnap.val()||{};
+    let idx=-1;
+    if(floor.eventNo) idx=ttmRows.findIndex(r=>String(r.no||'')===String(floor.eventNo||''));
+    if(idx<0 && floor.now) idx=ttmRows.findIndex(r=>String(r.event||'').trim()===String(floor.now||'').trim());
+    if(idx<0) idx=0;
+    const current=ttmRows[idx]||{};
+    const onDeck=ttmRows[idx+1]||{};
+    const next=ttmRows[idx+2]||{};
+    await set(ref(db,'floorStatus'),{
+      now:current.event||(current.no?`EVENT ${current.no}`:'WAITING'),
+      eventNo:current.no||'',
+      onDeck:onDeck.event||(onDeck.no?`EVENT ${onDeck.no}`:'—'),
+      next:next.event||(next.no?`EVENT ${next.no}`:'—'),
+      round:current.round||'',
+      danceOrder:current.danceOrder||'',
+      updatedAt:Date.now()
+    });
+
+    ttmMessage.textContent='SAVED & LIVE UPDATED';
+    setTimeout(()=>ttmMessage.textContent='',1800);
+  }catch(e){
+    console.error(e);
+    ttmMessage.textContent='SAVE ERROR';
+  }
+});
 ttmStart?.addEventListener('change',ttmRecalculate);
 ttmLoad();
