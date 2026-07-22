@@ -1667,7 +1667,7 @@
     "event": "Under 12 Solo C",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "52",
@@ -1715,6 +1715,16 @@
     "style": "Latin",
     "division": "Under 12 Solo",
     "event": "Under 12 Solo C",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
+  },
+  {
+    "eventNo": "52",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo C",
     "backNo": "149",
     "entryType": "Solo",
     "player": "UiChan KIM"
@@ -1740,24 +1750,14 @@
     "player": "JIN YU TONG"
   },
   {
-    "eventNo": "83",
-    "section": "Under 15",
+    "eventNo": "53",
+    "section": "Under 12",
     "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo CR",
-    "backNo": "107",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo CJ",
+    "backNo": "77",
     "entryType": "Solo",
-    "player": "SoHee YONG"
-  },
-  {
-    "eventNo": "83",
-    "section": "Under 15",
-    "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo CR",
-    "backNo": "108",
-    "entryType": "Solo",
-    "player": "NaRin PYEON"
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "53",
@@ -1857,7 +1857,7 @@
     "event": "Under 12 Solo CR",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "54",
@@ -1908,6 +1908,16 @@
     "backNo": "73",
     "entryType": "Solo",
     "player": "SiA JEON"
+  },
+  {
+    "eventNo": "54",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo CR",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "54",
@@ -2037,7 +2047,7 @@
     "event": "Under 12 Solo CRJ",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "55",
@@ -2078,6 +2088,16 @@
     "backNo": "76",
     "entryType": "Solo",
     "player": "Avery Boon"
+  },
+  {
+    "eventNo": "55",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo CRJ",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "55",
@@ -2207,7 +2227,7 @@
     "event": "Under 12 Solo CRS",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "56",
@@ -2248,6 +2268,16 @@
     "backNo": "76",
     "entryType": "Solo",
     "player": "Avery Boon"
+  },
+  {
+    "eventNo": "56",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo CRS",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "56",
@@ -2310,26 +2340,6 @@
     "player": "Wong Tsun Yin"
   },
   {
-    "eventNo": "81",
-    "section": "Under 15",
-    "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo C",
-    "backNo": "107",
-    "entryType": "Solo",
-    "player": "SoHee YONG"
-  },
-  {
-    "eventNo": "81",
-    "section": "Under 15",
-    "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo C",
-    "backNo": "108",
-    "entryType": "Solo",
-    "player": "NaRin PYEON"
-  },
-  {
     "eventNo": "58",
     "section": "Under 12",
     "style": "Latin",
@@ -2417,7 +2427,7 @@
     "event": "Under 12 Solo J",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "58",
@@ -2448,6 +2458,16 @@
     "backNo": "76",
     "entryType": "Solo",
     "player": "Avery Boon"
+  },
+  {
+    "eventNo": "58",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo J",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "58",
@@ -2557,7 +2577,7 @@
     "event": "Under 12 Solo P",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "59",
@@ -2580,6 +2600,16 @@
     "player": "Avery Boon"
   },
   {
+    "eventNo": "59",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo P",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
+  },
+  {
     "eventNo": "60",
     "section": "Under 12",
     "style": "Modern",
@@ -2717,7 +2747,7 @@
     "event": "Under 12 Solo R",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "61",
@@ -2758,6 +2788,16 @@
     "backNo": "76",
     "entryType": "Solo",
     "player": "Avery Boon"
+  },
+  {
+    "eventNo": "61",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo R",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "61",
@@ -2877,7 +2917,7 @@
     "event": "Under 12 Solo RJ",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "62",
@@ -2925,6 +2965,16 @@
     "style": "Latin",
     "division": "Under 12 Solo",
     "event": "Under 12 Solo RJ",
+    "backNo": "77",
+    "entryType": "Solo",
+    "player": "Wong Tsun Yin"
+  },
+  {
+    "eventNo": "62",
+    "section": "Under 12",
+    "style": "Latin",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo RJ",
     "backNo": "149",
     "entryType": "Solo",
     "player": "UiChan KIM"
@@ -3037,7 +3087,7 @@
     "event": "Under 12 Solo S",
     "backNo": "66",
     "entryType": "Solo",
-    "player": "Liang Brain"
+    "player": "Liang Brian"
   },
   {
     "eventNo": "63",
@@ -3070,24 +3120,14 @@
     "player": "Avery Boon"
   },
   {
-    "eventNo": "91",
-    "section": "Under 15",
+    "eventNo": "63",
+    "section": "Under 12",
     "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo R",
-    "backNo": "107",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo S",
+    "backNo": "77",
     "entryType": "Solo",
-    "player": "SoHee YONG"
-  },
-  {
-    "eventNo": "91",
-    "section": "Under 15",
-    "style": "Latin",
-    "division": "Under 15 Solo",
-    "event": "Under 15 Solo R",
-    "backNo": "108",
-    "entryType": "Solo",
-    "player": "NaRin PYEON"
+    "player": "Wong Tsun Yin"
   },
   {
     "eventNo": "63",
@@ -3225,6 +3265,16 @@
     "style": "Modern",
     "division": "Under 12 Solo",
     "event": "Under 12 Solo W",
+    "backNo": "66",
+    "entryType": "Solo",
+    "player": "Liang Brian"
+  },
+  {
+    "eventNo": "65",
+    "section": "Under 12",
+    "style": "Modern",
+    "division": "Under 12 Solo",
+    "event": "Under 12 Solo W",
     "backNo": "77",
     "entryType": "Solo",
     "player": "Wong Tsun Yin"
@@ -3365,16 +3415,6 @@
     "style": "Modern",
     "division": "Under 12 Solo",
     "event": "Under 12 Solo WTF",
-    "backNo": "77",
-    "entryType": "Solo",
-    "player": "Wong Tsun Yin"
-  },
-  {
-    "eventNo": "69",
-    "section": "Under 12",
-    "style": "Modern",
-    "division": "Under 12 Solo",
-    "event": "Under 12 Solo WTFQ",
     "backNo": "77",
     "entryType": "Solo",
     "player": "Wong Tsun Yin"
@@ -3567,7 +3607,7 @@
     "event": "Under 15 Solo C",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "81",
@@ -3608,6 +3648,26 @@
     "backNo": "106",
     "entryType": "Solo",
     "player": "Charis Phay Jia En"
+  },
+  {
+    "eventNo": "81",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo C",
+    "backNo": "107",
+    "entryType": "Solo",
+    "player": "SoHee YONG"
+  },
+  {
+    "eventNo": "81",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo C",
+    "backNo": "108",
+    "entryType": "Solo",
+    "player": "NaRin PYEON"
   },
   {
     "eventNo": "81",
@@ -3757,7 +3817,7 @@
     "event": "Under 15 Solo CR",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "83",
@@ -3778,6 +3838,26 @@
     "backNo": "103",
     "entryType": "Solo",
     "player": "JiMin JEONG"
+  },
+  {
+    "eventNo": "83",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo CR",
+    "backNo": "107",
+    "entryType": "Solo",
+    "player": "SoHee YONG"
+  },
+  {
+    "eventNo": "83",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo CR",
+    "backNo": "108",
+    "entryType": "Solo",
+    "player": "NaRin PYEON"
   },
   {
     "eventNo": "83",
@@ -3917,7 +3997,7 @@
     "event": "Under 15 Solo CRJ",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "84",
@@ -4245,6 +4325,16 @@
     "style": "Latin",
     "division": "Under 15 Solo",
     "event": "Under 15 Solo CSRJ",
+    "backNo": "98",
+    "entryType": "Solo",
+    "player": "Keung Yuen Hei Maemi"
+  },
+  {
+    "eventNo": "86",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo CSRJ",
     "backNo": "99",
     "entryType": "Solo",
     "player": "Keung Wing Sum"
@@ -4477,7 +4567,7 @@
     "event": "Under 15 Solo J",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "88",
@@ -4817,7 +4907,7 @@
     "event": "Under 15 Solo R",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "91",
@@ -4848,6 +4938,26 @@
     "backNo": "106",
     "entryType": "Solo",
     "player": "Charis Phay Jia En"
+  },
+  {
+    "eventNo": "91",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo R",
+    "backNo": "107",
+    "entryType": "Solo",
+    "player": "SoHee YONG"
+  },
+  {
+    "eventNo": "91",
+    "section": "Under 15",
+    "style": "Latin",
+    "division": "Under 15 Solo",
+    "event": "Under 15 Solo R",
+    "backNo": "108",
+    "entryType": "Solo",
+    "player": "NaRin PYEON"
   },
   {
     "eventNo": "91",
@@ -4957,7 +5067,7 @@
     "event": "Under 15 Solo RJ",
     "backNo": "100",
     "entryType": "Solo",
-    "player": "Hsien Ho Kiu"
+    "player": "Hsieh Hoi Kiu"
   },
   {
     "eventNo": "93",
@@ -6420,6 +6530,16 @@
     "player": "Leung Pui U"
   },
   {
+    "eventNo": "129",
+    "section": "Under 18",
+    "style": "Modern",
+    "division": "Under 18 Solo",
+    "event": "Under 18 Solo WTFQ",
+    "backNo": "154",
+    "entryType": "Solo",
+    "player": "이연우"
+  },
+  {
     "eventNo": "130",
     "section": "Under 18",
     "style": "Modern",
@@ -7360,16 +7480,6 @@
     "player": "JaeHo KO & JinShun"
   },
   {
-    "eventNo": "202",
-    "section": "Pro-Am",
-    "style": "Latin",
-    "division": "Pro-Am Couple",
-    "event": "Pro-Am Latin R",
-    "backNo": "213",
-    "player": "DaRae KIM & SuIm CHAE",
-    "entryType": "Couple"
-  },
-  {
     "eventNo": "201",
     "section": "Pro-Am",
     "style": "Latin",
@@ -7378,6 +7488,16 @@
     "backNo": "216",
     "entryType": "Couple",
     "player": "Melissa & HyunHyuk SHIN"
+  },
+  {
+    "eventNo": "202",
+    "section": "Pro-Am",
+    "style": "Latin",
+    "division": "Pro-Am Couple",
+    "event": "Pro-Am Latin R",
+    "backNo": "213",
+    "player": "DaRae KIM & SuIm CHAE",
+    "entryType": "Couple"
   },
   {
     "eventNo": "220",
