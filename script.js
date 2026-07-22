@@ -145,19 +145,28 @@ document.querySelectorAll("[data-close-info]").forEach(button=>button.onclick=cl
 document.querySelectorAll("[data-close-player]").forEach(button=>button.onclick=closePlayer);
 document.addEventListener("keydown",event=>{if(event.key==="Escape"){closeInfo();closePlayer();}});
 
-fetch(`players.json?v=${Date.now()}`,{cache:"no-store"})
-  .then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json();})
-  .then(data=>{
-    if(!Array.isArray(data))throw new Error("players.json must contain an array");
+(async()=>{
+  try{
+    let data=null;
+    try{
+      const rr=await fetch(`https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json?v=${Date.now()}`,{cache:"no-store"});
+      if(rr.ok){const rd=await rr.json();if(Array.isArray(rd)&&rd.length)data=rd;}
+    }catch(e){console.warn("Shared player data unavailable",e)}
+    if(!data){
+      const response=await fetch(`players.json?v=${Date.now()}`,{cache:"no-store"});
+      if(!response.ok)throw new Error(`HTTP ${response.status}`);
+      data=await response.json();
+    }
+    if(!Array.isArray(data))throw new Error("players data must contain an array");
     entries=data.filter(item=>item&&item.competitor&&item.event&&item.section);
     renderTabs();
     renderEvents();
-  })
-  .catch(error=>{
+  }catch(error){
     console.error(error);
     eventSummary.textContent="ERROR";
-    eventList.innerHTML='<div class="empty">FAILED TO LOAD PLAYERS.JSON<br>PLEASE UPLOAD ALL FILES AGAIN.</div>';
-  });
+    eventList.innerHTML='<div class="empty">FAILED TO LOAD PLAYER DATA<br>PLEASE CHECK CONNECTION OR UPLOAD ALL FILES AGAIN.</div>';
+  }
+})();
 
 document.addEventListener("DOMContentLoaded",()=>{
  const query=document.getElementById("query");if(query)query.placeholder=apdcT("searchPlaceholder");

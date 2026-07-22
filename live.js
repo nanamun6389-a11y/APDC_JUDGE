@@ -71,15 +71,28 @@ function render(){
     : "";
 }
 
+async function loadSharedPlayers(){
+  const remote=`https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json?v=${Date.now()}`;
+  try{
+    const r=await fetch(remote,{cache:"no-store"});
+    if(r.ok){const d=await r.json();if(Array.isArray(d)&&d.length)return d.map(x=>({...x,player:x.player||x.competitor||''}));}
+  }catch(e){console.warn("Shared player data unavailable",e)}
+  const r=await fetch(`players.json?v=${Date.now()}`,{cache:"no-store"});
+  if(!r.ok)throw new Error(`players.json HTTP ${r.status}`);
+  const d=await r.json();
+  if(!Array.isArray(d))throw new Error("players.json must contain an array");
+  return d.map(x=>({...x,player:x.player||x.competitor||''}));
+}
+
 async function load(){
   try{
-    const [tr,pr]=await Promise.all([
-      fetch("timetable-data.json?v=20260722-running-order-v7",{cache:"no-store"}),
-      fetch("players.json?v=20260721-live-v7",{cache:"no-store"})
+    const [tr,sharedPlayers]=await Promise.all([
+      fetch("timetable-data.json?v=20260722-unified-v1",{cache:"no-store"}),
+      loadSharedPlayers()
     ]);
     const td=await tr.json();
     TT=td.rows||[];
-    players=await pr.json();
+    players=sharedPlayers;
   }catch(e){console.error(e)}
 
   try{

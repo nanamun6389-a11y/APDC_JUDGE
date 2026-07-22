@@ -1,4 +1,4 @@
-const CACHE_NAME = 'apdc-judge-running-order-v7';
+const CACHE_NAME = 'apdc-judge-20260722-unified-timetable-v1';
 const APP_SHELL = [
   "./admin.html",
   "./admin.js",

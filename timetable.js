@@ -79,8 +79,8 @@ function loadLocal(){
 
 async function loadDefault(){
   const urls=[
-    'timetable-data.json?v=20260722-safe-v5',
-    './timetable-data.json?v=20260722-safe-v5'
+    'timetable-data.json?v=20260722-unified-v2',
+    './timetable-data.json?v=20260722-unified-v2'
   ];
   for(const url of urls){
     try{
@@ -104,7 +104,7 @@ async function connectFirebase(){
     const [{initializeApp,getApps},{getDatabase,ref,get,onValue},{firebaseConfig}] = await Promise.all([
       import("https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js"),
       import("https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js"),
-      import("./firebase-config.js?v=20260722-safe-v5")
+      import("./firebase-config.js?v=20260722-unified-v2")
     ]);
     const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
     ttDb=getDatabase(app);

@@ -184,15 +184,28 @@ function renderTimetableRow(){
   progress();
   if(typeof renderMcUpcoming==="function")renderMcUpcoming();
 }
+async function loadSharedPlayers(){
+  const remote=`https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json?v=${Date.now()}`;
+  try{
+    const r=await fetch(remote,{cache:"no-store"});
+    if(r.ok){const d=await r.json();if(Array.isArray(d)&&d.length)return d.map(x=>({...x,player:x.player||x.competitor||''}));}
+  }catch(e){console.warn("Shared player data unavailable",e)}
+  const r=await fetch(`players.json?v=${Date.now()}`,{cache:"no-store"});
+  if(!r.ok)throw new Error(`players.json HTTP ${r.status}`);
+  const d=await r.json();
+  if(!Array.isArray(d))throw new Error("players.json must contain an array");
+  return d.map(x=>({...x,player:x.player||x.competitor||''}));
+}
+
 async function loadTimetable(){
   try{
-    const [tr,pr]=await Promise.all([
-      fetch("timetable-data.json?v=20260722-single-state-v7",{cache:"no-store"}),
-      fetch("players.json?v=20260721-mc-v7",{cache:"no-store"})
+    const [tr,sharedPlayers]=await Promise.all([
+      fetch("timetable-data.json?v=20260722-unified-v1",{cache:"no-store"}),
+      loadSharedPlayers()
     ]);
     const d=await tr.json();
     TT=d.rows||[];
-    try{PLAYERS=await pr.json()}catch(_){PLAYERS=[]}
+    PLAYERS=sharedPlayers;
 
     // Apply saved timetable first, when present.
     try{
