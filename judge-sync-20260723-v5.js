@@ -50,9 +50,9 @@ function assignedCodesForTimetableRow(row){
   if(label.includes("team match")) return TEAM_MATCH_PANEL;
   const n=Number(row.no);
   if(!Number.isFinite(n)) return [];
-  if(n>=139 && n<=145) return FINAL_PANEL;
-  if((n>=1&&n<=12)||(n>=30&&n<=51)||(n>=72&&n<=88)||(n>=107&&n<=113)||(n>=123&&n<=130)) return ODD_PANEL;
-  if((n>=13&&n<=29)||(n>=54&&n<=71)||(n>=89&&n<=106)||(n>=114&&n<=122)||(n>=131&&n<=138)) return EVEN_PANEL;
+  if(n>=140 && n<=144) return FINAL_PANEL;
+  if((n>=1&&n<=17)||(n>=34&&n<=51)||(n>=68&&n<=84)||(n>=105&&n<=120)||(n>=132&&n<=139)) return ODD_PANEL;
+  if((n>=18&&n<=33)||(n>=55&&n<=67)||(n>=85&&n<=104)||(n>=121&&n<=131)) return EVEN_PANEL;
   return [];
 }
 function eventCandidatesForTimetableRow(row){

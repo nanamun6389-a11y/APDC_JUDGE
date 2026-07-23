@@ -1,18 +1,156 @@
 {
-  "source": "APDC judge code allocation supplied by organizer",
+  "source": "APDC judge code allocation supplied by organizer · 144-event final timetable",
   "rules": [
-    {"events":"1-12","judges":["T1","T3","T5","T7","W1","W3","W5","W7","W9"]},
-    {"events":"13-29","judges":["T2","T4","T6","T8","W2","W4","W6","W8"]},
-    {"events":"30-51","judges":["T1","T3","T5","T7","W1","W3","W5","W7","W9"]},
-    {"eventName":"Country Team Match","judges":["T1","T2","T3","T4","T5","T6","T7","T8"]},
-    {"events":"54-71","judges":["T2","T4","T6","T8","W2","W4","W6","W8"]},
-    {"events":"72-88","judges":["T1","T3","T5","T7","W1","W3","W5","W7","W9"]},
-    {"events":"89-106","judges":["T2","T4","T6","T8","W2","W4","W6","W8"]},
-    {"events":"107-113","judges":["T1","T3","T5","T7","W1","W3","W5","W7","W9"]},
-    {"events":"114-122","judges":["T2","T4","T6","T8","W2","W4","W6","W8"]},
-    {"events":"123-130","judges":["T1","T3","T5","T7","W1","W3","W5","W7","W9"]},
-    {"events":"131-138","judges":["T2","T4","T6","T8","W2","W4","W6","W8"]},
-    {"events":"139-145","judges":["T1","T2","T3","T4","T5","W2","W4","W7","W8"]}
+    {
+      "events": "1-17",
+      "judges": [
+        "T1",
+        "T3",
+        "T5",
+        "T7",
+        "W1",
+        "W3",
+        "W5",
+        "W7",
+        "W9"
+      ]
+    },
+    {
+      "events": "18-33",
+      "judges": [
+        "T2",
+        "T4",
+        "T6",
+        "T8",
+        "W2",
+        "W4",
+        "W6",
+        "W8"
+      ]
+    },
+    {
+      "events": "34-51",
+      "judges": [
+        "T1",
+        "T3",
+        "T5",
+        "T7",
+        "W1",
+        "W3",
+        "W5",
+        "W7",
+        "W9"
+      ]
+    },
+    {
+      "event": "54",
+      "eventName": "Country Team Match",
+      "judges": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6",
+        "T7",
+        "T8"
+      ]
+    },
+    {
+      "events": "55-67",
+      "judges": [
+        "T2",
+        "T4",
+        "T6",
+        "T8",
+        "W2",
+        "W4",
+        "W6",
+        "W8"
+      ]
+    },
+    {
+      "events": "68-84",
+      "judges": [
+        "T1",
+        "T3",
+        "T5",
+        "T7",
+        "W1",
+        "W3",
+        "W5",
+        "W7",
+        "W9"
+      ]
+    },
+    {
+      "events": "85-104",
+      "judges": [
+        "T2",
+        "T4",
+        "T6",
+        "T8",
+        "W2",
+        "W4",
+        "W6",
+        "W8"
+      ]
+    },
+    {
+      "events": "105-120",
+      "judges": [
+        "T1",
+        "T3",
+        "T5",
+        "T7",
+        "W1",
+        "W3",
+        "W5",
+        "W7",
+        "W9"
+      ]
+    },
+    {
+      "events": "121-131",
+      "judges": [
+        "T2",
+        "T4",
+        "T6",
+        "T8",
+        "W2",
+        "W4",
+        "W6",
+        "W8"
+      ]
+    },
+    {
+      "events": "132-139",
+      "judges": [
+        "T1",
+        "T3",
+        "T5",
+        "T7",
+        "W1",
+        "W3",
+        "W5",
+        "W7",
+        "W9"
+      ]
+    },
+    {
+      "events": "140-144",
+      "judges": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "W2",
+        "W4",
+        "W7",
+        "W8"
+      ]
+    }
   ],
-  "note": "Break / Opening Ceremony / Judges Introduction are not scored. Country Team Match is matched by event name so the packaged timetable order is preserved without renumbering."
+  "note": "Events 52 (Break) and 53 (Opening Ceremony) are not scored. Event 54 Team Match uses T1-T8. Timetable order/data are unchanged."
 }
