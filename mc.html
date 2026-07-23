@@ -1,70 +1,58 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
 <title>APDC MC</title>
-<link rel="stylesheet" href="style.css?v=20260720-mc-timetable">
+<link rel="stylesheet" href="style.css?v=v10-official">
 </head>
 <body>
-<header style="position:relative"><button class="brand brand-button" type="button" onclick="location.href='index.html'">APDC MC</button><div id="languageHost" class="language-host"></div></header>
+<header style="position:relative"><a class="brand brand-link" href="control-room.html">APDC MC</a><div id="languageHost" class="language-host"></div></header>
+
 <nav class="top-category-nav">
-  <a href="control-room.html">DASHBOARD</a><a href="index.html">JUDGE</a><a href="timetable.html">TIMETABLE</a><a class="active" href="mc.html">MC</a><a href="live.html">LIVE</a><a href="broadcast.html">BROADCAST</a><a href="admin.html">SETTINGS</a>
+  <a href="control-room.html">DASHBOARD</a>
+  <a href="index.html">JUDGE</a>
+  <a href="mc.html">MC</a>
+  <a href="live.html">LIVE</a>
+  <a href="broadcast.html">BROADCAST</a>
+  <a href="admin.html">SETTINGS</a>
 </nav>
+
 <main class="mc-page">
 <section id="mcPasswordGate" class="password-gate">
-  <div class="password-box"><div class="small-label">APDC MC ACCESS</div><h1>ENTER PASSWORD</h1><input id="mcPasswordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off"><button id="mcPasswordBtn" type="button">ENTER</button><div id="mcPasswordMessage" class="message"></div></div>
+<div class="password-box"><div class="small-label">MC ACCESS</div><h1>ENTER PASSWORD</h1>
+<input id="mcPasswordInput" type="password" placeholder="••••"><button id="mcPasswordBtn">ENTER</button><div id="mcPasswordMessage" class="message"></div></div>
 </section>
 <div id="mcProtected" class="hidden">
-  <section class="mc-progress"><div><span>RUNNING ORDER</span><strong id="mcProgressText">0 / 0 EVENTS</strong></div><div class="mc-progress-bar"><i id="mcProgressBar"></i></div></section>
+<section class="mc-progress"><div><span>PROGRESS</span><strong id="mcProgressText">0 / 0 EVENTS</strong></div><div class="mc-progress-bar"><i id="mcProgressBar"></i></div></section>
+<section class="mc-live-control" aria-label="MC live event control">
+  <div class="mc-live-control-head"><span>LIVE EVENT CONTROL</span><strong id="mcCurrentEventNo">—</strong></div>
+  <select id="mcEventSelect" class="mc-event-select" aria-label="Select event"></select>
+  <div class="mc-event-nav">
+    <button id="mcFirstBtn" type="button">FIRST</button>
+    <button id="mcPrevBtn" type="button">PREVIOUS</button>
+    <button id="mcNextBtn" type="button">NEXT</button>
+    <button id="mcLastBtn" type="button">LAST</button>
+  </div>
+  <div id="mcNavMessage" class="message">MC → LIVE CONNECTED</div>
+</section>
+<section class="mc-now-card"><div class="small-label">NOW</div><h1 id="mcNow">WAITING</h1><div id="mcRound" class="mc-round"></div></section>
+<section class="mc-script-grid">
+<article class="mc-script-card"><div class="mc-script-head"><span>🇰🇷 한국어</span><button data-copy="mcKorean">COPY</button></div><div id="mcKorean" class="mc-script-text">다음 경기를 준비하겠습니다.</div></article>
+<article class="mc-script-card"><div class="mc-script-head"><span>🇬🇧 ENGLISH</span><button data-copy="mcEnglish">COPY</button></div><div id="mcEnglish" class="mc-script-text">Please get ready for the next event.</div></article>
+</section>
+<section class="mc-next-grid"><div><span>NEXT UP</span><strong id="mcOnDeck">—</strong></div><div><span>COMING SOON</span><strong id="mcNext">—</strong></div></section>
+<section class="mc-judge-status"><div class="mc-status-head"><h2>JUDGES</h2><strong id="mcJudgeCount">0 / 0 DONE</strong></div><div id="mcWaitingJudges">Waiting for Judges.</div></section>
+<section class="mc-quick-lines"><h2>QUICK LINES</h2><div class="quick-line-grid">
+<button data-ko="선수 입장." data-en="Players, please come to the floor.">CALL PLAYERS</button>
+<button data-ko="심사위원 여러분, 준비 부탁드립니다." data-en="Judges, please get ready.">CALL JUDGES</button>
+<button data-ko="준비되셨나요?" data-en="Are you ready?">READY?</button>
+<button data-ko="음악 주세요." data-en="Music, please.">MUSIC</button>
+<button data-ko="감사합니다." data-en="Thank you, Players.">THANK YOU</button>
+<button data-ko="심사 결과 대기." data-en="Waiting for Judges.">WAITING</button>
+</div></section>
 
-  <section class="mc-timetable-control">
-    <div class="mc-tt-head">
-      <div><span class="small-label">TIMETABLE POSITION</span><strong id="mcTtPosition">0 / 0</strong></div>
-      <div class="mc-tt-buttons"><button id="mcFirstBtn" type="button">FIRST</button><button id="mcPrevBtn" type="button">← PREV</button><button id="mcNextBtn" class="primary" type="button">NEXT →</button><button id="mcLastBtn" type="button">LAST</button></div>
-    </div>
-    <div id="mcRangeButtons" class="mc-range-buttons"></div>
-    <div id="mcTtMeta" class="mc-tt-meta"></div>
-  </section>
-
-  <section class="mc-now-card">
-    <div class="small-label">CURRENT EVENT</div>
-    <h1 id="mcNow">WAITING</h1>
-    <div id="mcRound" class="mc-round"></div>
-    <div class="mc-event-reference">
-      <span>EVENT NAME · REFERENCE ONLY</span>
-      <strong id="mcEventName">—</strong>
-    </div>
-    <div class="mc-event-reference" style="margin-top:10px">
-      <span>DANCE ORDER · REFERENCE ONLY</span>
-      <strong id="mcDanceOrder">—</strong>
-    </div>
-  </section>
-
-  <section class="mc-comment-note-grid" style="margin-top:14px">
-    <div class="mc-script-card"><div class="mc-script-head">EVENT INFORMATION</div><div id="mcTimetableComment" class="mc-reference-title">—</div></div>
-    <div class="mc-script-card"><div class="mc-script-head">MC REFERENCE</div><div id="mcTimetableNote" class="mc-note-text">—</div></div>
-  </section>
-
-  <section class="mc-script-grid">
-    <div class="mc-script-card"><div class="mc-script-head"><span>한국어 MC</span><button type="button" data-copy="mcKorean">COPY</button></div><div id="mcKorean" class="mc-script-text">다음 EVENT를 준비하겠습니다.</div></div>
-    <div class="mc-script-card"><div class="mc-script-head"><span>English MC</span><button type="button" data-copy="mcEnglish">COPY</button></div><div id="mcEnglish" class="mc-script-text">Please get ready for the next EVENT.</div></div>
-  </section>
-
-  <section class="mc-next-grid"><div><span>ON DECK</span><strong id="mcOnDeck">—</strong></div><div><span>NEXT</span><strong id="mcNext">—</strong></div></section>
-
-  <section class="mc-judge-status"><div class="mc-status-head"><strong>JUDGE STATUS</strong><strong id="mcJudgeCount">0 / 0 DONE</strong></div><div id="mcWaitingJudges" class="muted" style="margin-top:8px">—</div></section>
-
-  <section style="margin-top:20px"><div class="small-label" style="margin-bottom:8px">QUICK MC LINES</div><div class="quick-line-grid">
-    <button type="button" data-ko="심사위원 여러분, 준비해 주시기 바랍니다." data-en="Judges, please get ready.">JUDGES READY</button>
-    <button type="button" data-ko="선수 여러분, 플로어로 입장해 주세요." data-en="Players, please come to the floor.">PLAYERS TO FLOOR</button>
-    <button type="button" data-ko="선수 여러분께 큰 박수 부탁드립니다." data-en="Please give the players a big round of applause.">APPLAUSE</button>
-    <button type="button" data-back-number="1">BACK NUMBER</button>
-  </div></section>
-</div>
-</main>
-<script src="i18n.js?v=20260717-1305"></script>
-<script type="module" src="mc.js?v=20260722-unified-v2"></script>
-</body>
-</html>
+</div></main>
+<script src="i18n.js?v=v10-official"></script>
+<script type="module" src="mc.js?v=v11-mc-live-sync"></script>
+</body></html>
