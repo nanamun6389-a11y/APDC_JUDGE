@@ -540,6 +540,14 @@ async function loadJudgeRunningOrder(){
     syncJudgeToRunningOrder();
   });
 
+  onValue(ref(db,"apdcPublic/liveState"),snap=>{
+    const idx=Number(snap.val()?.timetableIndex);
+    if(Number.isInteger(idx) && idx>=0 && idx<APDC_TT_ROWS.length){
+      apdcCurrentTimetableIndex=idx;
+      apdcSyncJudgeToTimetable();
+    }
+  });
+
   onValue(ref(db,"timetableOverride"),snap=>{
     const rows=snap.val()?.rows;
     if(Array.isArray(rows)&&rows.length){

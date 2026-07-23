@@ -198,13 +198,18 @@ async function loadSharedPlayers(){
 }
 
 async function readSharedIndex(){
-  // ONE SOURCE OF TRUTH: floorStatus/timetableIndex only.
+  // floorStatus is the proven public sync path. runningOrder is compatibility only.
   try{
     const fs=await get(ref(db,"floorStatus"));
     const v=fs.val()||{};
     const idx=Number(v.timetableIndex);
     if(Number.isInteger(idx)) return idx;
   }catch(e){console.warn("floorStatus index read failed",e)}
+  try{
+    const st=await get(ref(db,"runningOrder/currentIndex"));
+    const idx=Number(st.val());
+    if(Number.isInteger(idx)) return idx;
+  }catch(e){console.warn("runningOrder index read failed",e)}
   return null;
 }
 
@@ -258,12 +263,20 @@ async function loadTimetable(){
   onValue(ref(db,"floorStatus"),snap=>{
     const v=snap.val()||{};
     const idx=Number(v.timetableIndex);
-    if(Number.isInteger(idx)&&idx>=0&&idx<TT.length){
-      if(idx!==ttIndex) ttIndex=idx;
+    if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
+      ttIndex=idx;
       renderTimetableRow();
     }
   });
 
+  // Compatibility listener for older/newer pages that use runningOrder.
+  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    const idx=Number(snap.val());
+    if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
+      ttIndex=idx;
+      renderTimetableRow();
+    }
+  });
 }
 
 async function publishLiveStatus(){
@@ -283,8 +296,14 @@ async function publishLiveStatus(){
     updatedAt
   };
 
-  // ONE SOURCE OF TRUTH: every screen follows this exact object.
+  // floorStatus is written first so LIVE/JUDGE update even if the newer path is unavailable.
   await set(ref(db,"floorStatus"),payload);
+  try{
+    await set(ref(db,"runningOrder/currentIndex"),ttIndex);
+    await set(ref(db,"runningOrder/updatedAt"),updatedAt);
+  }catch(e){
+    console.warn("runningOrder mirror failed; floorStatus sync remains active",e);
+  }
 }
 firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
 prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
@@ -301,7 +320,7 @@ function renderMcUpcoming(){
   if(dEl)dEl.textContent=d.event||"—";
   if(nEl)nEl.textContent=n.event||"—";
 }
-
+onValue(ref(db,"runningOrder/currentIndex"),()=>renderMcUpcoming());
 document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent);b.textContent="COPIED";setTimeout(()=>b.textContent="COPY",800)});
 document.querySelectorAll(".quick-line-grid button").forEach(b=>b.onclick=()=>{
   if(b.dataset.backNumber){

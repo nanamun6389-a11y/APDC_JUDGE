@@ -21,7 +21,7 @@ let currentRoundSubmitted = false;
 
 // ===== APDC 2026 RUNNING ORDER / JUDGE ASSIGNMENT SYNC =====
 // The packaged timetable-data.json is the source of truth.
-// MC, LIVE and JUDGE all follow floorStatus/timetableIndex as the single running-order source.
+// MC changes runningOrder/currentIndex; LIVE and JUDGE follow that same index.
 let timetableRows = [];
 let runningIndex = 0;
 let runningRow = null;
@@ -530,6 +530,12 @@ async function loadJudgeRunningOrder(){
       runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
     }
   }catch(_){ }
+  if(!hasFloorIndex){
+    try{
+      const idx=Number((await get(ref(db,"runningOrder/currentIndex"))).val());
+      if(Number.isInteger(idx)) runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    }catch(_){ }
+  }
   syncJudgeToRunningOrder();
 
   onValue(ref(db,"floorStatus"),snap=>{
@@ -540,6 +546,13 @@ async function loadJudgeRunningOrder(){
     syncJudgeToRunningOrder();
   });
 
+  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    if(hasFloorIndex)return;
+    const idx=Number(snap.val());
+    if(!Number.isInteger(idx)) return;
+    runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    syncJudgeToRunningOrder();
+  });
   onValue(ref(db,"timetableOverride"),snap=>{
     const rows=snap.val()?.rows;
     if(Array.isArray(rows)&&rows.length){
@@ -555,7 +568,7 @@ onValue(ref(db,"eventSettings"),snap=>{
   firebaseEventSettings=snap.val()||{};
   if(currentJudge){populateEventsForJudge();render();}
 });
-// JUDGE follows floorStatus/timetableIndex, the single source shared with MC and LIVE.
+// JUDGE follows runningOrder/currentIndex (same source used by MC and LIVE).
 
 fetch("event-settings.json?v=20260717-1305", {cache:"no-store"})
   .then(r => r.json())

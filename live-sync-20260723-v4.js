@@ -120,17 +120,21 @@ async function load(){
     }
   });
 
-  // Primary position listener: the same floorStatus written by MC.
-  onValue(ref(db,"floorStatus"),snap=>{
-    const v=snap.val()||{};
+  function applySharedState(v){
+    v=v||{};
+    const ts=Number(v.updatedAt)||0;
+    // Ignore older echoes when both Firebase paths fire.
+    if(ts && updatedAt && ts < updatedAt) return;
     const idx=Number(v.timetableIndex);
-    if(Number.isInteger(idx)){
+    if(Number.isInteger(idx) && idx>=0 && idx<TT.length){
       hasFloorIndex=true;
       currentIndex=idx;
     }
-    updatedAt=Number(v.updatedAt)||updatedAt;
+    updatedAt=ts||updatedAt;
     render();
-  });
+  }
+  onValue(ref(db,"floorStatus"),snap=>applySharedState(snap.val()));
+  onValue(ref(db,"apdcPublic/liveState"),snap=>applySharedState(snap.val()));
 
 }
 load();

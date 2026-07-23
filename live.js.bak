@@ -109,6 +109,15 @@ async function load(){
     if(Number.isInteger(idx)){currentIndex=idx;hasFloorIndex=true;}
     updatedAt=Number(v.updatedAt)||0;
   }catch(_){}
+  if(!hasFloorIndex){
+    try{
+      const idxSnap=await get(ref(db,"runningOrder/currentIndex"));
+      const idx=Number(idxSnap.val());
+      if(Number.isInteger(idx))currentIndex=idx;
+      const upSnap=await get(ref(db,"runningOrder/updatedAt"));
+      updatedAt=Number(upSnap.val())||updatedAt;
+    }catch(_){}
+  }
 
   render();
 
@@ -132,6 +141,18 @@ async function load(){
     render();
   });
 
+  // Compatibility fallback only until floorStatus carries a timetable index.
+  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    if(hasFloorIndex)return;
+    const idx=Number(snap.val());
+    if(Number.isInteger(idx)){currentIndex=idx;render();}
+  });
+
+  onValue(ref(db,"runningOrder/updatedAt"),snap=>{
+    if(hasFloorIndex)return;
+    updatedAt=Number(snap.val())||0;
+    render();
+  });
 }
 load();
 

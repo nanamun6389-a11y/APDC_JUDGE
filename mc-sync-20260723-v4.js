@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, get, onValue, set } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref, get, onValue, set, update } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 apdcBuildLanguageUI();
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app),PASSWORD="0808";
@@ -283,8 +283,17 @@ async function publishLiveStatus(){
     updatedAt
   };
 
-  // ONE SOURCE OF TRUTH: every screen follows this exact object.
-  await set(ref(db,"floorStatus"),payload);
+  // ONE SOURCE OF TRUTH. Write both paths atomically so public LIVE and JUDGE can never drift.
+  await update(ref(db), {
+    floorStatus: payload,
+    "apdcPublic/liveState": payload
+  });
+  // Read-back makes a failed network write visible in the console instead of silently drifting.
+  try {
+    const check = await get(ref(db,"floorStatus/timetableIndex"));
+    const saved = Number(check.val());
+    if (saved !== ttIndex) console.warn("APDC sync read-back mismatch", {wanted:ttIndex,saved});
+  } catch (e) { console.warn("APDC sync read-back failed",e); }
 }
 firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
 prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
