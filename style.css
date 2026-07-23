@@ -13,7 +13,7 @@
 .controls.two{grid-template-columns:1fr 1fr}
 .number-btn{color:#000!important}
 .number-btn.selected{color:#fff!important}
-.competitor-name{color:#666;font-size:13px;margin-top:3px}
+.player-name{color:#666;font-size:13px;margin-top:3px}
 @media(max-width:700px){
   .judge-grid{grid-template-columns:1fr}
   .controls.two{grid-template-columns:1fr}
@@ -404,48 +404,57 @@ main {
   }
 }
 
-/* ===== V11 MC → LIVE EVENT CONTROL ===== */
-.mc-live-control{
-  border:1px solid #d8d8d8;
-  padding:16px;
-  margin:14px 0;
-  background:#fff;
-}
-.mc-live-control-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:10px;
-  font-size:12px;
-  letter-spacing:.08em;
-}
-.mc-live-control-head strong{font-size:18px;letter-spacing:0;}
-.mc-event-select{
-  width:100%;
-  min-height:46px;
-  padding:0 12px;
-  border:1px solid #111;
-  background:#fff;
-  font:inherit;
-  font-weight:700;
-}
-.mc-event-nav{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  margin-top:10px;
-}
-.mc-event-nav button{
-  min-height:44px;
-  border:1px solid #111;
-  background:#111;
-  color:#fff;
-  font-weight:800;
-  cursor:pointer;
-}
-.mc-event-nav button:disabled{opacity:.28;cursor:not-allowed;}
-.mc-live-control .message{min-height:20px;margin-top:8px;font-size:12px;font-weight:800;}
-@media(max-width:640px){
-  .mc-event-nav{grid-template-columns:repeat(2,1fr);}
-}
+/* TIMETABLE · JUDGE PROGRAM ONLY */
+.tt-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;margin:22px 0 18px}.tt-head h1{margin:4px 0 6px;font-size:clamp(30px,6vw,54px)}.tt-tools{display:flex;gap:8px;align-items:center}.tt-tools input{min-width:220px;padding:12px 14px;border:1px solid #cfcfcf;background:#fff;color:#111}.tt-cards{display:grid;gap:10px;padding-bottom:40px}.tt-card{display:grid;grid-template-columns:80px 1fr 72px;gap:14px;align-items:start;border:1px solid #d8d8d8;background:#fff;padding:16px;transition:.2s}.tt-card:hover{border-color:#111}.tt-time{font-size:20px;font-weight:800;letter-spacing:-.02em}.tt-topline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:5px}.tt-run,.tt-round{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.tt-round{background:#111;color:#fff;padding:3px 6px}.tt-main h2{font-size:18px;line-height:1.25;margin:0 0 6px}.tt-meta,.tt-info,.tt-note{font-size:13px;line-height:1.5;color:#555}.tt-info b{color:#111;margin-right:6px}.tt-note{margin-top:8px;padding-top:8px;border-top:1px solid #eee;color:#111}.tt-duration{text-align:right;font-size:12px;font-weight:700;color:#555}.tt-highlight{outline:3px solid #111;outline-offset:2px}.top-category-nav a.active{background:#111;color:#fff}@media(max-width:720px){.tt-head{align-items:stretch;flex-direction:column}.tt-tools{width:100%}.tt-tools input{min-width:0;flex:1}.tt-card{grid-template-columns:64px 1fr}.tt-duration{grid-column:2;text-align:left}.tt-time{font-size:17px}.tt-main h2{font-size:16px}}
+
+
+/* MC timetable-driven controls */
+.mc-timetable-control{margin:18px 0;padding:18px;border:1px solid #d9d9d9;background:#fff}
+.mc-tt-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mc-tt-head>div:first-child{display:flex;flex-direction:column;gap:4px}
+.mc-tt-head strong{font-size:20px}
+.mc-tt-buttons{display:flex;gap:8px}
+.mc-tt-buttons button{min-width:92px;padding:12px 16px;border:1px solid #111;background:#fff;color:#111;font-weight:800;cursor:pointer}
+.mc-tt-buttons button.primary{background:#111;color:#fff}
+.mc-tt-buttons button:disabled{opacity:.28;cursor:not-allowed}
+.mc-tt-meta{margin-top:14px;padding-top:14px;border-top:1px solid #e5e5e5;font-size:13px;letter-spacing:.02em;color:#555}
+.mc-comment-note-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:14px;margin-bottom:14px}
+.mc-note-text{white-space:pre-line}
+@media(max-width:760px){.mc-comment-note-grid{grid-template-columns:1fr}.mc-tt-head{align-items:flex-start;flex-direction:column}.mc-tt-buttons{width:100%}.mc-tt-buttons button{flex:1}}
+
+/* LIVE participant back numbers */
+.live-backnos{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.18);font-size:clamp(14px,1.7vw,24px);font-weight:700;letter-spacing:.08em;line-height:1.5;word-break:break-word;color:inherit;opacity:.9}
+.now-block .live-backnos{opacity:1}
+
+/* LIVE: final event only */
+.floor-board.final-only .floor-block:not(.now-block){display:none}
+.floor-board.final-only .now-block{min-height:60vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border-bottom:1px solid #000;padding:56px 18px}
+.floor-board.final-only .now-block .floor-label{font-size:clamp(18px,2.2vw,30px);margin-bottom:18px}
+.floor-board.final-only .now-block .floor-event{font-size:clamp(48px,10vw,112px);max-width:1100px}
+.floor-board.final-only .now-block .live-backnos{font-size:clamp(20px,2.5vw,34px);margin-top:22px;padding-top:18px}
+.floor-board.final-only .updated-time{text-align:center;margin-top:18px}
+
+
+/* LIVE current event metadata: event number / round */
+.now-block{position:relative}
+.live-now-meta{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.live-now-meta span:last-child{text-align:right}
+.floor-board.final-only .now-block .live-now-meta{position:absolute;top:22px;left:18px;right:18px;width:auto}
+@media(max-width:640px){.live-now-meta{font-size:11px;letter-spacing:.08em}}
+
+/* MC quick timetable navigation */
+.mc-range-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.mc-range-buttons button{padding:9px 12px;border:1px solid #bbb;background:#fff;color:#111;font-size:12px;font-weight:800;cursor:pointer}
+.mc-range-buttons button.active{background:#111;color:#fff;border-color:#111}
+@media(max-width:760px){.mc-tt-buttons{flex-wrap:wrap}.mc-tt-buttons button{min-width:calc(50% - 4px);flex:1 1 calc(50% - 4px)}.mc-range-buttons button{flex:1 0 auto}}
+
+/* MC event reference: visible information, not spoken script */
+.mc-event-reference{margin-top:18px;padding-top:14px;border-top:1px solid #ddd;display:flex;flex-direction:column;gap:6px}
+.mc-event-reference span{font-size:11px;color:#666;font-weight:900;letter-spacing:.08em}
+.mc-event-reference strong{font-size:clamp(18px,3vw,28px);line-height:1.35}
+.mc-reference-title{margin-top:14px;font-size:20px;line-height:1.45;font-weight:900;min-height:58px}
+@media(max-width:760px){.mc-script-grid{grid-template-columns:1fr 1fr}.mc-script-text{font-size:18px;min-height:130px}.mc-script-card{padding:12px}}
+@media(max-width:560px){.mc-script-grid{grid-template-columns:1fr}.mc-script-text{min-height:auto}}
+/* SIMPLE TIMETABLE MANAGER */
+.ttm-panel{max-width:980px;margin:20px auto}.ttm-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.ttm-head h1{margin:4px 0 0}.ttm-tools{display:grid;grid-template-columns:180px repeat(3,1fr);gap:8px;align-items:end;margin-bottom:12px}.ttm-tools label{font-size:11px;font-weight:800}.ttm-tools input{width:100%;margin-top:5px}.ttm-list{display:grid;gap:8px}.ttm-row{display:grid;grid-template-columns:78px 92px 1fr auto;gap:10px;align-items:center;background:#fff;border:1px solid #ddd;border-radius:12px;padding:11px 12px}.ttm-time{font-weight:900}.ttm-no{font-size:12px;font-weight:900}.ttm-name{min-width:0}.ttm-name strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ttm-name span{display:block;color:#777;font-size:11px;margin-top:3px}.ttm-actions{display:flex;gap:4px}.ttm-actions button{padding:7px 9px;min-width:36px}.ttm-dialog{border:0;border-radius:16px;max-width:620px;width:calc(100% - 24px);padding:20px}.ttm-dialog::backdrop{background:rgba(0,0,0,.55)}.ttm-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ttm-form-grid label{font-size:11px;font-weight:800}.ttm-form-grid input,.ttm-form-grid select{width:100%;margin-top:5px}.ttm-form-grid .wide{grid-column:1/-1}.ttm-dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:700px){.ttm-tools{grid-template-columns:1fr 1fr}.ttm-tools label{grid-column:1/-1}.ttm-row{grid-template-columns:64px 72px 1fr}.ttm-actions{grid-column:1/-1;justify-content:flex-end}.ttm-form-grid{grid-template-columns:1fr}.ttm-form-grid .wide{grid-column:auto}}
