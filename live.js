@@ -20,6 +20,7 @@ let players=[];
 let TT=[];
 let currentIndex=0;
 let updatedAt=0;
+let hasFloorIndex=false;
 
 function norm(v){return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function eventParts(label){return String(label||"").split(/\n|\s*\+\s*|\s*\/\s*/).map(x=>x.trim()).filter(Boolean)}
@@ -102,12 +103,21 @@ async function load(){
   }catch(_){}
 
   try{
-    const idxSnap=await get(ref(db,"runningOrder/currentIndex"));
-    const idx=Number(idxSnap.val());
-    if(Number.isInteger(idx))currentIndex=idx;
-    const upSnap=await get(ref(db,"runningOrder/updatedAt"));
-    updatedAt=Number(upSnap.val())||0;
+    const fs=await get(ref(db,"floorStatus"));
+    const v=fs.val()||{};
+    const idx=Number(v.timetableIndex);
+    if(Number.isInteger(idx)){currentIndex=idx;hasFloorIndex=true;}
+    updatedAt=Number(v.updatedAt)||0;
   }catch(_){}
+  if(!hasFloorIndex){
+    try{
+      const idxSnap=await get(ref(db,"runningOrder/currentIndex"));
+      const idx=Number(idxSnap.val());
+      if(Number.isInteger(idx))currentIndex=idx;
+      const upSnap=await get(ref(db,"runningOrder/updatedAt"));
+      updatedAt=Number(upSnap.val())||updatedAt;
+    }catch(_){}
+  }
 
   render();
 
@@ -119,16 +129,27 @@ async function load(){
     }
   });
 
-  // THIS IS THE ONLY POSITION LISTENER.
-  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
-    const idx=Number(snap.val());
+  // Primary position listener: the same floorStatus written by MC.
+  onValue(ref(db,"floorStatus"),snap=>{
+    const v=snap.val()||{};
+    const idx=Number(v.timetableIndex);
     if(Number.isInteger(idx)){
+      hasFloorIndex=true;
       currentIndex=idx;
-      render();
     }
+    updatedAt=Number(v.updatedAt)||updatedAt;
+    render();
+  });
+
+  // Compatibility fallback only until floorStatus carries a timetable index.
+  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    if(hasFloorIndex)return;
+    const idx=Number(snap.val());
+    if(Number.isInteger(idx)){currentIndex=idx;render();}
   });
 
   onValue(ref(db,"runningOrder/updatedAt"),snap=>{
+    if(hasFloorIndex)return;
     updatedAt=Number(snap.val())||0;
     render();
   });

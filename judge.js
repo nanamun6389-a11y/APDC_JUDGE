@@ -25,6 +25,7 @@ let currentRoundSubmitted = false;
 let timetableRows = [];
 let runningIndex = 0;
 let runningRow = null;
+let hasFloorIndex=false;
 
 const ODD_PANEL = ["T1","T3","T5","T7","W1","W3","W5","W7","W9"];
 const EVEN_PANEL = ["T2","T4","T6","T8","W2","W4","W6","W8"];
@@ -522,12 +523,31 @@ async function loadJudgeRunningOrder(){
   }catch(_){ }
 
   try{
-    const idx=Number((await get(ref(db,"runningOrder/currentIndex"))).val());
-    if(Number.isInteger(idx)) runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    const fs=await get(ref(db,"floorStatus"));
+    const idx=Number(fs.val()?.timetableIndex);
+    if(Number.isInteger(idx)){
+      hasFloorIndex=true;
+      runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    }
   }catch(_){ }
+  if(!hasFloorIndex){
+    try{
+      const idx=Number((await get(ref(db,"runningOrder/currentIndex"))).val());
+      if(Number.isInteger(idx)) runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    }catch(_){ }
+  }
   syncJudgeToRunningOrder();
 
+  onValue(ref(db,"floorStatus"),snap=>{
+    const idx=Number(snap.val()?.timetableIndex);
+    if(!Number.isInteger(idx)) return;
+    hasFloorIndex=true;
+    runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));
+    syncJudgeToRunningOrder();
+  });
+
   onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    if(hasFloorIndex)return;
     const idx=Number(snap.val());
     if(!Number.isInteger(idx)) return;
     runningIndex=Math.max(0,Math.min(idx,Math.max(0,timetableRows.length-1)));

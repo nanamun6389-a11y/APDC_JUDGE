@@ -174,7 +174,7 @@ function renderTimetableRow(){
   const row=ttRow();
   ttPos.textContent=`${ttIndex+1} / ${TT.length}`;
   ttMeta.textContent=[row.start?`START ${row.start}`:"",eventRoundLabel(row)].filter(Boolean).join(" · ");
-  nowEl.textContent=row.no?`EVENT ${row.no}`:"WAITING";roundEl.textContent=rtext(String(row.round||"").toLowerCase());
+  nowEl.textContent=String(row.event||"").trim() || (row.no?`EVENT ${row.no}`:"WAITING");roundEl.textContent=rtext(String(row.round||"").toLowerCase());
   ttComment.textContent=buildComment(row);ttNote.textContent=buildNote(row);
   if(eventNameEl)eventNameEl.textContent=String(row.event||"—").trim()||"—";
   if(danceOrderEl){const dances=danceList(row);danceOrderEl.textContent=dances.length?dances.join(" → "):"—";}
@@ -197,71 +197,96 @@ async function loadSharedPlayers(){
   return d.map(x=>({...x,player:x.player||x.competitor||''}));
 }
 
+async function readSharedIndex(){
+  // floorStatus is the proven public sync path. runningOrder is compatibility only.
+  try{
+    const fs=await get(ref(db,"floorStatus"));
+    const v=fs.val()||{};
+    const idx=Number(v.timetableIndex);
+    if(Number.isInteger(idx)) return idx;
+  }catch(e){console.warn("floorStatus index read failed",e)}
+  try{
+    const st=await get(ref(db,"runningOrder/currentIndex"));
+    const idx=Number(st.val());
+    if(Number.isInteger(idx)) return idx;
+  }catch(e){console.warn("runningOrder index read failed",e)}
+  return null;
+}
+
 async function loadTimetable(){
+  // Loading the local timetable and syncing Firebase are deliberately separated.
+  // A Firebase write/read error must never be shown as "Timetable could not be loaded".
   try{
     const [tr,sharedPlayers]=await Promise.all([
-      fetch("timetable-data.json?v=20260722-unified-v1",{cache:"no-store"}),
+      fetch(`timetable-data.json?v=20260723-syncfix1-${Date.now()}`,{cache:"no-store"}),
       loadSharedPlayers()
     ]);
+    if(!tr.ok) throw new Error(`timetable-data.json HTTP ${tr.status}`);
     const d=await tr.json();
-    TT=d.rows||[];
+    TT=Array.isArray(d?.rows)?d.rows:[];
+    if(!TT.length) throw new Error("timetable-data.json has no rows");
     PLAYERS=sharedPlayers;
-
-    // Apply saved timetable first, when present.
-    try{
-      const ov=await get(ref(db,"timetableOverride"));
-      const v=ov.val();
-      if(v&&Array.isArray(v.rows)&&v.rows.length)TT=v.rows;
-    }catch(_){ }
-
-    // Restore the single shared running-order index.
-    try{
-      const st=await get(ref(db,"runningOrder/currentIndex"));
-      const idx=Number(st.val());
-      if(Number.isInteger(idx)) ttIndex=Math.max(0,Math.min(idx,TT.length-1));
-    }catch(_){ }
-
-    renderTimetableRow();
-    await publishLiveStatus();
-
-    onValue(ref(db,"timetableOverride"),async snap=>{
-      const v=snap.val();
-      if(v&&Array.isArray(v.rows)&&v.rows.length){
-        const stateSnap=await get(ref(db,"runningOrder/currentIndex"));
-        TT=v.rows;
-        const idx=Number(stateSnap.val());
-        ttIndex=Math.max(0,Math.min(Number.isInteger(idx)?idx:0,TT.length-1));
-        renderTimetableRow();
-        await publishLiveStatus();
-      }
-    });
-
-    // Any page changing the one shared index updates this MC.
-    onValue(ref(db,"runningOrder/currentIndex"),snap=>{
-      const idx=Number(snap.val());
-      if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
-        ttIndex=idx;
-        renderTimetableRow();
-      }
-    });
   }catch(e){
-    console.error(e);
+    console.error("Timetable load failed",e);
+    TT=[];
     ttMeta.textContent="Timetable could not be loaded.";
+    ttPos.textContent="0 / 0";
+    progress();
+    return;
   }
+
+  // Optional saved timetable override. Failure here does not invalidate the packaged timetable.
+  try{
+    const ov=await get(ref(db,"timetableOverride"));
+    const v=ov.val();
+    if(v&&Array.isArray(v.rows)&&v.rows.length) TT=v.rows;
+  }catch(e){console.warn("Timetable override unavailable",e)}
+
+  const sharedIndex=await readSharedIndex();
+  if(Number.isInteger(sharedIndex)) ttIndex=Math.max(0,Math.min(sharedIndex,TT.length-1));
+  else ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
+  renderTimetableRow();
+
+  // Only initialize Firebase when no shared position exists. Never let this affect timetable rendering.
+  if(!Number.isInteger(sharedIndex)) publishLiveStatus().catch(e=>console.warn("Initial live sync failed",e));
+
+  onValue(ref(db,"timetableOverride"),snap=>{
+    const v=snap.val();
+    if(v&&Array.isArray(v.rows)&&v.rows.length){
+      TT=v.rows;
+      ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
+      renderTimetableRow();
+    }
+  });
+
+  // Primary shared state: floorStatus. This path already worked on the deployed site.
+  onValue(ref(db,"floorStatus"),snap=>{
+    const v=snap.val()||{};
+    const idx=Number(v.timetableIndex);
+    if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
+      ttIndex=idx;
+      renderTimetableRow();
+    }
+  });
+
+  // Compatibility listener for older/newer pages that use runningOrder.
+  onValue(ref(db,"runningOrder/currentIndex"),snap=>{
+    const idx=Number(snap.val());
+    if(Number.isInteger(idx)&&idx>=0&&idx<TT.length&&idx!==ttIndex){
+      ttIndex=idx;
+      renderTimetableRow();
+    }
+  });
 }
+
 async function publishLiveStatus(){
   if(!TT.length)return;
   const current=TT[ttIndex]||{};
   const onDeck=TT[ttIndex+1]||{};
   const next=TT[ttIndex+2]||{};
   const updatedAt=Date.now();
-
-  // THE ONLY SOURCE OF TRUTH FOR POSITION.
-  await set(ref(db,"runningOrder/currentIndex"),ttIndex);
-  await set(ref(db,"runningOrder/updatedAt"),updatedAt);
-
-  // Legacy mirror only. LIVE no longer reads this.
-  await set(ref(db,"floorStatus"),{
+  const payload={
+    timetableIndex:ttIndex,
     now:current.event|| (current.no?`EVENT ${current.no}`:"WAITING"),
     eventNo:current.no||"",
     onDeck:onDeck.event|| (onDeck.no?`EVENT ${onDeck.no}`:"—"),
@@ -269,7 +294,16 @@ async function publishLiveStatus(){
     round:current.round||"",
     danceOrder:current.danceOrder||"",
     updatedAt
-  });
+  };
+
+  // floorStatus is written first so LIVE/JUDGE update even if the newer path is unavailable.
+  await set(ref(db,"floorStatus"),payload);
+  try{
+    await set(ref(db,"runningOrder/currentIndex"),ttIndex);
+    await set(ref(db,"runningOrder/updatedAt"),updatedAt);
+  }catch(e){
+    console.warn("runningOrder mirror failed; floorStatus sync remains active",e);
+  }
 }
 firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
 prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
