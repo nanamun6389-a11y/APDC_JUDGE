@@ -75,18 +75,29 @@ let currentIndex=0;
 let updatedAt=0;
 let hasFloorIndex=false;
 let sharedState=null;
+let QUALIFIERS={};
 
 function norm(v){return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function eventParts(label){return String(label||"").split(/\n|\s*\+\s*|\s*\/\s*/).map(x=>x.trim()).filter(Boolean)}
-function backNumbersFor(label){
+function qualifierNumbersForRow(row){
+  const source=String(row?.sourceEventNo||row?.event||'').trim();
+  const bucket=QUALIFIERS?.[encodeURIComponent(source)]||QUALIFIERS?.[source]||{};
+  const round=String(row?.round||'').toLowerCase();
+  const key=round.includes('semi')?'semi':(round.includes('final')?'final':'');
+  const vals=key&&Array.isArray(bucket?.[key])?bucket[key].map(String).filter(Boolean):[];
+  return vals.sort((a,b)=>Number(a)-Number(b));
+}
+function backNumbersFor(label,row){
+  const chosen=qualifierNumbersForRow(row);
+  if(chosen.length)return chosen;
   const raw=String(label||"").trim();
   if(!raw||raw==="—"||raw.toUpperCase()==="WAITING")return[];
   const exact=new Set(eventParts(raw).map(norm));
   const nums=players.filter(p=>exact.has(norm(p.event))).map(p=>String(p.backNo||"").trim()).filter(Boolean);
   return [...new Set(nums)].sort((a,b)=>Number(a)-Number(b));
 }
-function renderBack(el,label){
-  const nums=backNumbersFor(label);
+function renderBack(el,label,row){
+  const nums=backNumbersFor(label,row);
   el.textContent=nums.length?`BACK NO. ${nums.join(" · ")}`:"BACK NO. —";
 }
 function hasEvent(v){
@@ -118,9 +129,9 @@ function render(){
   deckEl.textContent=deckLabel;
   nextEl.textContent=nextLabel;
 
-  renderBack(nowBackEl,nowLabel);
-  renderBack(deckBackEl,deckLabel);
-  renderBack(nextBackEl,nextLabel);
+  renderBack(nowBackEl,nowLabel,cur);
+  renderBack(deckBackEl,deckLabel,deck);
+  renderBack(nextBackEl,nextLabel,next);
 
   document.querySelector(".floor-board")?.classList.toggle(
     "final-only",
@@ -187,7 +198,10 @@ async function load(){
     if(Number.isInteger(idx) && (!updatedAt || !ts || ts>=updatedAt)){currentIndex=idx;hasFloorIndex=true;sharedState=v;updatedAt=ts||updatedAt;}
   }catch(_){}
 
+  try{const qs=await get(ref(db,'qualifiers'));QUALIFIERS=qs.val()||{};}catch(_){QUALIFIERS={};}
   render();
+
+  onValue(ref(db,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
 
   onValue(ref(db,"timetableOverride"),snap=>{
     const v=snap.val();

@@ -13,6 +13,10 @@ let ttDb=null;
 let ttRef=null;
 let ttOnValue=null;
 let searchEntryCounts=null;
+let latestPlayers=[];
+let currentFloorIndex=-1;
+let ttSet=null;
+let QUALIFIERS={};
 
 const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
 const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
@@ -33,6 +37,7 @@ async function fetchLatestPlayers(){
 async function loadSearchEntryCounts(){
   try{
     const data=await fetchLatestPlayers();
+    latestPlayers=Array.isArray(data)?data:[];
     const counts=new Map();
     for(const p of data){
       const no=String(p?.eventNo??'').trim();
@@ -93,16 +98,45 @@ function esc(s){
   return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
+function qualifierNumbersForRow(row){
+  const source=String(row?.sourceEventNo||row?.event||'').trim();
+  const bucket=QUALIFIERS?.[encodeURIComponent(source)]||QUALIFIERS?.[source]||{};
+  const round=String(row?.round||'').toLowerCase();
+  const key=round.includes('semi')?'semi':(round.includes('final')?'final':'');
+  const vals=key&&Array.isArray(bucket?.[key])?bucket[key].map(String).filter(Boolean):[];
+  return vals.sort((a,b)=>Number(a)-Number(b));
+}
+
 function render(){
-  const q=(document.getElementById('ttSearch').value||'').trim().toLowerCase();
-  const rows=TT.filter(x=>!q||[
-    x.start,x.no,x.round,x.style,x.section,x.division,x.event,
-    x.entries,x.danceOrder,x.note
-  ].join(' ').toLowerCase().includes(q));
+  const q=(document.getElementById('ttSearch').value||'').trim();
+  const qLower=q.toLowerCase();
+  let wantedBackNos=null;
+
+  if(q){
+    if(/^\d+$/.test(q)){
+      // Numeric searches are BACK NUMBER only. Do not match event number, time, entries, etc.
+      wantedBackNos=new Set([String(Number(q))]);
+    }else{
+      // Text searches are PLAYER NAME only. Resolve matching players to their back numbers.
+      wantedBackNos=new Set(
+        (latestPlayers||[])
+          .filter(p=>String(p?.competitor??'').toLowerCase().includes(qLower))
+          .map(p=>String(p?.backNo??'').trim())
+          .filter(Boolean)
+      );
+    }
+  }
+
+  const rows=TT.map((x,index)=>({x,index})).filter(({x})=>{
+    if(!q) return true;
+    if(!wantedBackNos || wantedBackNos.size===0) return false;
+    const nums=Array.isArray(x.backNumbers)?x.backNumbers.map(n=>String(n).trim()):[];
+    return nums.some(n=>wantedBackNos.has(n));
+  });
 
   const host=document.getElementById('ttCards');
-  host.innerHTML=rows.map(x=>`
-    <article class="tt-card" data-start="${esc(x.start)}">
+  host.innerHTML=rows.map(({x,index})=>`
+    <article class="tt-card ${index===currentFloorIndex?'tt-current':''}" data-index="${index}" data-start="${esc(x.start)}">
       <div class="tt-time">${esc(x.start)}</div>
       <div class="tt-main">
         <div class="tt-topline">
@@ -113,7 +147,7 @@ function render(){
         <div class="tt-meta">${[x.section,x.division,x.style].filter(Boolean).map(esc).join(' · ')}</div>
         ${x.entries?`<div class="tt-info"><b>ENTRIES</b> ${esc(x.entries)}</div>`:''}
         ${x.danceOrder?`<div class="tt-info"><b>DANCE</b> ${esc(x.danceOrder)}</div>`:''}
-        ${Array.isArray(x.backNumbers)&&x.backNumbers.length?`<div class="tt-info"><b>BACK NO.</b> ${x.backNumbers.map(esc).join(' · ')}</div>`:''}
+        ${(()=>{const qn=qualifierNumbersForRow(x);const nums=qn.length?qn:(Array.isArray(x.backNumbers)?x.backNumbers:[]);return nums.length?`<div class="tt-info"><b>BACK NO.</b> ${nums.map(esc).join(' · ')}</div>`:'';})()}
         ${x.note?`<div class="tt-note">${esc(x.note)}</div>`:''}
       </div>
       <div class="tt-duration">${esc(x.durationText||x.duration)}${x.durationText?'':(x.duration?' min':'')}</div>
@@ -153,7 +187,7 @@ async function loadDefault(){
 
 async function connectFirebase(){
   try{
-    const [{initializeApp,getApps},{getDatabase,ref,get,onValue},{firebaseConfig}] = await Promise.all([
+    const [{initializeApp,getApps},{getDatabase,ref,get,onValue,set},{firebaseConfig}] = await Promise.all([
       import("https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js"),
       import("https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js"),
       import("./firebase-config.js?v=20260722-unified-v2")
@@ -162,6 +196,7 @@ async function connectFirebase(){
     ttDb=getDatabase(app);
     ttRef=ref;
     ttOnValue=onValue;
+    ttSet=set;
     firebaseReady=true;
 
     try{
@@ -181,6 +216,23 @@ async function connectFirebase(){
       const rows=normalizeRows(v?.rows);
       if(rows.length){
         TT=applySearchEntryCounts(rows,searchEntryCounts);
+        render();
+      }
+    });
+
+    try{const qs=await get(ref(ttDb,'qualifiers'));QUALIFIERS=qs.val()||{};render();}catch(_){QUALIFIERS={};}
+    onValue(ref(ttDb,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
+
+    try{
+      const fs=await get(ref(ttDb,'floorStatus'));
+      const idx=Number(fs.val()?.timetableIndex);
+      if(Number.isInteger(idx)){currentFloorIndex=idx;render();}
+    }catch(e){console.warn('Current floor position read failed',e)}
+
+    onValue(ref(ttDb,'floorStatus'),snap=>{
+      const idx=Number(snap.val()?.timetableIndex);
+      if(Number.isInteger(idx)&&idx!==currentFloorIndex){
+        currentFloorIndex=idx;
         render();
       }
     });
@@ -221,6 +273,38 @@ async function loadTimetable(){
       '<div class="message">TIMETABLE LOAD ERROR · Please refresh once.</div>';
   }
 }
+
+async function setCurrentFloor(index){
+  index=Math.max(0,Math.min(Number(index)||0,TT.length-1));
+  currentFloorIndex=index;
+  render();
+  const row=TT[index]||{};
+  const payload={
+    timetableIndex:index,
+    now:row.event||(row.no?`EVENT ${row.no}`:'WAITING'),
+    eventNo:row.no||'',
+    onDeck:TT[index+1]?.event||(TT[index+1]?.no?`EVENT ${TT[index+1].no}`:'—'),
+    next:TT[index+2]?.event||(TT[index+2]?.no?`EVENT ${TT[index+2].no}`:'—'),
+    round:row.round||'',
+    danceOrder:row.danceOrder||'',
+    updatedAt:Date.now()
+  };
+  try{localStorage.setItem('apdcFloorStatusV2',JSON.stringify(payload));}catch(_){ }
+  if(firebaseReady&&ttDb&&ttRef&&ttSet){
+    try{
+      await Promise.all([
+        ttSet(ttRef(ttDb,'floorStatus'),payload),
+        ttSet(ttRef(ttDb,'apdcPublic/liveState'),payload)
+      ]);
+    }catch(e){console.warn('Current floor position write failed',e)}
+  }
+}
+
+document.getElementById('ttCards').addEventListener('click',e=>{
+  const card=e.target.closest('.tt-card[data-index]');
+  if(!card)return;
+  setCurrentFloor(Number(card.dataset.index));
+});
 
 document.getElementById('ttSearch').addEventListener('input',render);
 
