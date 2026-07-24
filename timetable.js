@@ -14,6 +14,7 @@ let ttRef=null;
 let ttOnValue=null;
 let searchEntryCounts=null;
 let latestPlayers=[];
+let backNumbersByEvent=new Map();
 let currentFloorIndex=-1;
 let ttSet=null;
 let QUALIFIERS={};
@@ -39,10 +40,18 @@ async function loadSearchEntryCounts(){
     const data=await fetchLatestPlayers();
     latestPlayers=Array.isArray(data)?data:[];
     const counts=new Map();
+    backNumbersByEvent=new Map();
     for(const p of data){
       const no=String(p?.eventNo??'').trim();
       const ev=String(p?.event??'').trim();
-      if(no) counts.set(no,(counts.get(no)||0)+1);
+      const backNo=String(p?.backNo??'').trim();
+      if(no){
+        counts.set(no,(counts.get(no)||0)+1);
+        if(backNo){
+          if(!backNumbersByEvent.has(no)) backNumbersByEvent.set(no,new Set());
+          backNumbersByEvent.get(no).add(backNo);
+        }
+      }
       if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}
     }
     return counts;
@@ -55,6 +64,11 @@ function applySearchEntryCounts(rows,counts){
   if(!Array.isArray(rows)||!counts) return rows;
   const seen=new Set();
   return rows.map(row=>{
+    const sourceNo=String(row?.sourceEventNo??'').trim();
+    const linkedBackNos=sourceNo&&backNumbersByEvent.has(sourceNo)
+      ? Array.from(backNumbersByEvent.get(sourceNo)).sort((a,b)=>Number(a)-Number(b))
+      : (Array.isArray(row?.backNumbers)?row.backNumbers:[]);
+    row={...row,backNumbers:linkedBackNos};
     const eventName=String(row?.event??'').trim();
     if(eventName.includes('+')){
       const parts=eventName.split('+').map(x=>x.trim().toLowerCase()).filter(Boolean);
@@ -62,7 +76,6 @@ function applySearchEntryCounts(rows,counts){
       if(parts.length&&vals.every(v=>Number.isFinite(v))) return {...row,entries:String(vals.reduce((a,b)=>a+b,0))};
       return row;
     }
-    const sourceNo=String(row?.sourceEventNo??'').trim();
     if(!sourceNo||seen.has(sourceNo)||!counts.has(sourceNo)) return row;
     seen.add(sourceNo);
     return {...row,entries:String(counts.get(sourceNo))};
@@ -135,12 +148,16 @@ function render(){
   });
 
   const host=document.getElementById('ttCards');
-  host.innerHTML=rows.map(({x,index})=>`
+  host.innerHTML=rows.map(({x,index})=>{
+    const rowBackNos=Array.isArray(x.backNumbers)?x.backNumbers.map(n=>String(n).trim()):[];
+    const matchedBackNos=q ? rowBackNos.filter(n=>wantedBackNos?.has(n)) : [];
+    const searchLabel=q && matchedBackNos.length ? `BACK NO. ${matchedBackNos.map(esc).join(' · ')}` : '';
+    return `
     <article class="tt-card ${index===currentFloorIndex?'tt-current':''}" data-index="${index}" data-start="${esc(x.start)}">
-      <div class="tt-time">${esc(x.start)}</div>
+      ${q ? '' : `<div class="tt-time">${esc(x.start)}</div>`}
       <div class="tt-main">
         <div class="tt-topline">
-          <span class="tt-run">${x.no ? `EVENT ${esc(x.no)}` : ''}</span>
+          <span class="tt-run">${q ? searchLabel : (x.no ? `EVENT ${esc(x.no)}` : '')}</span>
           <span class="tt-round">${esc(x.round)}</span>
         </div>
         <h2>${esc(x.event).replace(/\n/g,'<br>')}</h2>
@@ -150,9 +167,10 @@ function render(){
         ${(()=>{const qn=qualifierNumbersForRow(x);const nums=qn.length?qn:(Array.isArray(x.backNumbers)?x.backNumbers:[]);return nums.length?`<div class="tt-info"><b>BACK NO.</b> ${nums.map(esc).join(' · ')}</div>`:'';})()}
         ${x.note?`<div class="tt-note">${esc(x.note)}</div>`:''}
       </div>
-      <div class="tt-duration">${esc(x.durationText||x.duration)}${x.durationText?'':(x.duration?' min':'')}</div>
+      ${q ? '' : `<div class="tt-duration">${esc(x.durationText||x.duration)}${x.durationText?'':(x.duration?' min':'')}</div>`}
     </article>
-  `).join('') || '<div class="message">No timetable results.</div>';
+  `;
+  }).join('') || '<div class="message">No timetable results.</div>';
 }
 
 function loadLocal(){
