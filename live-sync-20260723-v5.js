@@ -56,6 +56,8 @@ function applySearchEntryCounts(rows,counts){
 
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
 const db=getDatabase(app);
+const APDC_LIVE_STATE_KEY="apdcFloorStatusV2";
+const apdcLiveChannel=("BroadcastChannel" in window)?new BroadcastChannel("apdc-mc-live-v2"):null;
 
 const nowEl=document.getElementById("liveNow");
 const deckEl=document.getElementById("liveOnDeck");
@@ -72,6 +74,7 @@ let TT=[];
 let currentIndex=0;
 let updatedAt=0;
 let hasFloorIndex=false;
+let sharedState=null;
 
 function norm(v){return String(v||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
 function eventParts(label){return String(label||"").split(/\n|\s*\+\s*|\s*\/\s*/).map(x=>x.trim()).filter(Boolean)}
@@ -103,19 +106,25 @@ function render(){
   const i=Math.max(0,Math.min(Number.isInteger(currentIndex)?currentIndex:0,TT.length-1));
   const cur=TT[i]||{},deck=TT[i+1]||{},next=TT[i+2]||{};
 
-  eventNoEl.textContent=cur.no?`EVENT ${cur.no}`:"EVENT —";
-  liveRoundEl.textContent=displayRound(cur.round);
-  nowEl.textContent=cur.event||"WAITING";
-  deckEl.textContent=deck.event||"—";
-  nextEl.textContent=next.event||"—";
+  const state=sharedState||{};
+  const nowLabel=String(state.now||cur.event||"WAITING");
+  const deckLabel=String(state.onDeck||deck.event||"—");
+  const nextLabel=String(state.next||next.event||"—");
+  const eventNo=String(state.eventNo??cur.no??"").trim();
+  const round=String(state.round??cur.round??"");
+  eventNoEl.textContent=eventNo?`EVENT ${eventNo}`:"EVENT —";
+  liveRoundEl.textContent=displayRound(round);
+  nowEl.textContent=nowLabel;
+  deckEl.textContent=deckLabel;
+  nextEl.textContent=nextLabel;
 
-  renderBack(nowBackEl,cur.event);
-  renderBack(deckBackEl,deck.event);
-  renderBack(nextBackEl,next.event);
+  renderBack(nowBackEl,nowLabel);
+  renderBack(deckBackEl,deckLabel);
+  renderBack(nextBackEl,nextLabel);
 
   document.querySelector(".floor-board")?.classList.toggle(
     "final-only",
-    hasEvent(cur.event)&&!hasEvent(deck.event)&&!hasEvent(next.event)
+    hasEvent(nowLabel)&&!hasEvent(deckLabel)&&!hasEvent(nextLabel)
   );
 
   updatedEl.textContent=updatedAt
@@ -161,11 +170,21 @@ async function load(){
   }catch(_){}
 
   try{
+    const local=JSON.parse(localStorage.getItem(APDC_LIVE_STATE_KEY)||"null");
+    if(local&&Number.isInteger(Number(local.timetableIndex))){
+      sharedState=local;
+      currentIndex=Number(local.timetableIndex);
+      updatedAt=Number(local.updatedAt)||0;
+      hasFloorIndex=true;
+    }
+  }catch(_){ }
+
+  try{
     const fs=await get(ref(db,"floorStatus"));
     const v=fs.val()||{};
     const idx=Number(v.timetableIndex);
-    if(Number.isInteger(idx)){currentIndex=idx;hasFloorIndex=true;}
-    updatedAt=Number(v.updatedAt)||0;
+    const ts=Number(v.updatedAt)||0;
+    if(Number.isInteger(idx) && (!updatedAt || !ts || ts>=updatedAt)){currentIndex=idx;hasFloorIndex=true;sharedState=v;updatedAt=ts||updatedAt;}
   }catch(_){}
 
   render();
@@ -189,10 +208,18 @@ async function load(){
       hasFloorIndex=true;
       currentIndex=idx;
     }
+    sharedState=v;
     updatedAt=ts||updatedAt;
     render();
   }
-  // LIVE follows both MC sync paths. updatedAt inside applySharedState prevents an older echo
+  // Instant same-browser sync from MC, plus Firebase for other devices.
+  window.addEventListener("storage",e=>{
+    if(e.key!==APDC_LIVE_STATE_KEY||!e.newValue)return;
+    try{applySharedState(JSON.parse(e.newValue));}catch(_){ }
+  });
+  if(apdcLiveChannel)apdcLiveChannel.onmessage=e=>applySharedState(e.data);
+
+  // LIVE follows both MC Firebase paths. updatedAt prevents an older echo
   // from moving the screen backwards, while the second path provides automatic failover.
   onValue(ref(db,"floorStatus"),snap=>applySharedState(snap.val()));
   onValue(ref(db,"apdcPublic/liveState"),snap=>applySharedState(snap.val()));

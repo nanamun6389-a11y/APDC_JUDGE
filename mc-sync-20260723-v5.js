@@ -54,6 +54,8 @@ function applySearchEntryCounts(rows,counts){
 
 apdcBuildLanguageUI();
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app),PASSWORD="0808";
+const APDC_LIVE_STATE_KEY="apdcFloorStatusV2";
+const apdcLiveChannel=("BroadcastChannel" in window)?new BroadcastChannel("apdc-mc-live-v2"):null;
 const gate=document.getElementById("mcPasswordGate"),box=document.getElementById("mcProtected"),pass=document.getElementById("mcPasswordInput"),btn=document.getElementById("mcPasswordBtn"),msg=document.getElementById("mcPasswordMessage");
 function unlock(){sessionStorage.setItem("apdcMcUnlocked","yes");gate.classList.add("hidden");box.classList.remove("hidden")}
 btn.onclick=()=>pass.value===PASSWORD?unlock():msg.textContent="WRONG PASSWORD";pass.onkeydown=e=>{if(e.key==="Enter")btn.click()};if(sessionStorage.getItem("apdcMcUnlocked")==="yes")unlock();
@@ -215,13 +217,22 @@ function renderRangeButtons(){
     b.type="button";
     b.textContent=`${start+1}–${end}`;
     b.classList.toggle("active",ttIndex>=start&&ttIndex<end);
-    b.onclick=async()=>{ttIndex=start;renderTimetableRow();await publishLiveStatus()};
+    b.onclick=()=>moveToTimetableIndex(start);
     rangeButtons.appendChild(b);
   }
 }
+function syncRunningOrderUI(){
+  const total=TT.length;
+  const pos=total?Math.max(0,Math.min(ttIndex,total-1))+1:0;
+  const text=document.getElementById("mcProgressText");
+  const bar=document.getElementById("mcProgressBar");
+  if(text)text.textContent=`${pos} / ${total} EVENTS`;
+  if(bar)bar.style.width=total?`${pos/total*100}%`:"0%";
+}
 function renderTimetableRow(){
-  if(!TT.length){ttPos.textContent="0 / 0";return}
+  if(!TT.length){ttPos.textContent="0 / 0";syncRunningOrderUI();return}
   ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));localStorage.setItem("apdcMcTimetableIndex",String(ttIndex));
+  syncRunningOrderUI();
   const row=ttRow();
   ttPos.textContent=`${ttIndex+1} / ${TT.length}`;
   ttMeta.textContent=[row.start?`START ${row.start}`:"",eventRoundLabel(row)].filter(Boolean).join(" · ");
@@ -345,36 +356,32 @@ async function publishLiveStatus(){
     updatedAt
   };
 
-  // MC publishes the same running-order state to two Firebase paths.
-  // floorStatus remains the primary path used by JUDGE/BROADCAST; apdcPublic/liveState is a redundant LIVE mirror.
-  // One path failing must never prevent the other path from updating.
-  const writes = await Promise.allSettled([
-    set(ref(db,"floorStatus"), payload),
-    set(ref(db,"apdcPublic/liveState"), payload)
-  ]);
-  if (writes[0].status === "rejected") console.warn("floorStatus write failed", writes[0].reason);
-  if (writes[1].status === "rejected") console.warn("Public live mirror write failed", writes[1].reason);
-  if (writes.every(x => x.status === "rejected")) throw new Error("MC → LIVE sync failed on both Firebase paths");
+  // Instant same-browser relay. This happens before any network request.
+  try{localStorage.setItem(APDC_LIVE_STATE_KEY,JSON.stringify(payload));}catch(e){console.warn("Local live sync failed",e)}
+  try{apdcLiveChannel?.postMessage(payload);}catch(e){console.warn("BroadcastChannel live sync failed",e)}
 
-  // Read back either path. This catches silent drift without blocking the MC controls.
-  try {
-    const [primary,mirror] = await Promise.allSettled([
-      get(ref(db,"floorStatus/timetableIndex")),
-      get(ref(db,"apdcPublic/liveState/timetableIndex"))
-    ]);
-    const savedPrimary = primary.status === "fulfilled" ? Number(primary.value.val()) : NaN;
-    const savedMirror = mirror.status === "fulfilled" ? Number(mirror.value.val()) : NaN;
-    if (savedPrimary !== ttIndex && savedMirror !== ttIndex) {
-      console.warn("APDC sync read-back mismatch", {wanted:ttIndex,savedPrimary,savedMirror});
-    }
-  } catch (e) { console.warn("APDC sync read-back failed",e); }
+  // Cross-device relay through Firebase. Either path is enough.
+  const writes=await Promise.allSettled([
+    set(ref(db,"floorStatus"),payload),
+    set(ref(db,"apdcPublic/liveState"),payload)
+  ]);
+  if(writes[0].status==="rejected")console.warn("floorStatus write failed",writes[0].reason);
+  if(writes[1].status==="rejected")console.warn("Public live mirror write failed",writes[1].reason);
+  if(writes.every(x=>x.status==="rejected"))console.warn("Firebase live sync unavailable; local browser sync remains active");
 }
-firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
-prevBtn.onclick=async()=>{if(ttIndex>0){ttIndex--;renderTimetableRow();await publishLiveStatus()}};
-nextBtn.onclick=async()=>{if(ttIndex<TT.length-1){ttIndex++;renderTimetableRow();await publishLiveStatus()}};
-lastBtn.onclick=async()=>{if(TT.length&&ttIndex!==TT.length-1){ttIndex=TT.length-1;renderTimetableRow();await publishLiveStatus()}};
+async function moveToTimetableIndex(index){
+  if(!TT.length)return;
+  const nextIndex=Math.max(0,Math.min(Number(index)||0,TT.length-1));
+  ttIndex=nextIndex;
+  renderTimetableRow();
+  await publishLiveStatus();
+}
+firstBtn.onclick=()=>moveToTimetableIndex(0);
+prevBtn.onclick=()=>moveToTimetableIndex(ttIndex-1);
+nextBtn.onclick=()=>moveToTimetableIndex(ttIndex+1);
+lastBtn.onclick=()=>moveToTimetableIndex(TT.length-1);
 function setScripts(){if(TT.length){renderTimetableRow();return}if(!active){koEl.textContent="다음 EVENT를 준비하겠습니다.";enEl.textContent="Please get ready for the next EVENT.";return}const round=rtext(active.round);const cue=[`EVENT ${active.eventNumber||"—"}`,round].filter(Boolean).join(" ");koEl.textContent=`다음은 EVENT ${active.eventNumber||"—"}입니다.`;enEl.textContent=`Next is EVENT ${active.eventNumber||"—"}.`}
-function progress(){const t=TT.length||order.length;const d=TT.length?ttIndex:(active?Math.max(0,order.findIndex(x=>x.eventKey===active.eventKey)):0);document.getElementById("mcProgressText").textContent=`${t?d+1:0} / ${t} EVENTS`;document.getElementById("mcProgressBar").style.width=t?`${(d+1)/t*100}%`:"0%"}
+function progress(){if(TT.length){syncRunningOrderUI();return}const t=order.length;const d=active?Math.max(0,order.findIndex(x=>x.eventKey===active.eventKey)):0;document.getElementById("mcProgressText").textContent=`${t?d+1:0} / ${t} EVENTS`;document.getElementById("mcProgressBar").style.width=t?`${(d+1)/t*100}%`:"0%"}
 let submissionUnsub=null;
 async function watch(active){if(submissionUnsub){submissionUnsub();submissionUnsub=null}if(!active||!active.eventKey)return;const e=enc(active.eventKey),s=await get(ref(db,`eventSettings/${e}`)),assigned=s.val()?.assignedJudges||[];submissionUnsub=onValue(ref(db,`submissions/${e}_${active.round||"final"}`),snap=>{const v=snap.val()||{},done=assigned.filter(c=>v[c]),wait=assigned.filter(c=>!v[c]);document.getElementById("mcJudgeCount").textContent=`${done.length} / ${assigned.length} DONE`;document.getElementById("mcWaitingJudges").textContent=wait.length?`Waiting for Judges: ${wait.join(", ")}`:"JUDGES ARE DONE."})}
 onValue(ref(db,"activeEvent"),snap=>{active=snap.val();if(!active){if(!TT.length){nowEl.textContent="WAITING";roundEl.textContent="";setScripts()}return}if(!TT.length){nowEl.textContent=active.label||"";roundEl.textContent=rtext(active.round);setScripts();progress()}watch(active)});
