@@ -111,13 +111,42 @@ function esc(s){
   return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
-function qualifierNumbersForRow(row){
-  const source=String(row?.sourceEventNo||row?.event||'').trim();
+function sourceKey(row){
+  return String(row?.sourceEventNo||row?.event||'').trim();
+}
+function sameSource(a,b){
+  return sourceKey(a)===sourceKey(b);
+}
+function roundText(row){
+  return String(row?.round||'').toLowerCase();
+}
+function qualifierStateForRow(row,index){
+  const source=sourceKey(row);
+  const round=roundText(row);
+  const prior=TT.slice(0,index).filter(r=>sameSource(r,row));
+  let key='';
+
+  // A Semi Final needs saved qualifiers only when a Quarter Final for the same
+  // event was actually held earlier. A Semi that is the first round uses the
+  // original entry list.
+  if(round.includes('semi') && prior.some(r=>roundText(r).includes('quarter'))){
+    key='semi';
+  }
+  // A Final/Grand Final needs saved finalists only when a Semi Final for the
+  // same event was held earlier. Direct Finals keep their original entry list.
+  if(round.includes('final') && prior.some(r=>roundText(r).includes('semi'))){
+    key='final';
+  }
+
+  if(!key){
+    const nums=Array.isArray(row?.backNumbers)?row.backNumbers.map(String).filter(Boolean):[];
+    return {requiresSaved:false,saved:true,numbers:nums.sort((a,b)=>Number(a)-Number(b))};
+  }
+
   const bucket=QUALIFIERS?.[encodeURIComponent(source)]||QUALIFIERS?.[source]||{};
-  const round=String(row?.round||'').toLowerCase();
-  const key=round.includes('semi')?'semi':(round.includes('final')?'final':'');
-  const vals=key&&Array.isArray(bucket?.[key])?bucket[key].map(String).filter(Boolean):[];
-  return vals.sort((a,b)=>Number(a)-Number(b));
+  const saved=Object.prototype.hasOwnProperty.call(bucket,key) && Array.isArray(bucket[key]);
+  const nums=saved?bucket[key].map(String).filter(Boolean).sort((a,b)=>Number(a)-Number(b)):[];
+  return {requiresSaved:true,saved,numbers:nums};
 }
 
 function render(){
@@ -140,20 +169,24 @@ function render(){
     }
   }
 
-  const rows=TT.map((x,index)=>({x,index})).filter(({x})=>{
+  const rows=TT.map((x,index)=>({x,index})).filter(({x,index})=>{
     if(!q) return true;
     if(!wantedBackNos || wantedBackNos.size===0) return false;
-    const nums=Array.isArray(x.backNumbers)?x.backNumbers.map(n=>String(n).trim()):[];
-    return nums.some(n=>wantedBackNos.has(n));
+    // For staged Semi/Final rounds, do not expose/search a result until the
+    // previous round's qualifiers have actually been saved.
+    const state=qualifierStateForRow(x,index);
+    if(state.requiresSaved && !state.saved) return false;
+    return state.numbers.some(n=>wantedBackNos.has(String(n).trim()));
   });
 
   const host=document.getElementById('ttCards');
   host.innerHTML=rows.map(({x,index})=>{
-    const rowBackNos=Array.isArray(x.backNumbers)?x.backNumbers.map(n=>String(n).trim()):[];
+    const qualifierState=qualifierStateForRow(x,index);
+    const rowBackNos=qualifierState.numbers.map(n=>String(n).trim());
     const matchedBackNos=q ? rowBackNos.filter(n=>wantedBackNos?.has(n)) : [];
     const searchLabel=q && matchedBackNos.length ? `BACK NO. ${matchedBackNos.map(esc).join(' · ')}` : '';
     return `
-    <article class="tt-card ${index===currentFloorIndex?'tt-current':''}" data-index="${index}" data-start="${esc(x.start)}">
+    <article class="tt-card ${q?'tt-search-result':''} ${index===currentFloorIndex?'tt-current':''}" data-index="${index}" data-start="${esc(x.start)}">
       ${q ? '' : `<div class="tt-time">${esc(x.start)}</div>`}
       <div class="tt-main">
         <div class="tt-topline">
@@ -164,7 +197,7 @@ function render(){
         <div class="tt-meta">${[x.section,x.division,x.style].filter(Boolean).map(esc).join(' · ')}</div>
         ${x.entries?`<div class="tt-info"><b>ENTRIES</b> ${esc(x.entries)}</div>`:''}
         ${x.danceOrder?`<div class="tt-info"><b>DANCE</b> ${esc(x.danceOrder)}</div>`:''}
-        ${(()=>{const qn=qualifierNumbersForRow(x);const nums=qn.length?qn:(Array.isArray(x.backNumbers)?x.backNumbers:[]);return nums.length?`<div class="tt-info"><b>BACK NO.</b> ${nums.map(esc).join(' · ')}</div>`:'';})()}
+        ${qualifierState.numbers.length?`<div class="tt-info tt-backnos"><b>BACK NO.</b> ${qualifierState.numbers.map(esc).join(' · ')}</div>`:''}
         ${x.note?`<div class="tt-note">${esc(x.note)}</div>`:''}
       </div>
       ${q ? '' : `<div class="tt-duration">${esc(x.durationText||x.duration)}${x.durationText?'':(x.duration?' min':'')}</div>`}
