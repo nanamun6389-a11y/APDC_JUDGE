@@ -192,8 +192,10 @@ async function load(){
     updatedAt=ts||updatedAt;
     render();
   }
-  // LIVE follows floorStatus only. Public mirror is intentionally not used as a competing source.
+  // LIVE follows both MC sync paths. updatedAt inside applySharedState prevents an older echo
+  // from moving the screen backwards, while the second path provides automatic failover.
   onValue(ref(db,"floorStatus"),snap=>applySharedState(snap.val()));
+  onValue(ref(db,"apdcPublic/liveState"),snap=>applySharedState(snap.val()));
 
 }
 load();

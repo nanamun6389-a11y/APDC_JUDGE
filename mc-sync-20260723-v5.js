@@ -345,16 +345,28 @@ async function publishLiveStatus(){
     updatedAt
   };
 
-  // PRIMARY SOURCE OF TRUTH: floorStatus.
-  // Save this path by itself so a permission problem on any public mirror can never block LIVE/JUDGE sync.
-  await set(ref(db,"floorStatus"), payload);
-  // Public mirror is best-effort only. Failure here must never cancel the primary floorStatus write.
-  set(ref(db,"apdcPublic/liveState"), payload).catch(e=>console.warn("Public live mirror write failed",e));
-  // Read-back makes a failed primary write visible in the console instead of silently drifting.
+  // MC publishes the same running-order state to two Firebase paths.
+  // floorStatus remains the primary path used by JUDGE/BROADCAST; apdcPublic/liveState is a redundant LIVE mirror.
+  // One path failing must never prevent the other path from updating.
+  const writes = await Promise.allSettled([
+    set(ref(db,"floorStatus"), payload),
+    set(ref(db,"apdcPublic/liveState"), payload)
+  ]);
+  if (writes[0].status === "rejected") console.warn("floorStatus write failed", writes[0].reason);
+  if (writes[1].status === "rejected") console.warn("Public live mirror write failed", writes[1].reason);
+  if (writes.every(x => x.status === "rejected")) throw new Error("MC → LIVE sync failed on both Firebase paths");
+
+  // Read back either path. This catches silent drift without blocking the MC controls.
   try {
-    const check = await get(ref(db,"floorStatus/timetableIndex"));
-    const saved = Number(check.val());
-    if (saved !== ttIndex) console.warn("APDC sync read-back mismatch", {wanted:ttIndex,saved});
+    const [primary,mirror] = await Promise.allSettled([
+      get(ref(db,"floorStatus/timetableIndex")),
+      get(ref(db,"apdcPublic/liveState/timetableIndex"))
+    ]);
+    const savedPrimary = primary.status === "fulfilled" ? Number(primary.value.val()) : NaN;
+    const savedMirror = mirror.status === "fulfilled" ? Number(mirror.value.val()) : NaN;
+    if (savedPrimary !== ttIndex && savedMirror !== ttIndex) {
+      console.warn("APDC sync read-back mismatch", {wanted:ttIndex,savedPrimary,savedMirror});
+    }
   } catch (e) { console.warn("APDC sync read-back failed",e); }
 }
 firstBtn.onclick=async()=>{if(TT.length&&ttIndex!==0){ttIndex=0;renderTimetableRow();await publishLiveStatus()}};
