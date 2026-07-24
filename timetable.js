@@ -22,7 +22,7 @@ let QUALIFIERS={};
 const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
 const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
 async function fetchLatestPlayers(){
-  const urls=[APDC_FIREBASE_PLAYERS_URL,APDC_SEARCH_PLAYERS_URL];
+  const urls=[APDC_FIREBASE_PLAYERS_URL,APDC_SEARCH_PLAYERS_URL,'./players.json'];
   let lastError=null;
   for(const url of urls){
     try{
@@ -126,22 +126,15 @@ function qualifierStateForRow(row,index){
   const prior=TT.slice(0,index).filter(r=>sameSource(r,row));
   let key='';
 
-  // Quarter Final: never pre-publish back numbers on the timetable.
-  // The draw/entry list exists internally, but the public timetable must not
-  // show it before the round/result.
-  if(round.includes('quarter')){
-    return {requiresSaved:true,saved:false,numbers:[]};
-  }
-
-  // Semi Final: only show back numbers after Quarter qualifiers have been saved.
-  // If Semi is the first competitive round, keep numbers hidden until a saved
-  // Semi field exists as an explicit result/selection.
-  if(round.includes('semi')){
+  // A Semi Final needs saved qualifiers only when a Quarter Final for the same
+  // event was actually held earlier. A Semi that is the first round uses the
+  // original entry list.
+  if(round.includes('semi') && prior.some(r=>roundText(r).includes('quarter'))){
     key='semi';
   }
-
-  // Final / Grand Final: only show back numbers after finalists have been saved.
-  if(round.includes('final')){
+  // A Final/Grand Final needs saved finalists only when a Semi Final for the
+  // same event was held earlier. Direct Finals keep their original entry list.
+  if(round.includes('final') && prior.some(r=>roundText(r).includes('semi'))){
     key='final';
   }
 
