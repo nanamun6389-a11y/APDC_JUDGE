@@ -3,6 +3,57 @@ import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.
 import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 
+const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
+const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
+async function fetchLatestPlayers(){
+  const urls=[APDC_FIREBASE_PLAYERS_URL,APDC_SEARCH_PLAYERS_URL];
+  let lastError=null;
+  for(const url of urls){
+    try{
+      const r=await fetch(`${url}?v=${Date.now()}`,{cache:'no-store'});
+      if(!r.ok) throw new Error(`${url} HTTP ${r.status}`);
+      const data=await r.json();
+      if(Array.isArray(data)&&data.length)return data;
+      throw new Error(`${url} returned empty/non-array data`);
+    }catch(e){lastError=e;}
+  }
+  throw lastError||new Error('No player source available');
+}
+async function loadSearchEntryCounts(){
+  try{
+    const data=await fetchLatestPlayers();
+    const counts=new Map();
+    for(const p of data){
+      const no=String(p?.eventNo??'').trim();
+      const ev=String(p?.event??'').trim();
+      if(no) counts.set(no,(counts.get(no)||0)+1);
+      if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}
+    }
+    return counts;
+  }catch(e){
+    console.warn('Entry auto-sync unavailable; keeping timetable values',e);
+    return null;
+  }
+}
+function applySearchEntryCounts(rows,counts){
+  if(!Array.isArray(rows)||!counts) return rows;
+  const seen=new Set();
+  return rows.map(row=>{
+    const eventName=String(row?.event??'').trim();
+    if(eventName.includes('+')){
+      const parts=eventName.split('+').map(x=>x.trim().toLowerCase()).filter(Boolean);
+      const vals=parts.map(x=>counts.get(`event:${x}`));
+      if(parts.length&&vals.every(v=>Number.isFinite(v))) return {...row,entries:String(vals.reduce((a,b)=>a+b,0))};
+      return row;
+    }
+    const sourceNo=String(row?.sourceEventNo??'').trim();
+    if(!sourceNo||seen.has(sourceNo)||!counts.has(sourceNo)) return row;
+    seen.add(sourceNo);
+    return {...row,entries:String(counts.get(sourceNo))};
+  });
+}
+
+
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
 const db=getDatabase(app);
 
@@ -73,6 +124,10 @@ function render(){
 }
 
 async function loadSharedPlayers(){
+  try{
+    const sr=await fetch(`${APDC_SEARCH_PLAYERS_URL}?v=${Date.now()}`,{cache:"no-store"});
+    if(sr.ok){const sd=await sr.json();if(Array.isArray(sd)&&sd.length)return sd.map(x=>({...x,player:x.player||x.competitor||''}));}
+  }catch(e){console.warn("APDC-SEARCH player data unavailable",e)}
   const remote=`https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json?v=${Date.now()}`;
   try{
     const r=await fetch(remote,{cache:"no-store"});
@@ -94,12 +149,15 @@ async function load(){
     const td=await tr.json();
     TT=td.rows||[];
     players=sharedPlayers;
+    const counts=new Map();
+    for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
+    TT=applySearchEntryCounts(TT,counts);
   }catch(e){console.error(e)}
 
   try{
     const ov=await get(ref(db,"timetableOverride"));
     const v=ov.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length)TT=v.rows;
+    if(v&&Array.isArray(v.rows)&&v.rows.length){const counts=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}TT=applySearchEntryCounts(v.rows,counts);}
   }catch(_){}
 
   try{
@@ -115,7 +173,8 @@ async function load(){
   onValue(ref(db,"timetableOverride"),snap=>{
     const v=snap.val();
     if(v&&Array.isArray(v.rows)&&v.rows.length){
-      TT=v.rows;
+      const counts=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
+      TT=applySearchEntryCounts(v.rows,counts);
       render();
     }
   });

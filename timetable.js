@@ -12,6 +12,58 @@ let firebaseReady=false;
 let ttDb=null;
 let ttRef=null;
 let ttOnValue=null;
+let searchEntryCounts=null;
+
+const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
+const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
+async function fetchLatestPlayers(){
+  const urls=[APDC_FIREBASE_PLAYERS_URL,APDC_SEARCH_PLAYERS_URL];
+  let lastError=null;
+  for(const url of urls){
+    try{
+      const r=await fetch(`${url}?v=${Date.now()}`,{cache:'no-store'});
+      if(!r.ok) throw new Error(`${url} HTTP ${r.status}`);
+      const data=await r.json();
+      if(Array.isArray(data)&&data.length)return data;
+      throw new Error(`${url} returned empty/non-array data`);
+    }catch(e){lastError=e;}
+  }
+  throw lastError||new Error('No player source available');
+}
+async function loadSearchEntryCounts(){
+  try{
+    const data=await fetchLatestPlayers();
+    const counts=new Map();
+    for(const p of data){
+      const no=String(p?.eventNo??'').trim();
+      const ev=String(p?.event??'').trim();
+      if(no) counts.set(no,(counts.get(no)||0)+1);
+      if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}
+    }
+    return counts;
+  }catch(e){
+    console.warn('Entry auto-sync unavailable; keeping timetable values',e);
+    return null;
+  }
+}
+function applySearchEntryCounts(rows,counts){
+  if(!Array.isArray(rows)||!counts) return rows;
+  const seen=new Set();
+  return rows.map(row=>{
+    const eventName=String(row?.event??'').trim();
+    if(eventName.includes('+')){
+      const parts=eventName.split('+').map(x=>x.trim().toLowerCase()).filter(Boolean);
+      const vals=parts.map(x=>counts.get(`event:${x}`));
+      if(parts.length&&vals.every(v=>Number.isFinite(v))) return {...row,entries:String(vals.reduce((a,b)=>a+b,0))};
+      return row;
+    }
+    const sourceNo=String(row?.sourceEventNo??'').trim();
+    if(!sourceNo||seen.has(sourceNo)||!counts.has(sourceNo)) return row;
+    seen.add(sourceNo);
+    return {...row,entries:String(counts.get(sourceNo))};
+  });
+}
+
 
 function normalizeRows(value){
   if(Array.isArray(value)) return value.filter(Boolean);
@@ -117,7 +169,7 @@ async function connectFirebase(){
       const v=s.val();
       const rows=normalizeRows(v?.rows);
       if(rows.length){
-        TT=rows;
+        TT=applySearchEntryCounts(rows,searchEntryCounts);
         render();
       }
     }catch(e){
@@ -128,7 +180,7 @@ async function connectFirebase(){
       const v=snap.val();
       const rows=normalizeRows(v?.rows);
       if(rows.length){
-        TT=rows;
+        TT=applySearchEntryCounts(rows,searchEntryCounts);
         render();
       }
     });
@@ -139,24 +191,25 @@ async function connectFirebase(){
 
 async function loadTimetable(){
   if(TT.length){render();return;}
+  searchEntryCounts=await loadSearchEntryCounts();
 
   // 1) Always show something first: local backup if present.
   const localRows=loadLocal();
   if(localRows?.length){
-    TT=localRows;
+    TT=applySearchEntryCounts(localRows,searchEntryCounts);
     render();
   }
 
   // 2) Load the packaged APDC timetable regardless of Firebase status.
   const defaultRows=await loadDefault();
   if(defaultRows?.length && !TT.length){
-    TT=defaultRows;
+    TT=applySearchEntryCounts(defaultRows,searchEntryCounts);
     render();
   }
 
   // Extra safety: if local data was malformed/empty, packaged timetable wins.
   if(!TT.length && defaultRows?.length){
-    TT=defaultRows;
+    TT=applySearchEntryCounts(defaultRows,searchEntryCounts);
     render();
   }
 
