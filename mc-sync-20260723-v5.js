@@ -337,20 +337,33 @@ function combinedScripts(row,lang){
   return "";
 }
 function closingEnglish(){return [
-  "All of today’s events are now complete.",
-  "We will now begin the Awards Ceremony.",
-  "Award winners, please come to the podium when your event is called.",
-  "Please give a big hand to all our award winners.",
-  "Thank you to all our dancers, families, guests, and staff for being with us until the end.",
-  "We hope to see you again at APDC 2027. Thank you."
+  "APDC 2026 is now finished.",
+  "",
+  "To all our dancers, Judges, families, guests, and staff,",
+  "thank you for making today so special.",
+  "",
+  "It was a wonderful day with all of you.",
+  "",
+  "We hope to see you again at APDC 2027.",
+  "",
+  "Thank you, everyone.",
+  "Have a safe trip home."
 ].join("\n");}
 function closingKorean(){return [
-  "이것으로 오늘 예정된 모든 경기가 끝났습니다.",
-  "이제 시상식을 진행하겠습니다.",
-  "수상하시는 선수 여러분은 해당 경기가 호명되면 시상대 앞으로 이동해 주시기 바랍니다.",
-  "수상하신 모든 선수 여러분께 큰 박수 부탁드립니다.",
-  "끝까지 함께해 주신 선수 여러분, 가족 여러분, 관계자 여러분, 그리고 모든 스태프 여러분께 진심으로 감사드립니다.",
-  "2027년 APDC에서 다시 뵙겠습니다. 감사합니다."
+  "이것으로 2026 Asia Pacific Dancesport Championship의 모든 공식 일정을 마치겠습니다.",
+  "",
+  "오늘 최고의 무대를 보여주신 선수 여러분,",
+  "공정한 심사를 위해 함께해 주신 심사위원 여러분,",
+  "아낌없는 응원으로 자리를 빛내주신 가족 여러분과 관객 여러분,",
+  "그리고 대회의 성공적인 진행을 위해 애써주신 관계자 여러분과 모든 스태프 여러분께 깊이 감사드립니다.",
+  "",
+  "여러분과 함께했기에 오늘 이 자리가 더욱 뜻깊고 빛날 수 있었습니다.",
+  "",
+  "오늘의 아름다운 순간들을 오래도록 기억해 주시길 바라며,",
+  "2027년 APDC에서 다시 뵙겠습니다.",
+  "",
+  "끝까지 함께해 주신 모든 분께 다시 한번 감사드립니다.",
+  "안전하게 돌아가시기 바랍니다."
 ].join("\n");}
 function scriptStyle(){return TT.length?(ttIndex%5):0;}
 function buildEnglish(row){
