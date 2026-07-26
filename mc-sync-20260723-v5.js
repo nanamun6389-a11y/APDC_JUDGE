@@ -387,7 +387,7 @@ function buildEnglish(row){
   else lines.push(`Next is EVENT ${no}.`);
   const calls=["Dancers, please come to the floor.","Dancers, please take your places.","Please welcome the dancers to the floor.","Dancers, the floor is ready.","Dancers, please get ready on the floor."];
   lines.push(calls[style],`Judges, please check EVENT ${no}.`);
-  const dances=danceList(row);if(dances.length>1)lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");if(dances.length)lines.push(`First dance, ${dances[0]}. Music, please.`);else lines.push("Music, please.");
+  const dances=danceList(row);if(dances.length>1){lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");lines.push(`First dance, ${dances[0]}. Music, please.`);}else if(dances.length===1)lines.push(`The dance is ${dances[0]}. Music, please.`);else lines.push("Music, please.");
   if(ttIndex===TT.length-1)lines.push("","AFTER THE LAST DANCE",closingEnglish());
   return lines.join("\n");
 }
@@ -412,7 +412,7 @@ function buildKorean(row){
   else lines.push(`다음은 EVENT ${no}입니다.`);
   const calls=["선수 여러분, 플로어로 입장해 주시기 바랍니다.","선수 여러분, 자리를 잡아주시기 바랍니다.","출전 선수들을 플로어로 맞아주시기 바랍니다.","선수 여러분, 플로어가 준비되었습니다.","선수 여러분, 플로어에서 준비해 주시기 바랍니다."];
   lines.push(calls[style],`심사위원 여러분, EVENT ${no}를 확인해 주시기 바랍니다.`);
-  const dances=danceList(row);if(dances.length>1)lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");if(dances.length)lines.push(`첫 종목은 ${dances[0]}입니다. 음악 부탁드립니다.`);else lines.push("음악 부탁드립니다.");
+  const dances=danceList(row);if(dances.length>1){lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");lines.push(`첫 종목은 ${dances[0]}입니다. 음악 부탁드립니다.`);}else if(dances.length===1)lines.push(`이번 종목은 ${dances[0]}입니다. 음악 부탁드립니다.`);else lines.push("음악 부탁드립니다.");
   if(ttIndex===TT.length-1)lines.push("","마지막 경기 종료 후",closingKorean());
   return lines.join("\n");
 }
