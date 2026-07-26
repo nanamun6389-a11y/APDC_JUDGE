@@ -517,3 +517,6 @@ main {
   .tt-card.tt-search-result .tt-main h2{font-size:19px;line-height:1.25;}
   .tt-card.tt-search-result .tt-meta,.tt-card.tt-search-result .tt-info{font-size:14px;line-height:1.55;}
 }
+
+/* MC SCRIPT READABILITY ONLY — 2026-07-27 */
+.mc-script-text{white-space:pre-line;line-height:1.7;overflow-wrap:anywhere}

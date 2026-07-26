@@ -178,56 +178,84 @@ function formationKorean(){
   return out.join("\n");
 }
 function openingEnglish(){return [
-  "Ladies and gentlemen, the Opening Ceremony of APDC 2026 will now begin.",
+  "Ladies and gentlemen, the Opening Ceremony of APDC 2026 will now begin.","",
   "First, please welcome the organizer of APDC, Tei Kim.",
-  "He has worked hard to make this event possible. Please give him a big hand.",
+  "He has worked hard to make this event possible.","Please give him a big hand.","",
   "Next, we would like to thank a very special guest who gave great support to APDC.",
   "Please welcome Jay Park, President of the Korea Professional Dance Council and Organizing Chairman of the Korea Open.",
-  "Thank you for your support for APDC. Please give him a warm welcome.",
-  "Now, we would like to introduce our Judges.",
-  "International Judges: Raymond Kim from Korea. Lorencia from Singapore. Marcus from Taiwan. Crystal from Macao. Tomohiro from Japan. Annie Oo from Malaysia. Nancy Chang. Max Yim from Hong Kong.",
-  "National Judges: JongRyul Lee. DoYeong Kim. HyeRi Eom. ChaeLim Ku. JaeHo Ko. ChaeSung Lim. Eun Il. Vladi. SeYoung Lee.",
-  "Judges, thank you for being with us today. Please give all our Judges a big hand.",
-  "And now, we are ready for the Country Team Match.",
-  "The Team Match will be danced in this order: Cha Cha, Samba, and Rumba.",
-  "Please welcome the teams from Korea, Japan, Taiwan, Hong Kong, Macao, Singapore, and Malaysia."
+  "Thank you for your support for APDC.","",
+  "Now, please welcome our Country Team Match dancers and Judges for the parade.",
+  "They are here today representing their countries.",
+  "Korea · Japan · Taiwan · Hong Kong · Macao · Singapore · Malaysia","",
+  "[AFTER THE PARADE]",
+  "Welcome to all our dancers and Judges.","",
+  "Now, let us introduce our Judges for APDC 2026.","",
+  "International Judges",
+  "From Korea, Judge Raymond Kim.",
+  "From Singapore, Judge Lorencia.",
+  "From Taiwan, Judge Marcus.",
+  "From Macao, Judge Crystal.",
+  "From Japan, Judge Tomohiro.",
+  "From Malaysia, Judge Annie Oo.",
+  "Judge Nancy Chang.",
+  "From Hong Kong, Judge Max Yim.","",
+  "Thank you to all our International Judges.","",
+  "National Judges",
+  "Judge JongRyul Lee.","Judge DoYeong Kim.","Judge HyeRi Eom.","Judge ChaeLim Ku.",
+  "Judge JaeHo Ko.","Judge ChaeSung Lim.","Judge Eun Il.","Judge Vladi.","Judge SeYoung Lee.","",
+  "Thank you to all our Judges for being with us today.",
+  "Please give them a big hand.","",
+  "And now, it is time for the Country Team Match.",
+  "DANCE ORDER  Cha Cha → Samba → Rumba"
 ].join("\n");}
 function openingKorean(){return [
-  "신사 숙녀 여러분, 지금부터 APDC 2026 개회식을 시작하겠습니다.",
+  "신사 숙녀 여러분, 지금부터 APDC 2026 개회식을 시작하겠습니다.","",
   "먼저 APDC의 대회장이자 오거나이저인 김태원, Tei Kim을 소개합니다.",
-  "이번 대회를 위해 많은 시간과 열정을 다해 준비해 주셨습니다. 큰 박수로 맞아주시기 바랍니다.",
+  "이번 대회를 위해 많은 시간과 열정을 다해 준비해 주셨습니다.","큰 박수로 맞아주시기 바랍니다.","",
   "이어서 APDC의 첫걸음에 큰 힘과 응원을 보내주신 특별한 분을 소개하겠습니다.",
   "한국프로댄스협회 회장이자 코리아오픈 조직위원장이신 박지우 선생님입니다.",
-  "APDC를 위해 보내주신 소중한 도움과 응원에 깊이 감사드립니다. 큰 박수로 맞아주시기 바랍니다.",
-  "이제 오늘 대회의 심사위원 여러분을 소개하겠습니다.",
-  "International Judges: 한국 Raymond Kim. 싱가포르 Lorencia. 대만 Marcus. 마카오 Crystal. 일본 Tomohiro. 말레이시아 Annie Oo. Nancy Chang. 홍콩 Max Yim.",
-  "National Judges: 이종률. 김도영. 엄혜리. 구채림. 고재호. 임채성. 은일. 블라디. 이세영.",
-  "오늘 함께해 주신 심사위원 여러분께 감사드립니다. 큰 박수 부탁드립니다.",
-  "이제 Country Team Match를 시작할 준비가 되었습니다.",
-  "Team Match는 Cha Cha, Samba, Rumba 순으로 진행됩니다.",
-  "한국, 일본, 대만, 홍콩, 마카오, 싱가포르, 말레이시아 팀을 큰 박수로 맞아주시기 바랍니다."
+  "APDC를 위해 보내주신 소중한 도움과 응원에 깊이 감사드립니다.","",
+  "이제 각 나라를 대표하는 Country Team Match 선수들과 심사위원 여러분의 행진이 있겠습니다.",
+  "각국을 대표해 함께해 주신 여러분을 환영합니다.",
+  "한국 · 일본 · 대만 · 홍콩 · 마카오 · 싱가포르 · 말레이시아","",
+  "[행진 완료 후]",
+  "각 나라를 대표해 함께해 주신 선수 여러분과 심사위원 여러분, 환영합니다.","",
+  "이제 APDC 2026의 심사를 맡아주실 심사위원 여러분을 한 분씩 소개하겠습니다.","",
+  "International Judges",
+  "한국의 Raymond Kim 심사위원입니다.",
+  "싱가포르의 Lorencia 심사위원입니다.",
+  "대만의 Marcus 심사위원입니다.",
+  "마카오의 Crystal 심사위원입니다.",
+  "일본의 Tomohiro 심사위원입니다.",
+  "말레이시아의 Annie Oo 심사위원입니다.",
+  "Nancy Chang 심사위원입니다.",
+  "홍콩의 Max Yim 심사위원입니다.","",
+  "함께 자리해 주신 International Judges 여러분께 감사드립니다.","",
+  "National Judges",
+  "이종률 심사위원입니다.","김도영 심사위원입니다.","엄혜리 심사위원입니다.","구채림 심사위원입니다.",
+  "고재호 심사위원입니다.","임채성 심사위원입니다.","은일 심사위원입니다.","블라디 심사위원입니다.","이세영 심사위원입니다.","",
+  "오늘 APDC 2026을 위해 함께 자리해 주신 모든 심사위원 여러분께 진심으로 감사드립니다.",
+  "큰 박수 부탁드립니다.","",
+  "이제 Country Team Match를 시작하겠습니다.",
+  "DANCE ORDER  Cha Cha → Samba → Rumba"
 ].join("\n");}
 function teamMatchEnglish(){return [
-  "It is time for the Country Team Match.",
-  "The dance order is Cha Cha, Samba, and Rumba.",
-  "All team dancers, please be ready. Judges, please be ready.",
-  "First dance, Cha Cha. Music, please.",
-  "Thank you. Dancers, please stay on the floor.",
-  "Next dance, Samba. Music, please.",
-  "Thank you. Dancers, please stay on the floor.",
-  "Last dance, Rumba. Music, please.",
-  "Thank you to all our teams. Please give all the dancers a big hand."
+  "It is time for the Country Team Match.","",
+  "DANCE ORDER  Cha Cha → Samba → Rumba","",
+  "All team dancers, please be ready.","Judges, please be ready.","",
+  "First dance, Cha Cha.","[MUSIC]","",
+  "Dancers, please stay on the floor.","Next dance, Samba.","[MUSIC]","",
+  "Dancers, please stay on the floor.","Last dance, Rumba.","[MUSIC]","",
+  "Thank you to all our teams.","Please give all the dancers a big hand."
 ].join("\n");}
 function teamMatchKorean(){return [
-  "이제 Country Team Match를 시작하겠습니다.",
-  "경기 순서는 Cha Cha, Samba, Rumba입니다.",
-  "모든 팀 선수 여러분, 준비해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.",
-  "첫 종목은 Cha Cha입니다. 음악 부탁드립니다.",
-  "감사합니다. 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.",
-  "다음 종목은 Samba입니다. 음악 부탁드립니다.",
-  "감사합니다. 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.",
-  "마지막 종목은 Rumba입니다. 음악 부탁드립니다.",
-  "함께해 주신 모든 팀 선수 여러분께 감사드립니다. 큰 박수 부탁드립니다."
+  "이제 Country Team Match를 시작하겠습니다.","",
+  "DANCE ORDER  Cha Cha → Samba → Rumba","",
+  "모든 팀 선수 여러분, 준비해 주시기 바랍니다.","심사위원 여러분, 준비해 주시기 바랍니다.","",
+  "첫 종목은 Cha Cha입니다.","[음악]","",
+  "선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음 종목은 Samba입니다.","[음악]","",
+  "선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","마지막 종목은 Rumba입니다.","[음악]","",
+  "함께해 주신 모든 팀 선수 여러분께 감사드립니다.","큰 박수 부탁드립니다."
 ].join("\n");}
 function combinedScripts(row,lang){
   const ev=String(row?.event||"").trim();
@@ -235,9 +263,9 @@ function combinedScripts(row,lang){
   const en=lang==="en";
   const both=(a,b)=>en?a:b;
   if(u.includes("MANIA LATIN R + KOREA CLOSED AMATEUR LATIN"))return both([
-    "This is a combined event: Mania Latin R and Korea Closed Amateur Latin.","All dancers, please come to the floor. Judges, please be ready.","First dance, Rumba. Music, please.","Thank you. Mania Latin R dancers, please leave the floor. Korea Closed Amateur Latin dancers, please stay on the floor.","Next, Cha Cha. Music, please.","Please stay on the floor. Next, Samba. Music, please.","Please stay on the floor. Next, Paso Doble. Music, please.","Please stay on the floor. Last dance, Jive. Music, please."
+    "This is a combined event: Mania Latin R and Korea Closed Amateur Latin.","All dancers, please come to the floor. Judges, please be ready.","First dance, Rumba. Music, please.","[LEAVE / STAY] Mania Latin R dancers, please leave the floor. Korea Closed Amateur Latin dancers, please stay on the floor.","Next, Cha Cha. Music, please.","Please stay on the floor. Next, Samba. Music, please.","Please stay on the floor. Next, Paso Doble. Music, please.","Please stay on the floor. Last dance, Jive. Music, please."
   ],[
-    "이번 경기는 Mania Latin R과 Korea Closed Amateur Latin의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","첫 종목은 Rumba입니다. 음악 부탁드립니다.","감사합니다. Mania Latin R 선수 여러분은 퇴장해 주시고, Korea Closed Amateur Latin 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Samba입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Paso Doble입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 마지막 종목은 Jive입니다. 음악 부탁드립니다."
+    "이번 경기는 Mania Latin R과 Korea Closed Amateur Latin의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","첫 종목은 Rumba입니다. 음악 부탁드립니다.","[퇴장 / 잔류] Mania Latin R 선수 여러분은 퇴장해 주시고, Korea Closed Amateur Latin 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Samba입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Paso Doble입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 마지막 종목은 Jive입니다. 음악 부탁드립니다."
   ]).join("\n");
   if(u.includes("UNDER 12 SOLO CJ + UNDER 15 SOLO CJ + UNDER 18 SOLO CJ"))return both([
     "This is a combined event for Under 12 Solo CJ, Under 15 Solo CJ, and Under 18 Solo CJ.","All dancers, please come to the floor. Judges, please be ready.","First, Cha Cha. Music, please.","Dancers, please stay on the floor.","Next, Jive. Music, please."
@@ -334,7 +362,7 @@ function buildEnglish(row){
   else lines.push(`Next is EVENT ${no}.`);
   const calls=["Dancers, please come to the floor.","Dancers, please take your places.","Please welcome the dancers to the floor.","Dancers, the floor is ready.","Dancers, please get ready on the floor."];
   lines.push(calls[style],`Judges, please check EVENT ${no}.`);
-  const dances=danceList(row);if(dances.length)lines.push(`First dance, ${dances[0]}. Music, please.`);else lines.push("Music, please.");
+  const dances=danceList(row);if(dances.length>1)lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");if(dances.length)lines.push(`First dance, ${dances[0]}. Music, please.`);else lines.push("Music, please.");
   if(ttIndex===TT.length-1)lines.push("","AFTER THE LAST DANCE",closingEnglish());
   return lines.join("\n");
 }
@@ -359,7 +387,7 @@ function buildKorean(row){
   else lines.push(`다음은 EVENT ${no}입니다.`);
   const calls=["선수 여러분, 플로어로 입장해 주시기 바랍니다.","선수 여러분, 자리를 잡아주시기 바랍니다.","출전 선수들을 플로어로 맞아주시기 바랍니다.","선수 여러분, 플로어가 준비되었습니다.","선수 여러분, 플로어에서 준비해 주시기 바랍니다."];
   lines.push(calls[style],`심사위원 여러분, EVENT ${no}를 확인해 주시기 바랍니다.`);
-  const dances=danceList(row);if(dances.length)lines.push(`첫 종목은 ${dances[0]}입니다. 음악 부탁드립니다.`);else lines.push("음악 부탁드립니다.");
+  const dances=danceList(row);if(dances.length>1)lines.push("",`DANCE ORDER  ${dances.join(" → ")}`,"");if(dances.length)lines.push(`첫 종목은 ${dances[0]}입니다. 음악 부탁드립니다.`);else lines.push("음악 부탁드립니다.");
   if(ttIndex===TT.length-1)lines.push("","마지막 경기 종료 후",closingKorean());
   return lines.join("\n");
 }
