@@ -157,8 +157,8 @@ function formationTeams(){
 }
 function formationEnglish(){
   const teams=formationTeams();
-  if(!teams.length)return ["Next is our Formation event.","Judges, please be ready.","Music, please."].join("\n");
-  const out=["Next is our Formation event."];
+  if(!teams.length)return ["Let’s begin with our first event, Formation.","Judges, please be ready.","Music, please."].join("\n");
+  const out=["Let’s begin with our first event, Formation."];
   teams.forEach((team,i)=>{
     out.push(i===0?`First, please welcome ${team} to the floor.`:`Next, please welcome ${team} to the floor.`);
     out.push("Judges, please be ready.","Music, please.",`Thank you, ${team}. Please give them a big hand.`);
@@ -168,8 +168,8 @@ function formationEnglish(){
 }
 function formationKorean(){
   const teams=formationTeams();
-  if(!teams.length)return ["다음은 Formation 경기입니다.","심사위원 여러분, 준비해 주시기 바랍니다.","음악 부탁드립니다."].join("\n");
-  const out=["다음은 Formation 경기입니다."];
+  if(!teams.length)return ["그럼 오늘의 첫 경기, Formation을 시작하겠습니다.","심사위원 여러분, 준비해 주시기 바랍니다.","음악 부탁드립니다."].join("\n");
+  const out=["그럼 오늘의 첫 경기, Formation을 시작하겠습니다."];
   teams.forEach((team,i)=>{
     out.push(i===0?`먼저 ${team} 팀을 큰 박수로 맞아주시기 바랍니다.`:`이어서 ${team} 팀을 플로어로 모시겠습니다.`);
     out.push("심사위원 여러분, 준비해 주시기 바랍니다.","음악 부탁드립니다.",`${team} 팀의 멋진 무대였습니다. 큰 박수 부탁드립니다.`);
@@ -212,8 +212,7 @@ function openingEnglish(){return [
   "Judges, please take your places.",
   "Thank you to all our Judges for being with us today.",
   "Please give them a big hand.","",
-  "And now, it is time for the Country Team Match.",
-  "DANCE ORDER  Cha Cha → Samba → Rumba"
+  "And now, it is time for the Country Team Match."
 ].join("\n");}
 function openingKorean(){return [
   "신사 숙녀 여러분, 지금부터 APDC 2026 개회식을 시작하겠습니다.","",
@@ -250,8 +249,7 @@ function openingKorean(){return [
   "심사위원 여러분께서는 심사 위치에 자리해 주시기 바랍니다.",
   "오늘 APDC 2026을 위해 함께 자리해 주신 모든 심사위원 여러분께 진심으로 감사드립니다.",
   "큰 박수 부탁드립니다.","",
-  "이제 Country Team Match를 시작하겠습니다.",
-  "DANCE ORDER  Cha Cha → Samba → Rumba"
+  "이제 Country Team Match를 시작하겠습니다."
 ].join("\n");}
 function teamMatchEnglish(){return [
   "It is time for the Country Team Match.","",
