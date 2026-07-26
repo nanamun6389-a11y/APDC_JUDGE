@@ -34,6 +34,24 @@ async function loadSearchEntryCounts(){
     return null;
   }
 }
+
+function normalizeTimetableRow(row){
+  const r=row&&typeof row==="object"?row:{};
+  const pick=(...vals)=>{for(const v of vals){if(v!==undefined&&v!==null&&String(v).trim()!=="")return v;}return "";};
+  return {
+    ...r,
+    no:String(pick(r.no,r.eventNo,r.eventNumber,r.sourceEventNo,r.EVENT,r.event_no)).trim(),
+    event:String(pick(r.event,r.Event,r.eventName,r.name,r.EVENT_NAME)).trim(),
+    round:String(pick(r.round,r.Round,r.stage,r.ROUND)).trim(),
+    section:String(pick(r.section,r.Section,r.category,r.SECTION)).trim(),
+    entries:String(pick(r.entries,r.Entries,r.entryCount,r.ENTRIES)).trim(),
+    danceOrder:String(pick(r.danceOrder,r.dance,r.Dance,r.DANCE,r.dances)).trim(),
+    note:String(pick(r.note,r.Note,r.memo,r.MEMO)).trim(),
+    sourceEventNo:String(pick(r.sourceEventNo,r.eventNo,r.eventNumber,r.no,r.EVENT)).trim()
+  };
+}
+function normalizeTimetableRows(rows){return Array.isArray(rows)?rows.map(normalizeTimetableRow):[];}
+
 function applySearchEntryCounts(rows,counts){
   if(!Array.isArray(rows)||!counts) return rows;
   const seen=new Set();
@@ -430,7 +448,7 @@ async function loadTimetable(){
     ]);
     if(!tr.ok) throw new Error(`timetable-data.json HTTP ${tr.status}`);
     const d=await tr.json();
-    TT=Array.isArray(d?.rows)?d.rows:[];
+    TT=normalizeTimetableRows(Array.isArray(d?.rows)?d.rows:[]);
     if(!TT.length) throw new Error("timetable-data.json has no rows");
     PLAYERS=sharedPlayers;
     const counts=new Map();
@@ -451,7 +469,7 @@ async function loadTimetable(){
     const v=ov.val();
     if(v&&Array.isArray(v.rows)&&v.rows.length){
       const counts=new Map();for(const p of PLAYERS){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
-      TT=applySearchEntryCounts(v.rows,counts);
+      TT=applySearchEntryCounts(normalizeTimetableRows(v.rows),counts);
     }
   }catch(e){console.warn("Timetable override unavailable",e)}
 
@@ -467,7 +485,7 @@ async function loadTimetable(){
     const v=snap.val();
     if(v&&Array.isArray(v.rows)&&v.rows.length){
       const counts=new Map();for(const p of PLAYERS){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
-      TT=applySearchEntryCounts(v.rows,counts);
+      TT=applySearchEntryCounts(normalizeTimetableRows(v.rows),counts);
       ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
       renderTimetableRow();
     }
