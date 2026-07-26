@@ -275,9 +275,9 @@ function combinedScripts(row,lang){
   const en=lang==="en";
   const both=(a,b)=>en?a:b;
   if(u.includes("MANIA LATIN R + KOREA CLOSED AMATEUR LATIN"))return both([
-    "This is a combined event: Mania Latin R and Korea Closed Amateur Latin.","All dancers, please come to the floor. Judges, please be ready.","First dance, Rumba. Music, please.","[LEAVE / STAY] Mania Latin R dancers, please leave the floor. Korea Closed Amateur Latin dancers, please stay on the floor.","Next, Cha Cha. Music, please.","Please stay on the floor. Next, Samba. Music, please.","Please stay on the floor. Next, Paso Doble. Music, please.","Please stay on the floor. Last dance, Jive. Music, please."
+    "This is a combined event: Mania Latin R and Korea Closed Amateur Latin.","All dancers, please come to the floor. Judges, please be ready.","First dance, Rumba. Music, please.","[LEAVE / STAY] Mania Latin R dancers, please leave the floor. Korea Closed Amateur Latin dancers, please stay on the floor.","Next, Cha Cha. Music, please.","Next, Samba. Music, please.","Next, Paso Doble. Music, please.","Please stay on the floor. Last dance, Jive. Music, please."
   ],[
-    "이번 경기는 Mania Latin R과 Korea Closed Amateur Latin의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","첫 종목은 Rumba입니다. 음악 부탁드립니다.","[퇴장 / 잔류] Mania Latin R 선수 여러분은 퇴장해 주시고, Korea Closed Amateur Latin 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Samba입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 다음은 Paso Doble입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 마지막 종목은 Jive입니다. 음악 부탁드립니다."
+    "이번 경기는 Mania Latin R과 Korea Closed Amateur Latin의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","첫 종목은 Rumba입니다. 음악 부탁드립니다.","[퇴장 / 잔류] Mania Latin R 선수 여러분은 퇴장해 주시고, Korea Closed Amateur Latin 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","다음은 Samba입니다. 음악 부탁드립니다.","다음은 Paso Doble입니다. 음악 부탁드립니다.","그대로 남아주시기 바랍니다. 마지막 종목은 Jive입니다. 음악 부탁드립니다."
   ]).join("\n");
   if(u.includes("UNDER 12 SOLO CJ + UNDER 15 SOLO CJ + UNDER 18 SOLO CJ"))return both([
     "This is a combined event for Under 12 Solo CJ, Under 15 Solo CJ, and Under 18 Solo CJ.","All dancers, please come to the floor. Judges, please be ready.","First, Cha Cha. Music, please.","Dancers, please stay on the floor.","Next, Jive. Music, please."
@@ -290,14 +290,14 @@ function combinedScripts(row,lang){
     "이번 경기는 Under 15 CRS와 Under 18 Solo S의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Samba입니다. 음악 부탁드립니다.","감사합니다. Under 18 Solo S 선수 여러분은 퇴장해 주시고, Under 15 CRS 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","선수 여러분, 그대로 남아주시기 바랍니다. 마지막 종목은 Rumba입니다. 음악 부탁드립니다."
   ]).join("\n");
   if(u.includes("UNDER 18 SOLO RJ + OVER 35 SOLO CRJ"))return both([
-    "This is a combined event: Under 18 Solo RJ and Over 35 Solo CRJ.","All dancers, please come to the floor. Judges, please be ready.","First, Rumba. Music, please.","Dancers, please stay on the floor. Next, Jive. Music, please.","Thank you. Under 18 Solo RJ dancers, please leave the floor. Over 35 Solo CRJ dancers, please stay on the floor.","Last dance, Cha Cha. Music, please."
+    "This is a combined event: Under 18 Solo RJ and Over 35 Solo CRJ.","All dancers, please come to the floor. Judges, please be ready.","First, Rumba. Music, please.","Next, Jive. Music, please.","Thank you. Under 18 Solo RJ dancers, please leave the floor. Over 35 Solo CRJ dancers, please stay on the floor.","Last dance, Cha Cha. Music, please."
   ],[
-    "이번 경기는 Under 18 Solo RJ와 Over 35 Solo CRJ의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Rumba입니다. 음악 부탁드립니다.","선수 여러분, 그대로 남아주시기 바랍니다. 다음은 Jive입니다. 음악 부탁드립니다.","감사합니다. Under 18 Solo RJ 선수 여러분은 퇴장해 주시고, Over 35 Solo CRJ 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","마지막 종목은 Cha Cha입니다. 음악 부탁드립니다."
+    "이번 경기는 Under 18 Solo RJ와 Over 35 Solo CRJ의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Rumba입니다. 음악 부탁드립니다.","선수 여러분, 다음은 Jive입니다. 음악 부탁드립니다.","감사합니다. Under 18 Solo RJ 선수 여러분은 퇴장해 주시고, Over 35 Solo CRJ 선수 여러분은 플로어에 그대로 남아주시기 바랍니다.","마지막 종목은 Cha Cha입니다. 음악 부탁드립니다."
   ]).join("\n");
   if(u.includes("OVER 19 SOLO RJ + UNDER 18 SOLO CRJ + OVER 19 SOLO LATIN CSRJ"))return both([
-    "This is a combined event for Over 19 Solo RJ, Under 18 Solo CRJ, and Over 19 Solo Latin CSRJ.","All dancers, please come to the floor. Judges, please be ready.","First, Rumba. Music, please.","All dancers, please stay on the floor. Next, Jive. Music, please.","Thank you. Over 19 Solo RJ dancers, please leave the floor. Under 18 Solo CRJ and Over 19 Solo Latin CSRJ dancers, please stay.","Next, Cha Cha. Music, please.","Thank you. Under 18 Solo CRJ dancers, please leave the floor. Over 19 Solo Latin CSRJ dancers, please stay.","Last dance, Samba. Music, please."
+    "This is a combined event for Over 19 Solo RJ, Under 18 Solo CRJ, and Over 19 Solo Latin CSRJ.","All dancers, please come to the floor. Judges, please be ready.","First, Rumba. Music, please.","Next, Jive. Music, please.","Thank you. Over 19 Solo RJ dancers, please leave the floor. Under 18 Solo CRJ and Over 19 Solo Latin CSRJ dancers, please stay.","Next, Cha Cha. Music, please.","Thank you. Under 18 Solo CRJ dancers, please leave the floor. Over 19 Solo Latin CSRJ dancers, please stay.","Last dance, Samba. Music, please."
   ],[
-    "이번 경기는 Over 19 Solo RJ, Under 18 Solo CRJ, Over 19 Solo Latin CSRJ의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Rumba입니다. 음악 부탁드립니다.","모든 선수는 그대로 남아주시기 바랍니다. 다음은 Jive입니다. 음악 부탁드립니다.","감사합니다. Over 19 Solo RJ 선수 여러분은 퇴장해 주시고, Under 18 Solo CRJ와 Over 19 Solo Latin CSRJ 선수 여러분은 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","감사합니다. Under 18 Solo CRJ 선수 여러분은 퇴장해 주시고, Over 19 Solo Latin CSRJ 선수 여러분은 그대로 남아주시기 바랍니다.","마지막 종목은 Samba입니다. 음악 부탁드립니다."
+    "이번 경기는 Over 19 Solo RJ, Under 18 Solo CRJ, Over 19 Solo Latin CSRJ의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Rumba입니다. 음악 부탁드립니다.","모든 선수는 다음은 Jive입니다. 음악 부탁드립니다.","감사합니다. Over 19 Solo RJ 선수 여러분은 퇴장해 주시고, Under 18 Solo CRJ와 Over 19 Solo Latin CSRJ 선수 여러분은 그대로 남아주시기 바랍니다.","다음은 Cha Cha입니다. 음악 부탁드립니다.","감사합니다. Under 18 Solo CRJ 선수 여러분은 퇴장해 주시고, Over 19 Solo Latin CSRJ 선수 여러분은 그대로 남아주시기 바랍니다.","마지막 종목은 Samba입니다. 음악 부탁드립니다."
   ]).join("\n");
   const simple=[
     ["OVER 19 SOLO P + UNDER 18 SOLO P","Paso Doble"],["OVER 19 SOLO C + OVER 35 SOLO C","Cha Cha"],["OVER 35 SOLO R + PRO-AM LATIN R","Rumba"],["OVER 19 SOLO S + OVER 35 SOLO S","Samba"],["UNDER 18 SOLO Q + UNDER 10 SOLO Q","Quickstep"],["OVER 19 SOLO T + UNDER 18 SOLO T","Tango"],["OVER 19 SOLO W + UNDER 18 SOLO W","Waltz"]
@@ -318,9 +318,9 @@ function combinedScripts(row,lang){
     "이번 경기는 Over 19 Solo R과 Over 19 Solo CR의 합동 경기입니다.","선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.","먼저 Rumba입니다. 음악 부탁드립니다.","감사합니다. Over 19 Solo R 선수 여러분은 퇴장해 주시고, Over 19 Solo CR 선수 여러분은 그대로 남아주시기 바랍니다.","마지막 종목은 Cha Cha입니다. 음악 부탁드립니다."
   ]).join("\n");
   if(u.includes("UNDER 12 SOLO WTFQ + UNDER 10 SOLO WTQ"))return both([
-    `This is a combined event: ${ev}.`,`All dancers, please come to the floor. Judges, please be ready.`,`First, Waltz. Music, please.`,`Dancers, please stay on the floor. Next, Tango. Music, please.`,`Dancers, please stay on the floor. Next, Quickstep. Music, please.`,`Thank you. Under 10 Solo WTQ dancers, please leave the floor. Under 12 Solo WTFQ dancers, please stay on the floor.`,`Last dance, Foxtrot. Music, please.`
+    `This is a combined event: ${ev}.`,`All dancers, please come to the floor. Judges, please be ready.`,`First, Waltz. Music, please.`,`Next, Tango. Music, please.`,`Next, Quickstep. Music, please.`,`Thank you. Under 10 Solo WTQ dancers, please leave the floor. Under 12 Solo WTFQ dancers, please stay on the floor.`,`Last dance, Foxtrot. Music, please.`
   ],[
-    `이번 경기는 ${ev}의 합동 경기입니다.`,`선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.`,`먼저 Waltz입니다. 음악 부탁드립니다.`,`선수 여러분, 그대로 남아주시기 바랍니다. 다음은 Tango입니다. 음악 부탁드립니다.`,`선수 여러분, 그대로 남아주시기 바랍니다. 다음은 Quickstep입니다. 음악 부탁드립니다.`,`감사합니다. Under 10 Solo WTQ 선수 여러분은 퇴장해 주시고, Under 12 Solo WTFQ 선수 여러분은 그대로 남아주시기 바랍니다.`,`마지막 종목은 Foxtrot입니다. 음악 부탁드립니다.`
+    `이번 경기는 ${ev}의 합동 경기입니다.`,`선수 여러분, 플로어로 입장해 주시기 바랍니다. 심사위원 여러분, 준비해 주시기 바랍니다.`,`먼저 Waltz입니다. 음악 부탁드립니다.`,`선수 여러분, 다음은 Tango입니다. 음악 부탁드립니다.`,`선수 여러분, 다음은 Quickstep입니다. 음악 부탁드립니다.`,`감사합니다. Under 10 Solo WTQ 선수 여러분은 퇴장해 주시고, Under 12 Solo WTFQ 선수 여러분은 그대로 남아주시기 바랍니다.`,`마지막 종목은 Foxtrot입니다. 음악 부탁드립니다.`
   ]).join("\n");
   const allStay=[
     ["UNDER 12 WTF + UNDER 18 SOLO WTF + OVER 19 SOLO WTF",["Waltz","Tango","Foxtrot"]],
@@ -381,9 +381,9 @@ function buildEnglish(row){
   const style=scriptStyle();
   let lines=[];
   if(round.includes("grand final"))lines.push(`Now, EVENT ${no}, the Grand Final.`);
-  else if(round.includes("final"))lines.push([`Now, EVENT ${no}, the Final.`,`Next is EVENT ${no}, the Final.`,`We are ready for EVENT ${no}, the Final.`,`It is time for EVENT ${no}, the Final.`,`Here is EVENT ${no}, the Final.`][style]);
-  else if(round.includes("semi"))lines.push([`Next is EVENT ${no}, Semi-Final.`,`Now, EVENT ${no}, Semi-Final.`,`We are ready for EVENT ${no}, Semi-Final.`,`It is time for EVENT ${no}, Semi-Final.`,`Here is EVENT ${no}, Semi-Final.`][style]);
   else if(round.includes("quarter"))lines.push([`Next is EVENT ${no}, Quarter-Final.`,`Now, EVENT ${no}, Quarter-Final.`,`We are ready for EVENT ${no}, Quarter-Final.`,`It is time for EVENT ${no}, Quarter-Final.`,`Here is EVENT ${no}, Quarter-Final.`][style]);
+  else if(round.includes("semi"))lines.push([`Next is EVENT ${no}, Semi-Final.`,`Now, EVENT ${no}, Semi-Final.`,`We are ready for EVENT ${no}, Semi-Final.`,`It is time for EVENT ${no}, Semi-Final.`,`Here is EVENT ${no}, Semi-Final.`][style]);
+  else if(round.includes("final"))lines.push([`Now, EVENT ${no}, the Final.`,`Next is EVENT ${no}, the Final.`,`We are ready for EVENT ${no}, the Final.`,`It is time for EVENT ${no}, the Final.`,`Here is EVENT ${no}, the Final.`][style]);
   else lines.push(`Next is EVENT ${no}.`);
   const calls=["Dancers, please come to the floor.","Dancers, please take your places.","Please welcome the dancers to the floor.","Dancers, the floor is ready.","Dancers, please get ready on the floor."];
   lines.push(calls[style],`Judges, please check EVENT ${no}.`);
@@ -406,9 +406,9 @@ function buildKorean(row){
   const style=scriptStyle();
   let lines=[];
   if(round.includes("grand final"))lines.push(`이제 EVENT ${no}, Grand Final입니다.`);
-  else if(round.includes("final"))lines.push([`이제 EVENT ${no}, Final입니다.`,`다음은 EVENT ${no}, Final입니다.`,`EVENT ${no}, Final을 진행하겠습니다.`,`이제 EVENT ${no}, Final을 시작하겠습니다.`,`EVENT ${no}, Final 무대입니다.`][style]);
-  else if(round.includes("semi"))lines.push([`다음은 EVENT ${no}, Semi-Final입니다.`,`이제 EVENT ${no}, Semi-Final입니다.`,`EVENT ${no}, Semi-Final을 진행하겠습니다.`,`이제 EVENT ${no}, Semi-Final을 시작하겠습니다.`,`EVENT ${no}, Semi-Final 무대입니다.`][style]);
   else if(round.includes("quarter"))lines.push([`다음은 EVENT ${no}, Quarter-Final입니다.`,`이제 EVENT ${no}, Quarter-Final입니다.`,`EVENT ${no}, Quarter-Final을 진행하겠습니다.`,`이제 EVENT ${no}, Quarter-Final을 시작하겠습니다.`,`EVENT ${no}, Quarter-Final 무대입니다.`][style]);
+  else if(round.includes("semi"))lines.push([`다음은 EVENT ${no}, Semi-Final입니다.`,`이제 EVENT ${no}, Semi-Final입니다.`,`EVENT ${no}, Semi-Final을 진행하겠습니다.`,`이제 EVENT ${no}, Semi-Final을 시작하겠습니다.`,`EVENT ${no}, Semi-Final 무대입니다.`][style]);
+  else if(round.includes("final"))lines.push([`이제 EVENT ${no}, Final입니다.`,`다음은 EVENT ${no}, Final입니다.`,`EVENT ${no}, Final을 진행하겠습니다.`,`이제 EVENT ${no}, Final을 시작하겠습니다.`,`EVENT ${no}, Final 무대입니다.`][style]);
   else lines.push(`다음은 EVENT ${no}입니다.`);
   const calls=["선수 여러분, 플로어로 입장해 주시기 바랍니다.","선수 여러분, 자리를 잡아주시기 바랍니다.","출전 선수들을 플로어로 맞아주시기 바랍니다.","선수 여러분, 플로어가 준비되었습니다.","선수 여러분, 플로어에서 준비해 주시기 바랍니다."];
   lines.push(calls[style],`심사위원 여러분, EVENT ${no}를 확인해 주시기 바랍니다.`);
