@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>APDC MC</title>
-<link rel="stylesheet" href="style.css?v=20260723-timetable-visible">
+<link rel="stylesheet" href="style.css?v=20260727-floorcheck12">
 </head>
 <body>
 <header style="position:relative"><button class="brand brand-button" type="button" onclick="location.href='index.html'">APDC MC</button><div id="languageHost" class="language-host"></div></header>
@@ -21,7 +21,14 @@
 </nav>
 <main class="mc-page">
 <section id="mcPasswordGate" class="password-gate">
-  <div class="password-box"><div class="small-label">APDC MC ACCESS</div><h1>ENTER PASSWORD</h1><input id="mcPasswordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off"><button id="mcPasswordBtn" type="button">ENTER</button><div id="mcPasswordMessage" class="message"></div></div>
+  <div class="password-box">
+    <div class="small-label">APDC MC SECURE ACCESS</div>
+    <h1>MC LOGIN</h1>
+    <input id="mcEmailInput" type="email" inputmode="email" placeholder="Admin email" autocomplete="username" style="margin-bottom:10px">
+    <input id="mcPasswordInput" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="mcPasswordBtn" type="button">LOGIN</button>
+    <div id="mcPasswordMessage" class="message"></div>
+  </div>
 </section>
 <div id="mcProtected" class="hidden">
   <section class="mc-progress"><div><span>RUNNING ORDER</span><strong id="mcProgressText">0 / 0 EVENTS</strong></div><div class="mc-progress-bar"><i id="mcProgressBar"></i></div></section>
@@ -63,18 +70,26 @@
 
   <section class="mc-judge-status"><div class="mc-status-head"><strong>JUDGE STATUS</strong><strong id="mcJudgeCount">0 / 0 DONE</strong></div><div id="mcWaitingJudges" class="muted" style="margin-top:8px">—</div></section>
 
-  <section style="margin-top:20px"><div class="small-label" style="margin-bottom:8px">QUICK MC LINES</div><div class="quick-line-grid">
-    <button type="button" data-ko="심사위원 여러분, 준비해 주시기 바랍니다." data-en="Judges, please get ready.">JUDGES READY</button>
-    <button type="button" data-ko="선수 여러분, 플로어로 입장해 주세요." data-en="Players, please come to the floor.">PLAYERS TO FLOOR</button>
-    <button type="button" data-ko="선수 여러분께 큰 박수 부탁드립니다." data-en="Please give the players a big round of applause.">APPLAUSE</button>
-    <button type="button" data-back-number="1">BACK NUMBER</button>
-  </div></section>
+  <section class="mc-floor-check">
+  <div class="mc-floor-check-head">
+    <div>
+      <div class="small-label">FLOOR CHECK</div>
+      <div class="mc-floor-check-sub">현재 EVENT 백넘버 확인</div>
+    </div>
+    <div class="mc-floor-check-actions">
+      <button id="mcRecheckBtn" type="button">RECHECK</button>
+      <button id="mcAllOkBtn" type="button">ALL OK</button>
+    </div>
+  </div>
+  <div id="mcFloorCheckStatus" class="mc-floor-check-status">ALL CHECKED</div>
+  <div id="mcFloorCheckNumbers" class="mc-floor-check-numbers"></div>
+</section>
 </div>
 </main>
 <script src="i18n.js?v=20260717-1305"></script>
 <script>
 if ("serviceWorker" in navigator) { navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())); }
 </script>
-<script type="module" src="mc-sync-20260723-v5.js?v=20260727-single-dance10"></script>
+<script type="module" src="mc-sync-20260723-v5.js?v=20260727-floorcheck12"></script>
 </body>
 </html>

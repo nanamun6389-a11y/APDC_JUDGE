@@ -1,0 +1,46 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+
+    "floorStatus": {
+      ".write": "auth != null"
+    },
+    "apdcPublic": {
+      "liveState": {
+        ".write": "auth != null"
+      },
+      "players": {
+        ".write": "auth != null"
+      }
+    },
+    "qualifiers": {
+      ".write": "auth != null"
+    },
+    "timetableOverride": {
+      ".write": "auth != null"
+    },
+    "runningOrder": {
+      ".write": "auth != null"
+    },
+    "runningOrderState": {
+      ".write": "auth != null"
+    },
+    "activeEvent": {
+      ".write": "auth != null"
+    },
+    "eventSettings": {
+      ".write": "auth != null"
+    },
+    "submissions": {
+      ".write": "auth != null"
+    },
+    "sponsors": {
+      ".write": "auth != null"
+    },
+
+    "searchAnalytics": {
+      ".write": true
+    }
+  }
+}

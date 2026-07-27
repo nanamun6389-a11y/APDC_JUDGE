@@ -520,3 +520,17 @@ main {
 
 /* MC SCRIPT READABILITY ONLY — 2026-07-27 */
 .mc-script-text{white-space:pre-line;line-height:1.7;overflow-wrap:anywhere}
+
+/* FLOOR CHECK — MC only */
+.mc-floor-check{margin-top:20px;padding:18px 0;border-top:1px solid #000;border-bottom:1px solid #000}
+.mc-floor-check-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mc-floor-check-sub{margin-top:4px;font-size:12px;color:#666;font-weight:800}
+.mc-floor-check-actions{display:flex;gap:8px}
+.mc-floor-check-actions button{background:#fff;border:1px solid #000;padding:9px 13px;font-size:12px;font-weight:900;cursor:pointer}
+.mc-floor-check-status{margin-top:14px;font-size:13px;font-weight:900;letter-spacing:.04em}
+.mc-floor-check-status.is-alert{font-size:17px}
+.mc-floor-check-numbers{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.mc-backno-chip{min-width:56px;padding:10px 12px;border:2px solid #000;background:#fff;color:#000;font-size:16px;font-weight:900;cursor:pointer}
+.mc-backno-chip.is-checked{background:#000;color:#fff;border-color:#000}
+.mc-backno-chip.is-missing{background:#fff;color:#000}
+@media(max-width:760px){.mc-floor-check-head{align-items:flex-start;flex-direction:column}}

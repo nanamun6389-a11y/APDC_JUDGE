@@ -1,6 +1,7 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getDatabase, ref, get, onValue, set, update } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
 const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
@@ -71,12 +72,24 @@ function applySearchEntryCounts(rows,counts){
 }
 
 apdcBuildLanguageUI();
-const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app),PASSWORD="0808";
+const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app),auth=getAuth(app);
 const APDC_LIVE_STATE_KEY="apdcFloorStatusV2";
 const apdcLiveChannel=("BroadcastChannel" in window)?new BroadcastChannel("apdc-mc-live-v2"):null;
-const gate=document.getElementById("mcPasswordGate"),box=document.getElementById("mcProtected"),pass=document.getElementById("mcPasswordInput"),btn=document.getElementById("mcPasswordBtn"),msg=document.getElementById("mcPasswordMessage");
-function unlock(){sessionStorage.setItem("apdcMcUnlocked","yes");gate.classList.add("hidden");box.classList.remove("hidden")}
-btn.onclick=()=>pass.value===PASSWORD?unlock():msg.textContent="WRONG PASSWORD";pass.onkeydown=e=>{if(e.key==="Enter")btn.click()};if(sessionStorage.getItem("apdcMcUnlocked")==="yes")unlock();
+const gate=document.getElementById("mcPasswordGate"),box=document.getElementById("mcProtected"),email=document.getElementById("mcEmailInput"),pass=document.getElementById("mcPasswordInput"),btn=document.getElementById("mcPasswordBtn"),msg=document.getElementById("mcPasswordMessage");
+function showMc(){gate.classList.add("hidden");box.classList.remove("hidden");msg.textContent=""}
+function showLogin(){gate.classList.remove("hidden");box.classList.add("hidden")}
+await setPersistence(auth,browserLocalPersistence);
+btn.onclick=async()=>{
+  const e=String(email.value||"").trim(),p=String(pass.value||"");
+  if(!e||!p){msg.textContent="ENTER EMAIL AND PASSWORD";return}
+  btn.disabled=true;msg.textContent="SIGNING IN…";
+  try{await signInWithEmailAndPassword(auth,e,p);msg.textContent=""}
+  catch(err){console.error("MC login failed",err);msg.textContent="LOGIN FAILED · CHECK EMAIL / PASSWORD"}
+  finally{btn.disabled=false}
+};
+pass.onkeydown=e=>{if(e.key==="Enter")btn.click()};
+email.onkeydown=e=>{if(e.key==="Enter")pass.focus()};
+onAuthStateChanged(auth,user=>{if(user)showMc();else showLogin()});
 const enc=k=>btoa(unescape(encodeURIComponent(k))).replaceAll("=","");
 let active=null,order=[],TT=[],PLAYERS=[],ttIndex=Number(localStorage.getItem("apdcMcTimetableIndex")||0);
 const nowEl=document.getElementById("mcNow"),roundEl=document.getElementById("mcRound"),koEl=document.getElementById("mcKorean"),enEl=document.getElementById("mcEnglish"),eventNameEl=document.getElementById("mcEventName"),danceOrderEl=document.getElementById("mcDanceOrder");
@@ -558,6 +571,11 @@ async function loadTimetable(){
 
 async function publishLiveStatus(){
   if(!TT.length)return;
+  if(!auth.currentUser){
+    msg.textContent="MC LOGIN REQUIRED";
+    showLogin();
+    return;
+  }
   const current=TT[ttIndex]||{};
   const onDeck=TT[ttIndex+1]||{};
   const next=TT[ttIndex+2]||{};
@@ -610,17 +628,6 @@ function renderMcUpcoming(){
 }
 
 document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{await navigator.clipboard.writeText(document.getElementById(b.dataset.copy).textContent);b.textContent="COPIED";setTimeout(()=>b.textContent="COPY",800)});
-document.querySelectorAll(".quick-line-grid button").forEach(b=>b.onclick=()=>{
-  if(b.dataset.backNumber){
-    const no=prompt("Back Number");
-    if(!no)return;
-    koEl.textContent=`백넘버 ${no}번 선수, 플로어로 와 주세요.`;
-    enEl.textContent=`Back Number ${no}, please come to the floor.`;
-    return;
-  }
-  koEl.textContent=b.dataset.ko;
-  enEl.textContent=b.dataset.en;
-});
 get(ref(db,"eventSettings")).then(s=>{order=Object.values(s.val()||{}).filter(x=>String(x.eventNumber||"").trim()!=="").sort((a,b)=>Number(a.eventNumber)-Number(b.eventNumber));progress()});
 loadTimetable();
 
@@ -637,3 +644,121 @@ function apdcCombinedExitGuide(row) {
     `${d} 종료${i === plan.length - 1 ? ' → 남은 선수 전원 퇴장' : ' → 해당 종목 종료 선수 퇴장'}`
   ).join(' | ');
 }
+
+
+// FLOOR CHECK — MC local helper only. No Firebase write, no LIVE/BROADCAST effect.
+const floorCheck={
+  key:"",
+  numbers:[],
+  checked:new Set(),
+  recheck:false
+};
+
+function floorCurrentRow(){
+  return (Array.isArray(TT) && TT[ttIndex]) ? TT[ttIndex] : null;
+}
+
+function floorBackNumbers(row){
+  if(!row || !Array.isArray(PLAYERS)) return [];
+  const sourceNo=String(row.sourceEventNo||row.no||"").trim();
+  const eventName=String(row.event||"").trim().toUpperCase();
+
+  const list=PLAYERS.filter(p=>{
+    const pNo=String(p.eventNo||p.eventNumber||p.no||"").trim();
+    const pEvent=String(p.event||p.eventName||"").trim().toUpperCase();
+    return (sourceNo && pNo===sourceNo) || (eventName && pEvent===eventName);
+  }).map(p=>String(p.backNo||p.backNumber||"").trim())
+    .filter(v=>/^\d+$/.test(v));
+
+  return [...new Set(list)].sort((a,b)=>Number(a)-Number(b));
+}
+
+function floorKey(row){
+  if(!row)return "";
+  return `${row.no||""}|${row.round||""}|${row.event||""}`;
+}
+
+function renderFloorCheck(){
+  const wrap=document.getElementById("mcFloorCheckNumbers");
+  const status=document.getElementById("mcFloorCheckStatus");
+  if(!wrap||!status)return;
+
+  const row=floorCurrentRow();
+  const key=floorKey(row);
+  const nums=floorBackNumbers(row);
+
+  // New event: assume normal situation = all dancers are present.
+  if(key!==floorCheck.key){
+    floorCheck.key=key;
+    floorCheck.numbers=nums;
+    floorCheck.checked=new Set(nums);
+    floorCheck.recheck=false;
+  }else if(nums.join(",")!==floorCheck.numbers.join(",")){
+    floorCheck.numbers=nums;
+    if(!floorCheck.recheck)floorCheck.checked=new Set(nums);
+  }
+
+  wrap.innerHTML="";
+  if(!nums.length){
+    status.textContent="NO BACK NUMBERS";
+    status.className="mc-floor-check-status";
+    return;
+  }
+
+  for(const no of nums){
+    const checked=floorCheck.checked.has(no);
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.className=`mc-backno-chip ${checked?"is-checked":"is-missing"}`;
+    btn.textContent=checked?`✓ ${no}`:no;
+    btn.title=checked?"확인됨":"미확인";
+    btn.onclick=()=>{
+      if(floorCheck.checked.has(no))floorCheck.checked.delete(no);
+      else floorCheck.checked.add(no);
+      floorCheck.recheck=true;
+      renderFloorCheck();
+    };
+    wrap.appendChild(btn);
+  }
+
+  const missing=nums.filter(no=>!floorCheck.checked.has(no));
+  if(!floorCheck.recheck){
+    status.textContent=`ALL CHECKED · ${nums.length}`;
+    status.className="mc-floor-check-status is-ok";
+  }else if(missing.length===0){
+    status.textContent=`ALL PRESENT · ${nums.length}`;
+    status.className="mc-floor-check-status is-ok";
+  }else{
+    status.textContent=`MISSING · ${missing.join(" · ")}`;
+    status.className="mc-floor-check-status is-alert";
+  }
+}
+
+function startFloorRecheck(){
+  const row=floorCurrentRow();
+  const nums=floorBackNumbers(row);
+  floorCheck.key=floorKey(row);
+  floorCheck.numbers=nums;
+  floorCheck.checked=new Set();
+  floorCheck.recheck=true;
+  renderFloorCheck();
+}
+
+function markFloorAllOk(){
+  const row=floorCurrentRow();
+  const nums=floorBackNumbers(row);
+  floorCheck.key=floorKey(row);
+  floorCheck.numbers=nums;
+  floorCheck.checked=new Set(nums);
+  floorCheck.recheck=false;
+  renderFloorCheck();
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  document.getElementById("mcRecheckBtn")?.addEventListener("click",startFloorRecheck);
+  document.getElementById("mcAllOkBtn")?.addEventListener("click",markFloorAllOk);
+  renderFloorCheck();
+  const now=document.getElementById("mcNow");
+  if(now)new MutationObserver(renderFloorCheck).observe(now,{childList:true,subtree:true,characterData:true});
+});
+
