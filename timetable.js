@@ -250,27 +250,7 @@ async function connectFirebase(){
     ttSet=set;
     firebaseReady=true;
 
-    try{
-      const s=await get(ref(ttDb,'timetableOverride'));
-      const v=s.val();
-      const rows=normalizeRows(v?.rows);
-      if(rows.length){
-        TT=applySearchEntryCounts(rows,searchEntryCounts);
-        render();
-      }
-    }catch(e){
-      console.warn('Firebase timetable initial read failed',e);
-    }
-
-    onValue(ref(ttDb,'timetableOverride'),snap=>{
-      const v=snap.val();
-      const rows=normalizeRows(v?.rows);
-      if(rows.length){
-        TT=applySearchEntryCounts(rows,searchEntryCounts);
-        render();
-      }
-    });
-
+    // TIMETABLE LOCK 2026-07-27: packaged timetable-data.json is canonical.
     try{const qs=await get(ref(ttDb,'qualifiers'));QUALIFIERS=qs.val()||{};render();}catch(_){QUALIFIERS={};}
     onValue(ref(ttDb,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
 

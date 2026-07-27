@@ -339,79 +339,26 @@ function ttmLocalLoad(){
 }
 async function ttmLoad(){
   if(!ttmList) return;
-  ttmMessage.textContent='LOADING...';
-  let loaded=null;
+  ttmMessage.textContent='LOADING CONFIRMED TIMETABLE...';
   try{
-    const saved=await get(ref(db,'timetableOverride'));
-    if(saved.exists()){
-      const v=saved.val()||{};
-      const rows=ttmNormalizeRows(v.rows);
-      if(rows.length) loaded={startTime:v.startTime,rows};
-    }
-  }catch(e){console.warn('Firebase timetable load failed',e);}
-
-  if(!loaded) loaded=ttmLocalLoad();
-
-  if(!loaded){
-    try{
-      const res=await fetch('timetable-data.json?ttm=v4',{cache:'no-store'});
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      const data=await res.json();
-      const rows=ttmNormalizeRows(data.rows);
-      if(rows.length) loaded={startTime:rows[0]?.start?.slice(0,5)||'11:30',rows};
-    }catch(e){console.error('Default timetable load failed',e);}
-  }
-
-  if(loaded?.rows?.length){
-    ttmRows=loaded.rows;
-    ttmStart.value=loaded.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
+    const res=await fetch('timetable-data.json?locked=20260727',{cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    const rows=ttmNormalizeRows(data.rows);
+    if(!rows.length) throw new Error('Confirmed timetable is empty');
+    ttmRows=rows;
+    ttmStart.value=ttmRows[0]?.start?.slice(0,5)||'11:30';
     ttmRender();
-    ttmLocalSave();
-    ttmMessage.textContent='';
-  }else{
-    ttmRows=[];
-    ttmRender();
-    ttmMessage.textContent='TIMETABLE LOAD ERROR · REFRESH';
-  }
+    ttmMessage.textContent='CONFIRMED TIMETABLE · LOCKED';
+  }catch(e){console.error(e);ttmRows=[];ttmRender();ttmMessage.textContent='TIMETABLE LOAD ERROR · REFRESH';}
 }
 document.getElementById('ttmAdd')?.addEventListener('click',()=>ttmOpen(-1));
 document.getElementById('ttmRecalc')?.addEventListener('click',ttmRecalculate);
 document.getElementById('ttmRenumber')?.addEventListener('click',()=>{let n=1;ttmRows.forEach(r=>{const text=`${r.round||''} ${r.event||''}`.toLowerCase();const non=/break|opening|award|closing|judge|photo/.test(text);r.no=non?'':String(n++);});ttmRender();});
 document.getElementById('ttmApply')?.addEventListener('click',e=>{e.preventDefault();ttmApplyEdit();ttmDialog.close();});
 document.getElementById('ttmSave')?.addEventListener('click',async()=>{
-  try{
-    ttmRecalculate();
-    ttmLocalSave();
-    await set(ref(db,'timetableOverride'),{startTime:ttmStart.value,rows:ttmRows,updatedAt:Date.now()});
-
-    // Keep LIVE in sync immediately, even when the MC page is not open.
-    const floorSnap=await get(ref(db,'floorStatus'));
-    const floor=floorSnap.val()||{};
-    let idx=-1;
-    if(floor.eventNo) idx=ttmRows.findIndex(r=>String(r.no||'')===String(floor.eventNo||''));
-    if(idx<0 && floor.now) idx=ttmRows.findIndex(r=>String(r.event||'').trim()===String(floor.now||'').trim());
-    if(idx<0) idx=0;
-    const current=ttmRows[idx]||{};
-    const onDeck=ttmRows[idx+1]||{};
-    const next=ttmRows[idx+2]||{};
-    const syncUpdatedAt=Date.now();
-    await set(ref(db,'runningOrderState'),{index:idx,eventNo:current.no||'',event:current.event||'',round:current.round||'',updatedAt:syncUpdatedAt});
-    await set(ref(db,'floorStatus'),{
-      now:current.event||(current.no?`EVENT ${current.no}`:'WAITING'),
-      eventNo:current.no||'',
-      onDeck:onDeck.event||(onDeck.no?`EVENT ${onDeck.no}`:'—'),
-      next:next.event||(next.no?`EVENT ${next.no}`:'—'),
-      round:current.round||'',
-      danceOrder:current.danceOrder||'',
-      updatedAt:syncUpdatedAt
-    });
-
-    ttmMessage.textContent='SAVED & LIVE UPDATED';
-    setTimeout(()=>ttmMessage.textContent='',1800);
-  }catch(e){
-    console.error(e);
-    ttmMessage.textContent='SAVE ERROR';
-  }
+  ttmMessage.textContent='CONFIRMED TIMETABLE IS LOCKED · Entry changes do not change order/time.';
+  alert('Confirmed timetable is locked. Entry edits will not change event order or times.');
 });
 ttmStart?.addEventListener('change',ttmRecalculate);
 ttmLoad();

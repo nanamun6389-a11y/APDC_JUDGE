@@ -12,6 +12,35 @@ const EMBEDDED_PLAYERS = [{"eventNo":"10","section":"Formation","style":"Other",
 
 
 let entries = [];
+
+function normalizeSharedPlayers(value){
+  if(!Array.isArray(value)) return [];
+  return value.map(x=>({
+    ...x,
+    backNo:String(x?.backNo??''),
+    player:String(x?.player||x?.competitor||''),
+    competitor:String(x?.competitor||x?.player||'')
+  })).filter(x=>x.backNo&&x.player&&x.event&&x.section);
+}
+
+async function loadSharedJudgePlayers(){
+  try{
+    const snap=await get(ref(db,'apdcPublic/players'));
+    const online=normalizeSharedPlayers(snap.val());
+    if(online.length) return online;
+  }catch(e){ console.warn('Judge online players unavailable; using packaged fallback.',e); }
+  return normalizeSharedPlayers(EMBEDDED_PLAYERS);
+}
+
+function watchSharedJudgePlayers(){
+  onValue(ref(db,'apdcPublic/players'),snap=>{
+    const online=normalizeSharedPlayers(snap.val());
+    if(!online.length) return;
+    entries=online;
+    if(currentJudge){ populateEventsForJudge(); render(); }
+  });
+}
+
 let eventSettings = {events:[]};
 let firebaseEventSettings = {};
 let selected = new Set();
@@ -516,11 +545,7 @@ async function loadJudgeRunningOrder(){
     timetableRows=[];
   }
 
-  try{
-    const ov=await get(ref(db,"timetableOverride"));
-    const rows=ov.val()?.rows;
-    if(Array.isArray(rows)&&rows.length) timetableRows=rows;
-  }catch(_){ }
+  // TIMETABLE LOCK: packaged timetable-data.json is the only schedule structure.
 
   try{
     const fs=await get(ref(db,"floorStatus"));
@@ -540,14 +565,6 @@ async function loadJudgeRunningOrder(){
     syncJudgeToRunningOrder();
   });
 
-  onValue(ref(db,"timetableOverride"),snap=>{
-    const rows=snap.val()?.rows;
-    if(Array.isArray(rows)&&rows.length){
-      timetableRows=rows;
-      runningIndex=Math.max(0,Math.min(runningIndex,timetableRows.length-1));
-      syncJudgeToRunningOrder();
-    }
-  });
 }
 
 
@@ -560,11 +577,12 @@ onValue(ref(db,"eventSettings"),snap=>{
 fetch("event-settings.json?v=20260717-1305", {cache:"no-store"})
   .then(r => r.json())
   .catch(() => ({events:[]}))
-  .then(settingsData => {
-    entries = EMBEDDED_PLAYERS;
+  .then(async settingsData => {
+    entries = await loadSharedJudgePlayers();
     eventSettings = settingsData || {events:[]};
     renderJudgeButtons();
     loadJudgeRunningOrder();
+    watchSharedJudgePlayers();
 
     const requestedJudge = new URL(location.href).searchParams.get("judge");
     if (requestedJudge && JUDGES[requestedJudge]) {
@@ -573,7 +591,7 @@ fetch("event-settings.json?v=20260717-1305", {cache:"no-store"})
   })
   .catch(err => {
     console.error(err);
-    entries = EMBEDDED_PLAYERS;
+    entries = normalizeSharedPlayers(EMBEDDED_PLAYERS);
     eventSettings = {events:[]};
     renderJudgeButtons();
   });

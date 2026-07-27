@@ -95,14 +95,8 @@ async function load(){
     TT=td.rows||[];
     players=sharedPlayers;
   }catch(e){console.error(e)}
-
-  try{
-    const ov=await get(ref(db,"timetableOverride"));
-    const v=ov.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length)TT=v.rows;
-  }catch(_){}
-
-  try{
+  // TIMETABLE LOCK: ignore Firebase timetableOverride.
+try{
     const fs=await get(ref(db,"floorStatus"));
     const v=fs.val()||{};
     const idx=Number(v.timetableIndex);
@@ -121,13 +115,6 @@ async function load(){
 
   render();
 
-  onValue(ref(db,"timetableOverride"),snap=>{
-    const v=snap.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length){
-      TT=v.rows;
-      render();
-    }
-  });
 
   // Primary position listener: the same floorStatus written by MC.
   onValue(ref(db,"floorStatus"),snap=>{

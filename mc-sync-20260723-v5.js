@@ -529,16 +529,7 @@ async function loadTimetable(){
     return;
   }
 
-  // Optional saved timetable override. Failure here does not invalidate the packaged timetable.
-  try{
-    const ov=await get(ref(db,"timetableOverride"));
-    const v=ov.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length){
-      const counts=new Map();for(const p of PLAYERS){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
-      TT=applySearchEntryCounts(normalizeTimetableRows(v.rows),counts);
-    }
-  }catch(e){console.warn("Timetable override unavailable",e)}
-
+  // TIMETABLE LOCK 2026-07-27: never replace the confirmed packaged timetable with Firebase override.
   const sharedIndex=await readSharedIndex();
   if(Number.isInteger(sharedIndex)) ttIndex=Math.max(0,Math.min(sharedIndex,TT.length-1));
   else ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
@@ -546,16 +537,6 @@ async function loadTimetable(){
 
   // Only initialize Firebase when no shared position exists. Never let this affect timetable rendering.
   if(!Number.isInteger(sharedIndex)) publishLiveStatus().catch(e=>console.warn("Initial live sync failed",e));
-
-  onValue(ref(db,"timetableOverride"),snap=>{
-    const v=snap.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length){
-      const counts=new Map();for(const p of PLAYERS){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
-      TT=applySearchEntryCounts(normalizeTimetableRows(v.rows),counts);
-      ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
-      renderTimetableRow();
-    }
-  });
 
   // Primary shared state: floorStatus. This path already worked on the deployed site.
   onValue(ref(db,"floorStatus"),snap=>{

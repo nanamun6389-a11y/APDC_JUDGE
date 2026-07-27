@@ -173,12 +173,7 @@ async function load(){
     for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
     TT=applySearchEntryCounts(TT,counts);
   }catch(e){console.error(e)}
-
-  try{
-    const ov=await get(ref(db,"timetableOverride"));
-    const v=ov.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length){const counts=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}TT=applySearchEntryCounts(v.rows,counts);}
-  }catch(_){}
+  // TIMETABLE LOCK 2026-07-27: packaged timetable-data.json is canonical.
 
   try{
     const local=JSON.parse(localStorage.getItem(APDC_LIVE_STATE_KEY)||"null");
@@ -202,15 +197,6 @@ async function load(){
   render();
 
   onValue(ref(db,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
-
-  onValue(ref(db,"timetableOverride"),snap=>{
-    const v=snap.val();
-    if(v&&Array.isArray(v.rows)&&v.rows.length){
-      const counts=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
-      TT=applySearchEntryCounts(v.rows,counts);
-      render();
-    }
-  });
 
   function applySharedState(v){
     v=v||{};
