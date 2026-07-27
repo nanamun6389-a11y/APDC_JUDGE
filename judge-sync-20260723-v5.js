@@ -545,7 +545,22 @@ async function loadJudgeRunningOrder(){
     timetableRows=[];
   }
 
-  // TIMETABLE LOCK: packaged timetable-data.json is the only schedule structure.
+  // Prefer the saved Firebase timetable so JUDGE follows edits immediately.
+  try{
+    const ov=await get(ref(db,"timetableOverride"));
+    const value=ov.val();
+    const rows=Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]);
+    if(rows.length) timetableRows=rows;
+  }catch(e){console.warn("Judge saved timetable read failed",e)}
+
+  onValue(ref(db,"timetableOverride"),snap=>{
+    const value=snap.val();
+    const rows=Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]);
+    if(!rows.length)return;
+    timetableRows=rows;
+    runningIndex=Math.max(0,Math.min(runningIndex,Math.max(0,timetableRows.length-1)));
+    syncJudgeToRunningOrder();
+  });
 
   try{
     const fs=await get(ref(db,"floorStatus"));

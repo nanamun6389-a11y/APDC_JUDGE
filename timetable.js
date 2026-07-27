@@ -250,7 +250,18 @@ async function connectFirebase(){
     ttSet=set;
     firebaseReady=true;
 
-    // TIMETABLE LOCK 2026-07-27: packaged timetable-data.json is canonical.
+    // Firebase timetableOverride is the live schedule source; packaged JSON is fallback only.
+    try{
+      const ov=await get(ref(ttDb,'timetableOverride'));
+      const value=ov.val();
+      const rows=normalizeRows(value?.rows ?? value);
+      if(rows.length){TT=applySearchEntryCounts(rows,searchEntryCounts);saveLocal(TT);render();}
+    }catch(e){console.warn('Saved timetable read failed',e);}
+    onValue(ref(ttDb,'timetableOverride'),snap=>{
+      const value=snap.val();
+      const rows=normalizeRows(value?.rows ?? value);
+      if(rows.length){TT=applySearchEntryCounts(rows,searchEntryCounts);saveLocal(TT);currentFloorIndex=Math.min(currentFloorIndex,TT.length-1);render();}
+    });
     try{const qs=await get(ref(ttDb,'qualifiers'));QUALIFIERS=qs.val()||{};render();}catch(_){QUALIFIERS={};}
     onValue(ref(ttDb,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
 

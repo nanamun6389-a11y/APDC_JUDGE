@@ -529,7 +529,21 @@ async function loadTimetable(){
     return;
   }
 
-  // TIMETABLE LOCK 2026-07-27: never replace the confirmed packaged timetable with Firebase override.
+  // Saved Firebase timetable is the live source for MC.
+  try{
+    const ov=await get(ref(db,"timetableOverride"));
+    const value=ov.val();
+    const rows=normalizeTimetableRows(Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]));
+    if(rows.length) TT=applySearchEntryCounts(rows,await loadSearchEntryCounts());
+  }catch(e){console.warn("Saved timetable read failed",e)}
+  onValue(ref(db,"timetableOverride"),async snap=>{
+    const value=snap.val();
+    const rows=normalizeTimetableRows(Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]));
+    if(!rows.length)return;
+    TT=applySearchEntryCounts(rows,await loadSearchEntryCounts());
+    ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));
+    renderTimetableRow();
+  });
   const sharedIndex=await readSharedIndex();
   if(Number.isInteger(sharedIndex)) ttIndex=Math.max(0,Math.min(sharedIndex,TT.length-1));
   else ttIndex=Math.max(0,Math.min(ttIndex,TT.length-1));

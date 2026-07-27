@@ -12,6 +12,9 @@
       },
       "players": {
         ".write": "auth != null"
+      },
+      "timetable": {
+        ".write": "auth != null"
       }
     },
     "qualifiers": {

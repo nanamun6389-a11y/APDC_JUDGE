@@ -173,7 +173,21 @@ async function load(){
     for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)counts.set(no,(counts.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;counts.set(k,(counts.get(k)||0)+1);}}
     TT=applySearchEntryCounts(TT,counts);
   }catch(e){console.error(e)}
-  // TIMETABLE LOCK 2026-07-27: packaged timetable-data.json is canonical.
+  // Saved Firebase timetable is the live source for LIVE.
+  try{
+    const ov=await get(ref(db,"timetableOverride"));
+    const value=ov.val();
+    const rows=Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]);
+    if(rows.length) TT=applySearchEntryCounts(rows,(()=>{const m=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)m.set(no,(m.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;m.set(k,(m.get(k)||0)+1);}}return m;})());
+  }catch(e){console.warn("Saved timetable read failed",e)}
+  onValue(ref(db,"timetableOverride"),snap=>{
+    const value=snap.val();
+    const rows=Array.isArray(value?.rows)?value.rows:(Array.isArray(value)?value:[]);
+    if(!rows.length)return;
+    TT=applySearchEntryCounts(rows,(()=>{const m=new Map();for(const p of players){const no=String(p?.eventNo??'').trim(),ev=String(p?.event??'').trim();if(no)m.set(no,(m.get(no)||0)+1);if(ev){const k=`event:${ev.toLowerCase()}`;m.set(k,(m.get(k)||0)+1);}}return m;})());
+    currentIndex=Math.max(0,Math.min(currentIndex,TT.length-1));
+    render();
+  });
 
   try{
     const local=JSON.parse(localStorage.getItem(APDC_LIVE_STATE_KEY)||"null");
