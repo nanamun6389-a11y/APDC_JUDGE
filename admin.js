@@ -272,6 +272,7 @@ const ttmStart=document.getElementById('ttmStart');
 const ttmMessage=document.getElementById('ttmMessage');
 const ttmDialog=document.getElementById('ttmDialog');
 let ttmRows=[];
+let ttmTimingVersion='';
 let ttmEditIndex=-1;
 
 function ttmEsc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
@@ -343,21 +344,53 @@ async function ttmLoad(){
   if(!ttmList) return;
   ttmMessage.textContent='LOADING TIMETABLE...';
   try{
-    // Firebase saved timetable is the live source. Packaged JSON is only the fallback.
+    // Always inspect the packaged timetable first. If it carries a newer timingVersion
+    // than Firebase, use the package so an old remote schedule cannot overwrite a new deployment.
+    let packaged=null;
+    try{
+      const res=await fetch(`timetable-data.json?v=${Date.now()}`,{cache:'no-store'});
+      if(res.ok){
+        const data=await res.json();
+        const rows=ttmNormalizeRows(data.rows);
+        if(rows.length) packaged={startTime:data.startTime,rows,timingVersion:String(data.timingVersion||'')};
+      }
+    }catch(e){console.warn('Packaged timetable read failed',e);}
+
     let saved=null;
     try{
       const snap=await get(ref(db,'timetableOverride'));
       const value=snap.val();
       const rows=ttmNormalizeRows(value?.rows ?? value);
-      if(rows.length) saved={startTime:value?.startTime,rows};
-    }catch(e){console.warn('Firebase timetable read failed; using packaged fallback',e);}
+      if(rows.length) saved={startTime:value?.startTime,rows,timingVersion:String(value?.timingVersion||'')};
+    }catch(e){console.warn('Firebase timetable read failed',e);}
+
+    const packageIsNewer=!!(packaged?.timingVersion) && (!saved?.timingVersion || saved.timingVersion < packaged.timingVersion);
+    if(packageIsNewer){
+      ttmRows=packaged.rows;
+      ttmTimingVersion=packaged.timingVersion;
+      ttmStart.value=packaged.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
+      ttmRender();
+      ttmMessage.textContent='NEW 1:20 TIMING LOADED · PRESS SAVE TO PUBLISH TO SEARCH / MC / LIVE';
+      ttmLocalSave();
+      return;
+    }
 
     if(saved){
       ttmRows=saved.rows;
+      ttmTimingVersion=saved.timingVersion||packaged?.timingVersion||'';
       ttmStart.value=saved.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
       ttmRender();
       ttmMessage.textContent='LIVE TIMETABLE · EDITABLE · FIREBASE SYNCED';
       ttmLocalSave();
+      return;
+    }
+
+    if(packaged){
+      ttmRows=packaged.rows;
+      ttmTimingVersion=packaged.timingVersion||'';
+      ttmStart.value=packaged.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
+      ttmRender();
+      ttmMessage.textContent='DEFAULT TIMETABLE · EDITABLE · SAVE TO SYNC';
       return;
     }
 
@@ -370,15 +403,7 @@ async function ttmLoad(){
       return;
     }
 
-    const res=await fetch('timetable-data.json?v=20260727-editable-v1',{cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    const rows=ttmNormalizeRows(data.rows);
-    if(!rows.length) throw new Error('Timetable is empty');
-    ttmRows=rows;
-    ttmStart.value=data.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
-    ttmRender();
-    ttmMessage.textContent='DEFAULT TIMETABLE · EDITABLE · SAVE TO SYNC';
+    throw new Error('Timetable is empty');
   }catch(e){console.error(e);ttmRows=[];ttmRender();ttmMessage.textContent='TIMETABLE LOAD ERROR · REFRESH';}
 }
 document.getElementById('ttmAdd')?.addEventListener('click',()=>ttmOpen(-1));
@@ -387,7 +412,7 @@ document.getElementById('ttmRenumber')?.addEventListener('click',()=>{let n=1;tt
 document.getElementById('ttmApply')?.addEventListener('click',e=>{e.preventDefault();ttmApplyEdit();ttmDialog.close();});
 document.getElementById('ttmSave')?.addEventListener('click',async()=>{
   ttmRecalculate();
-  const payload={startTime:ttmStart?.value||'11:30',rows:ttmRows,updatedAt:Date.now(),updatedBy:'JUDGE SETTINGS'};
+  const payload={startTime:ttmStart?.value||'11:30',rows:ttmRows,timingVersion:ttmTimingVersion||'20260728-ALL-80S-V2',updatedAt:Date.now(),updatedBy:'JUDGE SETTINGS'};
   ttmLocalSave();
   ttmMessage.textContent='SAVING TIMETABLE…';
   try{
