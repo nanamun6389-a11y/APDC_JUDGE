@@ -1,0 +1,1 @@
+All Quarter/Semi/Final dance durations are recalculated as 80 seconds per dance, including MC. Old Firebase 1:00 values are normalized on load and on RECALCULATE TIME. Save publishes V3 to both timetableOverride and apdcPublic/timetable.

@@ -276,7 +276,17 @@ let ttmTimingVersion='';
 let ttmEditIndex=-1;
 
 function ttmEsc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function ttmDanceCount(row){
+  const round=String(row?.round||'').toLowerCase();
+  if(!/(quarter|semi|final)/.test(round)) return 0;
+  const order=String(row?.danceOrder||'').toUpperCase();
+  const dances=order.match(/[CSRPJWT FQ]/g)?.filter(x=>x!==' ')||[];
+  const unique=[...new Set(dances.filter(x=>'CSRPJWTFQ'.includes(x)))];
+  return unique.length;
+}
 function ttmSeconds(row){
+  const danceCount=ttmDanceCount(row);
+  if(danceCount>0) return danceCount*80; // All competition rounds: 1 dance = 1:20 incl. MC
   if(Number.isFinite(Number(row.durationSeconds))) return Number(row.durationSeconds);
   return Math.round((Number(row.duration)||0)*60);
 }
@@ -369,8 +379,9 @@ async function ttmLoad(){
       ttmRows=packaged.rows;
       ttmTimingVersion=packaged.timingVersion;
       ttmStart.value=packaged.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
-      ttmRender();
-      ttmMessage.textContent='NEW 1:20 TIMING LOADED · PRESS SAVE TO PUBLISH TO SEARCH / MC / LIVE';
+      ttmTimingVersion='20260728-RECOVERED-ORDER-80S-V4';
+      ttmRecalculate();
+      ttmMessage.textContent='1:20 TIMING APPLIED · PRESS SAVE TO PUBLISH TO SEARCH / MC / LIVE';
       ttmLocalSave();
       return;
     }
@@ -379,8 +390,9 @@ async function ttmLoad(){
       ttmRows=saved.rows;
       ttmTimingVersion=saved.timingVersion||packaged?.timingVersion||'';
       ttmStart.value=saved.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
-      ttmRender();
-      ttmMessage.textContent='LIVE TIMETABLE · EDITABLE · FIREBASE SYNCED';
+      ttmTimingVersion='20260728-RECOVERED-ORDER-80S-V4';
+      ttmRecalculate();
+      ttmMessage.textContent='1:20 TIMING APPLIED · FIREBASE DATA NORMALIZED · PRESS SAVE';
       ttmLocalSave();
       return;
     }
@@ -389,8 +401,9 @@ async function ttmLoad(){
       ttmRows=packaged.rows;
       ttmTimingVersion=packaged.timingVersion||'';
       ttmStart.value=packaged.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
-      ttmRender();
-      ttmMessage.textContent='DEFAULT TIMETABLE · EDITABLE · SAVE TO SYNC';
+      ttmTimingVersion='20260728-RECOVERED-ORDER-80S-V4';
+      ttmRecalculate();
+      ttmMessage.textContent='DEFAULT 1:20 TIMETABLE · SAVE TO SYNC';
       return;
     }
 
@@ -398,8 +411,9 @@ async function ttmLoad(){
     if(local){
       ttmRows=local.rows;
       ttmStart.value=local.startTime||ttmRows[0]?.start?.slice(0,5)||'11:30';
-      ttmRender();
-      ttmMessage.textContent='LOCAL BACKUP · EDITABLE · SAVE TO SYNC';
+      ttmTimingVersion='20260728-RECOVERED-ORDER-80S-V4';
+      ttmRecalculate();
+      ttmMessage.textContent='LOCAL BACKUP NORMALIZED TO 1:20 · SAVE TO SYNC';
       return;
     }
 
@@ -408,11 +422,11 @@ async function ttmLoad(){
 }
 document.getElementById('ttmAdd')?.addEventListener('click',()=>ttmOpen(-1));
 document.getElementById('ttmRecalc')?.addEventListener('click',ttmRecalculate);
-document.getElementById('ttmRenumber')?.addEventListener('click',()=>{let n=1;ttmRows.forEach(r=>{const text=`${r.round||''} ${r.event||''}`.toLowerCase();const non=/break|opening|award|closing|judge|photo/.test(text);r.no=non?'':String(n++);});ttmRender();});
+document.getElementById('ttmRenumber')?.addEventListener('click',()=>{ttmMessage.textContent='RECOVERED EVENT ORDER 1–141 IS LOCKED · RENUMBER DISABLED';});
 document.getElementById('ttmApply')?.addEventListener('click',e=>{e.preventDefault();ttmApplyEdit();ttmDialog.close();});
 document.getElementById('ttmSave')?.addEventListener('click',async()=>{
   ttmRecalculate();
-  const payload={startTime:ttmStart?.value||'11:30',rows:ttmRows,timingVersion:ttmTimingVersion||'20260728-ALL-80S-V2',updatedAt:Date.now(),updatedBy:'JUDGE SETTINGS'};
+  const payload={startTime:ttmStart?.value||'11:30',rows:ttmRows,timingVersion:'20260728-RECOVERED-ORDER-80S-V4',updatedAt:Date.now(),updatedBy:'JUDGE SETTINGS'};
   ttmLocalSave();
   ttmMessage.textContent='SAVING TIMETABLE…';
   try{
