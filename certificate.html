@@ -37,7 +37,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
 .check{width:18px;height:18px}
 .preview-panel{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;margin-top:24px}
 .preview-shell{background:#ddd;padding:16px;overflow:auto}
-.certificate{position:relative;width:min(100%,794px);aspect-ratio:210/297;margin:auto;background:#fff;box-shadow:0 8px 30px #0002;overflow:hidden}.certificate-bg{position:absolute;left:50%;top:50%;width:103%;height:102%;transform:translate(-50%,-50%);object-fit:fill;z-index:0}.certificate .cover{z-index:2}
+.certificate{position:relative;width:min(100%,794px);aspect-ratio:210/297;margin:auto;background:#fff;box-shadow:0 8px 30px #0002;overflow:hidden}.certificate-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;transform:scale(1.04);transform-origin:center center}.certificate .cover{z-index:2}
 .cover{position:absolute;background:transparent;display:flex;align-items:center;justify-content:center;text-align:center}
 .name-cover{left:20%;top:41.0%;width:60%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,4.4vw,52px);font-weight:700;color:#8b5a2b;padding:0 8px;background:transparent}
 .event-cover{left:18%;top:64.3%;width:64%;height:5.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(16px,2.35vw,28px);font-weight:600;color:#a36b1c;padding:0 6px;background:transparent}
@@ -59,8 +59,8 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
  @page{size:A4 portrait;margin:0}
  body{background:#fff}
  .judge-integrated-nav,.topbar,.wrap{display:none!important}.batch-holder{display:block!important}
- .print-certificate{position:relative;width:210mm;height:296.5mm;break-after:page;page-break-after:always;background:#fff;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-certificate .certificate-bg{position:absolute;left:50%;top:50%;width:216.3mm;height:302.43mm;transform:translate(-50%,-50%);object-fit:fill;z-index:0}.print-certificate .cover{z-index:2}
- .print-certificate:last-child{break-after:auto;page-break-after:auto}
+ .print-certificate{position:relative;width:210mm;height:297mm;page-break-after:always;background:#fff;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-certificate .certificate-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;z-index:0;transform:scale(1.04);transform-origin:center center}.print-certificate .cover{z-index:2}
+ .print-certificate:last-child{page-break-after:auto}
  .print-certificate .cover{background:transparent}
  .print-certificate .name-cover{left:20%;top:41.0%;width:60%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:13mm;font-weight:700;color:#8b5a2b;padding:0 8px}
  .print-certificate .event-cover{left:18%;top:64.3%;width:64%;height:5.5%;font-family:Georgia,'Times New Roman',serif;font-size:5.7mm;font-weight:600;color:#a36b1c;padding:0 6px}
@@ -130,7 +130,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
   </div>
   <div class="preview-panel">
    <div class="preview-shell">
-    <div class="certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1618" alt=""><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
+    <div class="certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1807" alt=""><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
    </div>
    <aside class="side">
     <h3>SELECTED CERTIFICATE</h3>
@@ -141,7 +141,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
      <dt>DATE</dt><dd>August 8, 2026</dd>
     </dl>
     <div class="actions"><button id="printCurrent">PRINT THIS CERTIFICATE</button><button id="clearSel" class="light">CLEAR SELECTION</button></div>
-    <div class="note">A4 세로 / 배율 100% / 여백 없음으로 인쇄하세요. 테두리를 용지 가장자리 쪽으로 확장하고 빈 추가 페이지가 생기지 않도록 수정되었습니다. 그룹을 선택한 뒤 PRINT THIS GROUP을 누르면 해당 그룹 상장 전체가 연속 출력됩니다.</div>
+    <div class="note">A4 세로 / 배율 100% / 여백 없음으로 인쇄하세요. 전체 상장 디자인이 한 장 이미지로 직접 출력되도록 수정되었습니다. 그룹을 선택한 뒤 PRINT THIS GROUP을 누르면 해당 그룹 상장 전체가 연속 출력됩니다.</div>
    </aside>
   </div>
  </div>
@@ -176,7 +176,7 @@ function renderRows(){
 }
 function showPreview(r){$('pName').textContent=r.name;$('pEvent').textContent=r.event;$('pPlace').textContent=r.place.toUpperCase();$('dName').textContent=r.name;$('dBack').textContent=r.backNo||'—';$('dEvent').textContent=r.event;$('dPlace').textContent=r.place;$('dGroup').textContent=r.group;$('dCert').textContent=r.certNo||'—'}
 function updateSelectedStatus(){$('selectedStatus').textContent=selected.size+' selected'}
-function certHTML(r){return `<section class="print-certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1618" alt=""><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
+function certHTML(r){return `<section class="print-certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1807" alt=""><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
 function doPrint(arr){if(!arr.length)return alert('출력할 상장이 없습니다.');$('batchHolder').innerHTML=arr.map(certHTML).join('');setTimeout(()=>window.print(),100)}
 $('q').addEventListener('input',applyFilters);
 $('groupFilter').addEventListener('change',()=>{selected.clear();applyFilters()});
