@@ -30,3 +30,5 @@ Upload every file directly to the root of the APDC_JUDGE repository.
 - Print fix: certificate artwork is now an actual IMG element, not a CSS background, so it prints even when browser background graphics are disabled.
 
 - Certificate overlay fix: removed opaque boxes behind player/event/place text; original certificate artwork remains fully visible.
+
+- Full certificate artwork fix: replaced the truncated PNG with a complete valid certificate image and realigned player/place/event text.

@@ -39,9 +39,9 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
 .preview-shell{background:#ddd;padding:16px;overflow:auto}
 .certificate{position:relative;width:min(100%,794px);aspect-ratio:210/297;margin:auto;background:#fff;box-shadow:0 8px 30px #0002;overflow:hidden}.certificate-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0}.certificate .cover{z-index:2}
 .cover{position:absolute;background:transparent;display:flex;align-items:center;justify-content:center;text-align:center}
-.name-cover{left:24%;top:40.2%;width:52%;height:6.2%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(23px,3.8vw,46px);font-weight:600;color:#9a6519;padding:0 8px;background:transparent}
-.event-cover{left:20%;top:63.8%;width:60%;height:4.8%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(15px,2.15vw,25px);color:#b27618;padding:0 6px;background:transparent}
-.place-cover{left:32%;top:53.6%;width:36%;height:6.8%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(26px,4.3vw,52px);font-weight:700;color:#b67b16;letter-spacing:.01em;background:transparent}
+.name-cover{left:20%;top:41.0%;width:60%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(25px,4.4vw,52px);font-weight:700;color:#8b5a2b;padding:0 8px;background:transparent}
+.event-cover{left:18%;top:64.3%;width:64%;height:5.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(16px,2.35vw,28px);font-weight:600;color:#a36b1c;padding:0 6px;background:transparent}
+.place-cover{left:30%;top:54.0%;width:40%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(28px,4.8vw,58px);font-weight:700;color:#a36b1c;letter-spacing:.01em;background:transparent}
 .side{background:#fff;border:1px solid #ccc;padding:18px;height:max-content}.side h3{margin:0 0 14px}
 .side dl{margin:0}.side dt{font-size:11px;color:#777;font-weight:900;margin-top:12px}.side dd{margin:3px 0 0;font-weight:700}
 .actions{display:grid;gap:8px;margin-top:18px}.note{font-size:12px;color:#777;line-height:1.5;margin-top:14px}
@@ -62,9 +62,9 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
  .print-certificate{position:relative;width:210mm;height:297mm;page-break-after:always;background:#fff;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-certificate .certificate-bg{position:absolute;inset:0;width:210mm;height:297mm;object-fit:fill;z-index:0}.print-certificate .cover{z-index:2}
  .print-certificate:last-child{page-break-after:auto}
  .print-certificate .cover{background:transparent}
- .print-certificate .name-cover{left:24%;top:40.2%;width:52%;height:6.2%;font-family:Georgia,'Times New Roman',serif;font-size:13mm;font-weight:600;color:#9a6519;padding:0 8px}
- .print-certificate .event-cover{left:20%;top:63.8%;width:60%;height:4.8%;font-family:Georgia,'Times New Roman',serif;font-size:5.4mm;color:#b27618;padding:0 6px}
- .print-certificate .place-cover{left:32%;top:53.6%;width:36%;height:6.8%;font-family:Georgia,'Times New Roman',serif;font-size:13mm;font-weight:700;color:#b67b16}
+ .print-certificate .name-cover{left:20%;top:41.0%;width:60%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:13mm;font-weight:700;color:#8b5a2b;padding:0 8px}
+ .print-certificate .event-cover{left:18%;top:64.3%;width:64%;height:5.5%;font-family:Georgia,'Times New Roman',serif;font-size:5.7mm;font-weight:600;color:#a36b1c;padding:0 6px}
+ .print-certificate .place-cover{left:30%;top:54.0%;width:40%;height:7%;font-family:Georgia,'Times New Roman',serif;font-size:13.5mm;font-weight:700;color:#a36b1c}
 }
 </style>
 </head>
@@ -141,7 +141,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
      <dt>DATE</dt><dd>August 8, 2026</dd>
     </dl>
     <div class="actions"><button id="printCurrent">PRINT THIS CERTIFICATE</button><button id="clearSel" class="light">CLEAR SELECTION</button></div>
-    <div class="note">A4 세로 / 배율 100% / 여백 없음으로 인쇄하세요. 상장 디자인은 이미지로 직접 인쇄되므로 브라우저의 ‘배경 그래픽’ 설정과 관계없이 출력됩니다. 그룹을 선택한 뒤 PRINT THIS GROUP을 누르면 해당 그룹 상장 전체가 연속 출력됩니다.</div>
+    <div class="note">A4 세로 / 배율 100% / 여백 없음으로 인쇄하세요. 전체 상장 디자인이 한 장 이미지로 직접 출력되도록 수정되었습니다. 그룹을 선택한 뒤 PRINT THIS GROUP을 누르면 해당 그룹 상장 전체가 연속 출력됩니다.</div>
    </aside>
   </div>
  </div>
