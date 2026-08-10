@@ -82,7 +82,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
  </div>
 </section>
 <section id="app" class="hidden">
- <div class="topbar"><strong>2026 APDC · CERTIFICATE PRINT</strong><button id="logout" class="light">LOGOUT</button></div>
+ <div class="topbar"><strong>2026 APDC · CERTIFICATE PRINT <span style='font-size:10px;opacity:.55'>V2</span></strong><button id="logout" class="light">LOGOUT</button></div>
  <div class="wrap">
   <div class="hero">
    <div><div class="brand" style="color:#666">AUGUST 8, 2026 · SEOUL</div><h1>Certificate Print</h1><p>학원/팀 분류 · 개인 참가자 분류 · 선수/종목 검색 · 일괄 출력</p></div>
@@ -130,7 +130,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
   </div>
   <div class="preview-panel">
    <div class="preview-shell">
-    <div class="certificate"><img class="certificate-bg" src="APDC_Certificate_Background.png" alt=""><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
+    <div class="certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1618" alt=""><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
    </div>
    <aside class="side">
     <h3>SELECTED CERTIFICATE</h3>
@@ -176,7 +176,7 @@ function renderRows(){
 }
 function showPreview(r){$('pName').textContent=r.name;$('pEvent').textContent=r.event;$('pPlace').textContent=r.place.toUpperCase();$('dName').textContent=r.name;$('dBack').textContent=r.backNo||'—';$('dEvent').textContent=r.event;$('dPlace').textContent=r.place;$('dGroup').textContent=r.group;$('dCert').textContent=r.certNo||'—'}
 function updateSelectedStatus(){$('selectedStatus').textContent=selected.size+' selected'}
-function certHTML(r){return `<section class="print-certificate"><img class="certificate-bg" src="APDC_Certificate_Background.png" alt=""><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
+function certHTML(r){return `<section class="print-certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1618" alt=""><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
 function doPrint(arr){if(!arr.length)return alert('출력할 상장이 없습니다.');$('batchHolder').innerHTML=arr.map(certHTML).join('');setTimeout(()=>window.print(),100)}
 $('q').addEventListener('input',applyFilters);
 $('groupFilter').addEventListener('change',()=>{selected.clear();applyFilters()});
