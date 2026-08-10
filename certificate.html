@@ -22,7 +22,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
 .wrap{max-width:1180px;margin:auto;padding:24px}
 .hero{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid #111;padding-bottom:18px;gap:16px}
 .hero h1{font-size:40px;margin:4px 0}.hero p{margin:0;color:#666}
-.toolbar{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:20px 0 8px}
+.toolbar{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;margin:20px 0 8px}
 .status{display:flex;justify-content:space-between;color:#666;font-size:14px;margin:8px 0 12px}
 .results{background:#fff;border:1px solid #ccc}
 .head,.row{display:grid;grid-template-columns:44px 78px 1.2fr 2fr 80px;align-items:center}
@@ -32,12 +32,12 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
 .check{width:18px;height:18px}
 .preview-panel{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:22px;margin-top:24px}
 .preview-shell{background:#ddd;padding:16px;overflow:auto}
-.certificate{position:relative;width:min(100%,794px);aspect-ratio:210/297;margin:auto;background:#fff url('APDC_Certificate_Background.svg') center/100% 100% no-repeat;box-shadow:0 8px 30px #0002}
+.certificate{position:relative;width:min(100%,794px);aspect-ratio:210/297;margin:auto;background:#fff url('APDC_Certificate_Background.png') center/100% 100% no-repeat;box-shadow:0 8px 30px #0002}
 .cover{position:absolute;background:rgba(251,244,229,.97);display:flex;align-items:center;justify-content:center;text-align:center}
-.name-cover{left:21.5%;top:40.1%;width:57%;height:8.2%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(24px,4.2vw,49px);font-style:italic;color:#966d17;padding:0 10px}
-.event-cover{left:34.5%;top:63.0%;width:47%;height:3.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(11px,1.55vw,18px);padding:0 6px}
-.category-cover{left:34.5%;top:66.4%;width:47%;height:3.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(11px,1.45vw,17px)}
-.place-cover{left:34%;top:69.8%;width:47.5%;height:3.8%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.8vw,20px);font-weight:700;color:#8e681a;letter-spacing:.06em}
+.name-cover{left:27.5%;top:41.3%;width:45%;height:5.6%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(23px,3.8vw,46px);font-weight:600;color:#9a6519;padding:0 8px;background:rgba(250,244,229,.98)}
+.event-cover{left:23.5%;top:64.7%;width:53%;height:4.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(15px,2.15vw,25px);color:#b27618;padding:0 6px;background:rgba(250,244,229,.98)}
+.category-cover{display:none}
+.place-cover{left:34.5%;top:54.4%;width:31%;height:6.4%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(26px,4.3vw,52px);font-weight:700;color:#b67b16;letter-spacing:.01em;background:rgba(250,244,229,.98)}
 .side{background:#fff;border:1px solid #ccc;padding:18px;height:max-content}.side h3{margin:0 0 14px}
 .side dl{margin:0}.side dt{font-size:11px;color:#777;font-weight:900;margin-top:12px}.side dd{margin:3px 0 0;font-weight:700}
 .actions{display:grid;gap:8px;margin-top:18px}.note{font-size:12px;color:#777;line-height:1.5;margin-top:14px}
@@ -51,13 +51,13 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
  @page{size:A4 portrait;margin:0}
  body{background:#fff}
  .judge-integrated-nav,.topbar,.wrap{display:none!important}.batch-holder{display:block!important}
- .print-certificate{position:relative;width:210mm;height:297mm;page-break-after:always;background:#fff url('APDC_Certificate_Background.svg') center/210mm 297mm no-repeat}
+ .print-certificate{position:relative;width:210mm;height:297mm;page-break-after:always;background:#fff url('APDC_Certificate_Background.png') center/210mm 297mm no-repeat}
  .print-certificate:last-child{page-break-after:auto}
  .print-certificate .cover{background:rgba(251,244,229,.97)}
- .print-certificate .name-cover{font-size:13mm}
- .print-certificate .event-cover{font-size:4.6mm}
- .print-certificate .category-cover{font-size:4.3mm}
- .print-certificate .place-cover{font-size:5mm}
+ .print-certificate .name-cover{left:27.5%;top:41.3%;width:45%;height:5.6%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(23px,3.8vw,46px);font-weight:600;color:#9a6519;padding:0 8px;background:rgba(250,244,229,.98)}
+ .print-certificate .event-cover{left:23.5%;top:64.7%;width:53%;height:4.5%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(15px,2.15vw,25px);color:#b27618;padding:0 6px;background:rgba(250,244,229,.98)}
+ .print-certificate .category-cover{display:none}
+ .print-certificate .place-cover{left:34.5%;top:54.4%;width:31%;height:6.4%;font-family:Georgia,'Times New Roman',serif;font-size:clamp(26px,4.3vw,52px);font-weight:700;color:#b67b16;letter-spacing:.01em;background:rgba(250,244,229,.98)}
 }
 
 .judge-integrated-nav{display:flex;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #000;background:#fff;position:sticky;top:0;z-index:100}
@@ -96,7 +96,8 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
   </div>
   <div class="toolbar">
    <input id="q" type="search" placeholder="Search player / back number / event / place">
-   <button id="selectVisible" class="light">SELECT RESULTS</button>
+   <button id="selectVisible" class="light">SELECT ALL</button>
+   <button id="deselectAll" class="light">DESELECT ALL</button>
    <button id="printSelected" class="gold">PRINT SELECTED</button>
   </div>
   <div class="status"><span id="resultStatus"></span><span id="selectedStatus"></span></div>
@@ -109,7 +110,6 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
     <div class="certificate">
      <div id="pName" class="cover name-cover">Select a result</div>
      <div id="pEvent" class="cover event-cover">Event</div>
-     <div id="pCategory" class="cover category-cover">Category</div>
      <div id="pPlace" class="cover place-cover">Place</div>
     </div>
    </div>
@@ -168,14 +168,15 @@ function renderRows(){
  document.querySelectorAll('[data-check]').forEach(ch=>ch.addEventListener('change',()=>{const k=+ch.dataset.check;ch.checked?selected.add(k):selected.delete(k);updateSelectedStatus()}));
 }
 function showPreview(r){
- $('pName').textContent=r.name;$('pEvent').textContent=r.event;$('pCategory').textContent=r.category;$('pPlace').textContent=r.place.toUpperCase();
+ $('pName').textContent=r.name;$('pEvent').textContent=r.event;$('pPlace').textContent=r.place.toUpperCase();
  $('dName').textContent=r.name;$('dBack').textContent=r.backNo||'—';$('dEvent').textContent=r.event;$('dPlace').textContent=r.place;$('dCert').textContent=r.certNo||'—';
 }
 function updateSelectedStatus(){$('selectedStatus').textContent=selected.size+' selected'}
-function certHTML(r){return `<section class="print-certificate"><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover category-cover">${esc(r.category)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
+function certHTML(r){return `<section class="print-certificate"><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
 function doPrint(arr){if(!arr.length)return alert('출력할 상장을 선택해 주세요.');$('batchHolder').innerHTML=arr.map(certHTML).join('');setTimeout(()=>window.print(),100)}
 $('q').addEventListener('input',filterData);
 $('selectVisible').onclick=()=>{visible.forEach(r=>selected.add(DATA.indexOf(r)));renderRows()};
+$('deselectAll').onclick=()=>{selected.clear();renderRows()};
 $('clearSel').onclick=()=>{selected.clear();renderRows()};
 $('printSelected').onclick=()=>doPrint([...selected].sort((a,b)=>a-b).map(i=>DATA[i]));
 $('printCurrent').onclick=()=>current&&doPrint([current]);
