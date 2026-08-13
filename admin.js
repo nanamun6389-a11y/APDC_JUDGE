@@ -41,8 +41,7 @@ adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e
 judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
 
 
-// ===== ENTRY MANAGEMENT (V4) =====
-const entryEvent=document.getElementById("entryEvent");
+// ===== ENTRY MANAGEMENT (V5 · PLAYER MULTI-EVENT) =====
 const entryBackNo=document.getElementById("entryBackNo");
 const entryName=document.getElementById("entryName");
 const entryList=document.getElementById("entryList");
@@ -50,60 +49,174 @@ const entryCount=document.getElementById("entryCount");
 const entryMessage=document.getElementById("entryMessage");
 const saveEntryBtn=document.getElementById("saveEntryBtn");
 const cancelEntryEditBtn=document.getElementById("cancelEntryEditBtn");
+const entryEventChecks=document.getElementById("entryEventChecks");
+const entryEventSearch=document.getElementById("entryEventSearch");
+const entrySelectedCount=document.getElementById("entrySelectedCount");
+const entrySelectAllBtn=document.getElementById("entrySelectAllBtn");
+const entryClearAllBtn=document.getElementById("entryClearAllBtn");
 let competitionEntries={};
-let editingEntryKey=null;
+let editingPlayerKeys=[];
+let editingOriginalBackNo="";
 
-if(entryEvent){
-  entryEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
-}
 function firebaseSafeKey(){ return `entry_${Date.now()}_${Math.random().toString(36).slice(2,9)}`; }
-function selectedEntryEvent(){ return EVENTS.find(e=>e.eventKey===entryEvent?.value); }
 function entryTypeFor(event){
   if(!event) return "Solo";
   if(/formation/i.test(event.event)) return "Formation";
   if(/amateur latin|rising star|couple|pro-am/i.test(event.event) && !/solo/i.test(event.event)) return "Couple";
   return "Solo";
 }
+function eventId(e){ return `${e.event}||${e.section}||${e.style}`; }
+function selectedEventIds(){
+  return [...entryEventChecks.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
+}
+function updateSelectedCount(){
+  const n=selectedEventIds().length;
+  if(entrySelectedCount) entrySelectedCount.textContent=`${n} SELECTED`;
+}
+function renderEventChecks(){
+  if(!entryEventChecks) return;
+  const q=(entryEventSearch?.value||"").trim().toLowerCase();
+  const selected=new Set(selectedEventIds());
+  entryEventChecks.innerHTML=EVENTS.map((e,i)=>{
+    const label=`${e.section} · ${e.event}`;
+    const show=!q || label.toLowerCase().includes(q);
+    const id=`entryEventCheck_${i}`;
+    return `<label class="entry-event-check ${show?'':'hidden-by-search'}" data-event-label="${label.toLowerCase()}">
+      <input id="${id}" type="checkbox" value="${eventId(e)}" ${selected.has(eventId(e))?'checked':''}>
+      <span><b>${e.event}</b><small>${e.section} · ${e.style}</small></span>
+    </label>`;
+  }).join("");
+  updateSelectedCount();
+}
+renderEventChecks();
+entryEventChecks?.addEventListener("change",updateSelectedCount);
+entryEventSearch?.addEventListener("input",()=>{
+  const q=(entryEventSearch.value||"").trim().toLowerCase();
+  entryEventChecks.querySelectorAll('.entry-event-check').forEach(el=>{
+    el.classList.toggle('hidden-by-search', q && !String(el.dataset.eventLabel||'').includes(q));
+  });
+});
+entrySelectAllBtn?.addEventListener("click",()=>{
+  entryEventChecks.querySelectorAll('.entry-event-check:not(.hidden-by-search) input[type="checkbox"]').forEach(x=>x.checked=true);
+  updateSelectedCount();
+});
+entryClearAllBtn?.addEventListener("click",()=>{
+  entryEventChecks.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);
+  updateSelectedCount();
+});
+
+function groupedPlayers(){
+  const groups=new Map();
+  Object.entries(competitionEntries||{}).forEach(([key,x])=>{
+    if(!x||!x.backNo||!x.competitor) return;
+    const groupKey=String(x.backNo).trim();
+    if(!groups.has(groupKey)) groups.set(groupKey,{backNo:String(x.backNo),competitor:x.competitor,rows:[]});
+    const g=groups.get(groupKey);
+    if(!g.competitor && x.competitor) g.competitor=x.competitor;
+    g.rows.push({key,...x});
+  });
+  return [...groups.values()].sort((a,b)=>String(a.backNo).localeCompare(String(b.backNo),undefined,{numeric:true}));
+}
 function renderEntries(){
-  if(!entryList||!entryEvent) return;
-  const event=selectedEntryEvent();
-  const rows=Object.entries(competitionEntries||{})
-    .filter(([,x])=>x && event && x.event===event.event && x.section===event.section && x.style===event.style)
-    .sort((a,b)=>String(a[1].backNo||"").localeCompare(String(b[1].backNo||""),undefined,{numeric:true}));
-  entryCount.textContent=`${rows.length} ENTR${rows.length===1?'Y':'IES'}`;
-  entryList.innerHTML=rows.length?rows.map(([key,x])=>`<div class="entry-row">
-    <div class="backno">#${x.backNo||''}</div><div class="name">${x.competitor||''}</div>
-    <div class="entry-row-actions"><button type="button" data-entry-edit="${key}">EDIT</button><button type="button" class="delete" data-entry-delete="${key}">DELETE</button></div>
-  </div>`).join(""):'<div class="entry-empty">NO ENTRIES YET</div>';
+  if(!entryList) return;
+  const players=groupedPlayers();
+  const totalEntries=Object.values(competitionEntries||{}).filter(Boolean).length;
+  entryCount.textContent=`${players.length} PLAYER${players.length===1?'':'S'} · ${totalEntries} ENTRIES`;
+  entryList.innerHTML=players.length?players.map(g=>{
+    const names=[...new Set(g.rows.map(r=>r.event).filter(Boolean))];
+    return `<div class="entry-player-row">
+      <div class="entry-player-main"><span class="backno">#${g.backNo}</span><span class="name">${g.competitor||''}</span><span class="event-total">${names.length} EVENTS</span></div>
+      <div class="entry-player-events">${names.map(n=>`<span>${n}</span>`).join('')}</div>
+      <div class="entry-row-actions"><button type="button" data-player-edit="${g.backNo}">ADD / EDIT EVENTS</button><button type="button" class="delete" data-player-delete="${g.backNo}">DELETE PLAYER</button></div>
+    </div>`;
+  }).join(""):'<div class="entry-empty">NO ENTRIES YET</div>';
 }
 function resetEntryForm(){
-  editingEntryKey=null; if(entryBackNo)entryBackNo.value=""; if(entryName)entryName.value="";
-  if(saveEntryBtn)saveEntryBtn.textContent="ADD ENTRY"; cancelEntryEditBtn?.classList.add("hidden");
+  editingPlayerKeys=[]; editingOriginalBackNo="";
+  if(entryBackNo)entryBackNo.value="";
+  if(entryName)entryName.value="";
+  if(entryEventSearch)entryEventSearch.value="";
+  entryEventChecks?.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);
+  entryEventChecks?.querySelectorAll('.entry-event-check').forEach(x=>x.classList.remove('hidden-by-search'));
+  updateSelectedCount();
+  if(saveEntryBtn)saveEntryBtn.textContent="SAVE PLAYER ENTRIES";
+  cancelEntryEditBtn?.classList.add("hidden");
 }
-entryEvent?.addEventListener("change",()=>{resetEntryForm();renderEntries();});
 cancelEntryEditBtn?.addEventListener("click",resetEntryForm);
+
 saveEntryBtn?.addEventListener("click",async()=>{
-  const event=selectedEntryEvent(); const backNo=entryBackNo.value.trim(); const competitor=entryName.value.trim();
-  if(!event||!backNo||!competitor){entryMessage.textContent="EVENT / BACK NO. / NAME을 모두 입력하세요.";return;}
-  // Same event + back number updates instead of making a duplicate.
-  let key=editingEntryKey;
-  if(!key){
-    const found=Object.entries(competitionEntries||{}).find(([,x])=>x&&x.event===event.event&&x.section===event.section&&x.style===event.style&&String(x.backNo)===backNo);
-    key=found?.[0]||firebaseSafeKey();
-  }
-  const settingSnap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
-  const setting=settingSnap.val()||event;
-  await set(ref(db,`entries/${key}`),{
-    eventNo:String(setting.eventNumber||event.eventNumber||""),section:event.section,style:event.style,
-    division:event.event.replace(/\s+(C|S|R|J|CR|CJ|RJ|CS|CRS|CRJ|CSRJ|5 Dance|W|T|F|Q|WTFQ)$/i,""),
-    event:event.event,backNo,competitor,entryType:entryTypeFor(event),updatedAt:Date.now()
-  });
-  entryMessage.textContent=editingEntryKey?"ENTRY UPDATED":"ENTRY ADDED"; resetEntryForm(); setTimeout(()=>entryMessage.textContent="",1200);
+  const backNo=entryBackNo.value.trim();
+  const competitor=entryName.value.trim();
+  const chosen=new Set(selectedEventIds());
+  if(!backNo||!competitor){entryMessage.textContent="BACK NO. / NAME을 입력하세요.";return;}
+  if(!chosen.size){entryMessage.textContent="출전할 EVENT를 하나 이상 선택하세요.";return;}
+  saveEntryBtn.disabled=true;
+  entryMessage.textContent="SAVING...";
+  try{
+    // Editing a player synchronizes the entire selected event set. This makes later additions easy
+    // while also allowing an accidentally selected event to be unchecked and removed.
+    const existingForPlayer=Object.entries(competitionEntries||{}).filter(([,x])=>x && String(x.backNo).trim()===String(editingOriginalBackNo||backNo).trim());
+    const existingByEvent=new Map(existingForPlayer.map(([key,x])=>[eventId(x),{key,x}]));
+
+    // Remove events that were unchecked while editing, or remove old-back-number copies after changing a back number.
+    for(const [id,{key}] of existingByEvent){
+      if(!chosen.has(id) || (editingOriginalBackNo && editingOriginalBackNo!==backNo)) await remove(ref(db,`entries/${key}`));
+    }
+
+    for(const id of chosen){
+      const event=EVENTS.find(e=>eventId(e)===id);
+      if(!event) continue;
+      let key=null;
+      if(!editingOriginalBackNo || editingOriginalBackNo===backNo) key=existingByEvent.get(id)?.key||null;
+      if(!key){
+        const same=Object.entries(competitionEntries||{}).find(([,x])=>x&&String(x.backNo).trim()===backNo&&eventId(x)===id);
+        key=same?.[0]||firebaseSafeKey();
+      }
+      const settingSnap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
+      const setting=settingSnap.val()||event;
+      await set(ref(db,`entries/${key}`),{
+        eventNo:String(setting.eventNumber||event.eventNumber||""),section:event.section,style:event.style,
+        division:event.event.replace(/\s+(C|S|R|J|CR|CJ|RJ|CS|CRS|CRJ|CSRJ|5 Dance|W|T|F|Q|WTFQ)$/i,""),
+        event:event.event,backNo,competitor,entryType:entryTypeFor(event),updatedAt:Date.now()
+      });
+    }
+    entryMessage.textContent=`SAVED · #${backNo} ${competitor} · ${chosen.size} EVENTS`;
+    resetEntryForm();
+    setTimeout(()=>entryMessage.textContent="",1800);
+  }catch(err){
+    console.error(err);
+    entryMessage.textContent="SAVE FAILED · Firebase 권한/연결을 확인하세요.";
+  }finally{ saveEntryBtn.disabled=false; }
 });
+
 entryList?.addEventListener("click",async e=>{
-  const edit=e.target.closest('[data-entry-edit]'); const del=e.target.closest('[data-entry-delete]');
-  if(edit){ const key=edit.dataset.entryEdit,x=competitionEntries[key]; if(!x)return; editingEntryKey=key; entryBackNo.value=x.backNo||"";entryName.value=x.competitor||"";saveEntryBtn.textContent="SAVE CHANGES";cancelEntryEditBtn.classList.remove("hidden");window.scrollTo({top:entryEvent.getBoundingClientRect().top+scrollY-120,behavior:"smooth"}); }
-  if(del){ const key=del.dataset.entryDelete,x=competitionEntries[key]; if(x&&confirm(`Delete #${x.backNo} ${x.competitor}?`)) await remove(ref(db,`entries/${key}`)); }
+  const edit=e.target.closest('[data-player-edit]');
+  const del=e.target.closest('[data-player-delete]');
+  if(edit){
+    const backNo=edit.dataset.playerEdit;
+    const rows=Object.entries(competitionEntries||{}).filter(([,x])=>x&&String(x.backNo).trim()===String(backNo).trim());
+    if(!rows.length)return;
+    editingPlayerKeys=rows.map(([k])=>k); editingOriginalBackNo=String(backNo);
+    entryBackNo.value=backNo;
+    entryName.value=rows[0][1].competitor||"";
+    const ids=new Set(rows.map(([,x])=>eventId(x)));
+    entryEventChecks.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=ids.has(x.value));
+    if(entryEventSearch)entryEventSearch.value="";
+    entryEventChecks.querySelectorAll('.entry-event-check').forEach(x=>x.classList.remove('hidden-by-search'));
+    updateSelectedCount();
+    saveEntryBtn.textContent="SAVE CHANGES / ADD EVENTS";
+    cancelEntryEditBtn.classList.remove("hidden");
+    window.scrollTo({top:entryBackNo.getBoundingClientRect().top+scrollY-130,behavior:"smooth"});
+  }
+  if(del){
+    const backNo=del.dataset.playerDelete;
+    const rows=Object.entries(competitionEntries||{}).filter(([,x])=>x&&String(x.backNo).trim()===String(backNo).trim());
+    const name=rows[0]?.[1]?.competitor||"";
+    if(rows.length && confirm(`Delete #${backNo} ${name} and all ${rows.length} entries?`)){
+      for(const [key] of rows) await remove(ref(db,`entries/${key}`));
+      if(editingOriginalBackNo===backNo) resetEntryForm();
+    }
+  }
 });
 onValue(ref(db,"entries"),snap=>{competitionEntries=snap.val()||{};renderEntries();});
 

@@ -422,3 +422,28 @@ main {
 /* ===== NEW COMPETITION TIMETABLE BUILDER ===== */
 .tt-builder-tools{display:grid;grid-template-columns:180px 1fr 1fr 1fr;gap:8px;align-items:end;margin:16px 0}.tt-builder-tools label{font-size:11px;font-weight:900}.tt-builder-tools input,.tt-builder-tools button{width:100%;min-height:46px;box-sizing:border-box}.tt-builder-note{padding:12px;border:1px solid #ddd;background:#fafafa;font-size:12px;line-height:1.45;margin-bottom:12px}.tt-builder-list{display:grid;gap:8px}.tt-builder-row{display:grid;grid-template-columns:42px 92px minmax(0,1fr) auto;gap:10px;align-items:start;border:1px solid #111;padding:12px;background:#fff}.tt-builder-row.combined{border-width:2px;background:#f7f7f7}.tt-builder-row input[type=checkbox]{width:20px;height:20px;margin:3px 0}.tt-builder-no{font-weight:900}.tt-builder-main strong{display:block;font-size:16px}.tt-builder-meta{font-size:11px;color:#666;font-weight:800;margin-top:4px}.tt-builder-backs{font-size:12px;line-height:1.5;margin-top:7px;word-break:break-word}.tt-builder-backs b{font-weight:900}.tt-builder-duration{font-size:11px;font-weight:900;white-space:nowrap}.search-publish-box{margin:22px 0 12px;padding:18px;border:2px solid #111;background:#f7f7f7}.search-publish-box>button{width:100%;min-height:50px}.admin-section-tabs{grid-template-columns:repeat(6,1fr)}
 @media(max-width:760px){.tt-builder-tools{grid-template-columns:1fr 1fr}.tt-builder-row{grid-template-columns:32px 70px minmax(0,1fr)}.tt-builder-duration{grid-column:3}.admin-section-tabs{grid-template-columns:repeat(2,1fr)}}
+
+/* ENTRY V5 · one player, multiple events */
+.entry-player-grid{display:grid;grid-template-columns:.7fr 1.5fr;gap:10px;margin-bottom:16px}
+.entry-player-grid label{display:flex;flex-direction:column;gap:7px;font-weight:800;font-size:12px;letter-spacing:.08em}
+.entry-player-grid input{min-height:48px;border:1px solid #ccc;background:#fff;padding:10px 12px;font-size:16px}
+.entry-event-picker{border:1px solid #d8d8d8;background:#fafafa;padding:14px;margin:10px 0 14px}
+.entry-event-picker-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.entry-event-picker-head strong{font-size:13px;letter-spacing:.08em}.entry-event-picker-head span{font-size:12px;font-weight:900}
+.entry-event-tools{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-bottom:10px}
+.entry-event-tools input{min-height:44px;border:1px solid #ccc;background:#fff;padding:9px 11px;font-size:15px}
+.entry-event-tools button{min-height:44px;border:1px solid #111;background:#fff;padding:0 12px;font-weight:800}
+.entry-event-checks{max-height:430px;overflow:auto;border-top:1px solid #ddd;background:#fff}
+.entry-event-check{display:flex;align-items:center;gap:12px;padding:10px 8px;border-bottom:1px solid #eee;cursor:pointer}
+.entry-event-check.hidden-by-search{display:none}.entry-event-check input{width:20px;height:20px;flex:0 0 auto}
+.entry-event-check span{display:flex;flex-direction:column;gap:2px;min-width:0}.entry-event-check b{font-size:14px}.entry-event-check small{font-size:11px;color:#777}
+.entry-save-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px}
+.entry-save-actions button{min-height:50px;border:1px solid #111;background:#000;color:#fff;padding:0 16px;font-weight:900}
+.entry-save-actions button.light{background:#fff;color:#111}
+.entry-player-row{padding:14px 4px;border-bottom:1px solid #e5e5e5}
+.entry-player-main{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.entry-player-main .backno{font-size:20px;font-weight:900}.entry-player-main .name{font-weight:900}.entry-player-main .event-total{font-size:11px;font-weight:900;background:#eee;padding:5px 7px}
+.entry-player-events{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}.entry-player-events span{font-size:11px;border:1px solid #ddd;padding:5px 7px;background:#fff}
+.entry-player-row .entry-row-actions{justify-content:flex-end}
+@media(max-width:700px){
+  .entry-player-grid{grid-template-columns:1fr}.entry-event-tools{grid-template-columns:1fr 1fr}.entry-event-tools input{grid-column:1/-1}.entry-save-actions{grid-template-columns:1fr}.entry-event-checks{max-height:360px}
+}

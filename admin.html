@@ -67,14 +67,28 @@
 <section class="entry-manager admin-tab-panel hidden" data-admin-panel="entries">
   <div class="small-label">ENTRY MANAGEMENT</div>
   <h2>ENTRIES</h2>
-  <p class="muted">2026 APDC에서 사용한 이벤트 목록을 그대로 사용할 수 있습니다. 이벤트를 선택하고 백넘버와 선수 이름을 등록하세요.</p>
-  <div class="entry-form-grid">
-    <label class="event-field">EVENT<select id="entryEvent"></select></label>
+  <p class="muted">선수 한 명의 백넘버와 이름을 먼저 입력한 뒤, 출전할 이벤트를 여러 개 선택해서 한 번에 저장하세요. 저장한 선수는 아래에서 다시 열어 이벤트를 언제든 추가하거나 빼실 수 있습니다.</p>
+  <div class="entry-player-grid">
     <label>BACK NO.<input id="entryBackNo" type="text" inputmode="numeric" placeholder="44"></label>
-    <label class="name-field">NAME<input id="entryName" type="text" placeholder="Yul BAEK"></label>
-    <button id="saveEntryBtn" type="button">ADD ENTRY</button>
+    <label>NAME<input id="entryName" type="text" placeholder="Yul BAEK"></label>
   </div>
-  <div class="entry-tools"><strong id="entryCount">0 ENTRIES</strong><button id="cancelEntryEditBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+  <div class="entry-event-picker">
+    <div class="entry-event-picker-head">
+      <strong>SELECT EVENTS</strong>
+      <span id="entrySelectedCount">0 SELECTED</span>
+    </div>
+    <div class="entry-event-tools">
+      <input id="entryEventSearch" type="search" placeholder="이벤트 검색 · Under 10 / Solo / CR...">
+      <button id="entrySelectAllBtn" class="light" type="button">SELECT VISIBLE</button>
+      <button id="entryClearAllBtn" class="light" type="button">CLEAR</button>
+    </div>
+    <div id="entryEventChecks" class="entry-event-checks"></div>
+  </div>
+  <div class="entry-save-actions">
+    <button id="saveEntryBtn" type="button">SAVE PLAYER ENTRIES</button>
+    <button id="cancelEntryEditBtn" class="light hidden" type="button">CANCEL EDIT</button>
+  </div>
+  <div class="entry-tools"><strong id="entryCount">0 PLAYERS</strong></div>
   <div id="entryMessage" class="message"></div>
   <div id="entryList" class="entry-list"></div>
 </section>

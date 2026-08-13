@@ -35,6 +35,12 @@
     "eventSettings": {
       ".write": "auth != null"
     },
+    "competitions": {
+      "$competitionId": {
+        ".read": true,
+        ".write": "auth != null"
+      }
+    },
     "submissions": {
       ".write": "auth != null"
     },
