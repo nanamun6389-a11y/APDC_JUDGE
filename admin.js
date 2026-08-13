@@ -40,6 +40,62 @@ const adminEvent=document.getElementById("adminEvent");
 const adminRound=document.getElementById("adminRound");
 const judgeGroup=document.getElementById("judgeGroup");
 
+const DEFAULT_SOLO_SECTIONS=["Under 10","Under 12","Under 15","Under 18"];
+const DEFAULT_LATIN_DANCES=["C","S","R","J","CR","RJ","CRS","CRJ","5 Dance"];
+const DEFAULT_STANDARD_DANCES=["W","T","F","Q","WTF","WTFQ","5 Dance"];
+function makeDefaultEvent(event,section,style){
+  const id=`default_${String(event).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")}`;
+  return {id,event,section,style,eventKey:`custom:${id}`,eventNumber:"",assignedJudges:[],custom:true,defaultPreset:true,updatedAt:Date.now()};
+}
+function buildDefaultEventSet(){
+  const rows=[];
+  for(const section of DEFAULT_SOLO_SECTIONS){
+    for(const dance of DEFAULT_LATIN_DANCES){
+      const suffix=dance==="5 Dance"?"Latin 5 Dance":dance;
+      rows.push(makeDefaultEvent(`${section} Solo ${suffix}`,section,"Latin"));
+    }
+    for(const dance of DEFAULT_STANDARD_DANCES){
+      const suffix=dance==="5 Dance"?"Standard 5 Dance":dance;
+      rows.push(makeDefaultEvent(`${section} Solo ${suffix}`,section,"Modern"));
+    }
+  }
+  [
+    ["Asia Pacific Amateur Latin","Amateur","Latin"],
+    ["Amateur Rising Star Latin","Amateur","Latin"],
+    ["Amateur Solo Latin 5 Dance","Amateur","Latin"],
+    ["Over 19 Solo Latin 5 Dance","Over 19","Latin"],
+    ["Over 35 Solo CRS","Over 35","Latin"],
+    ["Senior 50 CR","Senior 50","Latin"],
+    ["Pro-Am Standard 3 Dance","Pro-Am","Modern"],
+    ["Formation","Formation","Other"]
+  ].forEach(x=>rows.push(makeDefaultEvent(...x)));
+  // Safety: collapse logical duplicates such as CRS/CSR before saving.
+  return rows.filter((e,i,a)=>a.findIndex(x=>danceSignatureForSeed(x)===danceSignatureForSeed(e))===i);
+}
+function danceSignatureForSeed(e){
+  const name=String(e?.event||"").trim();
+  const m=name.match(/\b([CSRPJWTVFQ]{2,5})$/i);
+  if(!m) return `${name.toLowerCase().replace(/\s+/g," ")}||${String(e.section||"").toLowerCase()}||${String(e.style||"").toLowerCase()}`;
+  const chars=[...m[1].toUpperCase()].sort().join("");
+  return `${name.slice(0,m.index).trim().toLowerCase().replace(/\s+/g," ")}||${chars}||${String(e.section||"").toLowerCase()}||${String(e.style||"").toLowerCase()}`;
+}
+let defaultSeedInProgress=false;
+async function ensureDefaultEvents(){
+  if(isLegacyCompetition || defaultSeedInProgress) return;
+  const seeded=await get(ref(db,"meta/defaultEventsSeededV14"));
+  if(seeded.val()) return;
+  defaultSeedInProgress=true;
+  try{
+    const existing=Object.values(customEvents||{}).filter(Boolean);
+    const signatures=new Set(existing.map(danceSignatureForSeed));
+    for(const item of buildDefaultEventSet()){
+      if(signatures.has(danceSignatureForSeed(item))) continue;
+      await set(ref(db,`customEvents/${item.id}`),item);
+      signatures.add(danceSignatureForSeed(item));
+    }
+    await set(ref(db,"meta/defaultEventsSeededV14"),true);
+  } finally { defaultSeedInProgress=false; }
+}
 const plainLabel=e=>`${e.section} · ${e.event}`;
 function eventFromEntry(x){return {eventKey:x.eventKey||`entry:${encodeKey(eventId(x))}`,eventNumber:x.eventNo||"",event:x.event||"",section:x.section||"",style:x.style||"Other",assignedJudges:[],recovered:true};}
 function refreshEventSources(){
@@ -182,7 +238,7 @@ customEventList?.addEventListener("click",async e=>{
   if(eb){const id=eb.dataset.eventEdit,x=customEvents[id];if(!x)return;editingCustomEventId=id;customEventName.value=x.event;customEventSection.value=x.section;customEventStyle.value=x.style||"Latin";customEventSaveBtn.textContent="SAVE EVENT CHANGES";customEventCancelBtn.classList.remove("hidden");customEventName.scrollIntoView({behavior:"smooth",block:"center"});}
   if(dbtn){const id=dbtn.dataset.eventDelete,x=customEvents[id];if(!x)return;const affected=Object.entries(competitionEntries||{}).filter(([,r])=>r&&eventId(r)===eventId(x));if(!confirm(`${x.event} 이벤트를 삭제할까요?\n등록된 엔트리 ${affected.length}개도 함께 삭제됩니다.`))return;for(const [key] of affected)await remove(ref(db,`entries/${key}`));await remove(ref(db,`customEvents/${id}`));customEventMessage.textContent="이벤트 삭제 완료";}
 });
-onValue(ref(db,"customEvents"),snap=>{customEvents=snap.val()||{};refreshEventSources();});
+onValue(ref(db,"customEvents"),async snap=>{customEvents=snap.val()||{};refreshEventSources();await ensureDefaultEvents();});
 
 function groupedPlayers(){
   const groups=new Map();
