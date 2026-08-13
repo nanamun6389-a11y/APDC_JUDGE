@@ -33,6 +33,7 @@
 <div class="admin-section-tabs">
   <button type="button" data-admin-tab="event" class="active">EVENT</button>
   <button type="button" data-admin-tab="entries">ENTRIES</button>
+  <button type="button" data-admin-tab="timetable">TIMETABLE</button>
   <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
@@ -75,14 +76,29 @@
   </div>
   <div class="entry-tools"><strong id="entryCount">0 ENTRIES</strong><button id="cancelEntryEditBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
   <div id="entryMessage" class="message"></div>
-  <div class="search-publish-box" style="margin:22px 0 12px;padding:18px;border:2px solid #111;background:#f7f7f7">
-    <div class="small-label">PUBLIC SEARCH</div>
-    <h3 style="margin:6px 0 8px">SEARCH에 새 대회 송출</h3>
-    <p class="muted" style="margin:0 0 12px">엔트리가 완성된 뒤 마지막에 눌러주세요. 이 버튼을 누르기 전까지 기존 APDC SEARCH에는 아무 변화가 없습니다. 누른 시점의 이벤트·백넘버·선수 이름만 새 대회로 공개됩니다.</p>
-    <button id="publishSearchBtn" class="dark" type="button" style="width:100%">SEARCH에 새 대회 송출</button>
+  <div id="entryList" class="entry-list"></div>
+</section>
+
+<section class="timetable-manager admin-tab-panel hidden" data-admin-panel="timetable">
+  <div class="small-label">TIMETABLE BUILDER</div>
+  <h2>TIMETABLE</h2>
+  <p class="muted">엔트리가 완성된 뒤 타임테이블을 만드세요. 합동경기는 체크한 경기들을 하나로 묶으며, 타임테이블에는 합동된 모든 경기의 백넘버가 전부 표시됩니다.</p>
+  <div class="tt-builder-tools">
+    <label>START TIME<input id="ttBuilderStart" type="time" value="11:30" step="20"></label>
+    <button id="buildTimetableBtn" class="dark" type="button">엔트리로 타임테이블 만들기</button>
+    <button id="combineTimetableBtn" type="button">선택 경기 합동</button>
+    <button id="uncombineTimetableBtn" class="light" type="button">합동 취소</button>
+  </div>
+  <div id="ttBuilderMessage" class="message"></div>
+  <div class="tt-builder-note">합동경기는 같은 라운드끼리 선택하는 것을 권장합니다. 합동 후에도 각 원래 경기의 선수 백넘버가 모두 유지됩니다.</div>
+  <div id="ttBuilderList" class="tt-builder-list"></div>
+  <div class="search-publish-box">
+    <div class="small-label">FINAL PUBLISH</div>
+    <h3>SEARCH에 새로운 시합 송출</h3>
+    <p class="muted">엔트리와 타임테이블을 모두 확인한 뒤 마지막에 누르세요. 이 버튼을 누르기 전에는 기존 SEARCH 데이터는 바뀌지 않습니다.</p>
+    <button id="publishSearchBtn" class="dark" type="button">SEARCH에 새로운 시합 송출</button>
     <div id="publishSearchMessage" class="message"></div>
   </div>
-  <div id="entryList" class="entry-list"></div>
 </section>
 
 <section class="controls admin-tab-panel" data-admin-panel="event">

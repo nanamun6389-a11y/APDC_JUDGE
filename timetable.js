@@ -1,3 +1,4 @@
+import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
 
 const gate=document.getElementById('ttPasswordGate');
 const protectedBox=document.getElementById('ttProtected');
@@ -5,7 +6,7 @@ const input=document.getElementById('ttPasswordInput');
 const btn=document.getElementById('ttPasswordBtn');
 const msg=document.getElementById('ttPasswordMessage');
 const ACCESS_KEY='apdc_judge_access_ok';
-const LOCAL_KEY='apdc_timetable_manager_backup_v4';
+const LOCAL_KEY=`apdc_timetable_manager_backup_v4_${competitionId}`;
 
 let TT=[];
 let firebaseReady=false;
@@ -22,6 +23,13 @@ let QUALIFIERS={};
 const APDC_FIREBASE_PLAYERS_URL='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app/apdcPublic/players.json';
 const APDC_SEARCH_PLAYERS_URL='https://nanamun6389-a11y.github.io/APDC-SEARCH/players.json';
 async function fetchLatestPlayers(){
+  if(!isLegacyCompetition){
+    try{
+      const root='https://apdc-judge-default-rtdb.asia-southeast1.firebasedatabase.app';
+      const r=await fetch(`${root}/competitions/${encodeURIComponent(competitionId)}/entries.json?v=${Date.now()}`,{cache:'no-store'});
+      if(r.ok){const raw=await r.json();const vals=raw&&typeof raw==='object'?Object.values(raw):[];if(vals.length)return vals;}
+    }catch(e){console.warn('Competition entries load failed',e);}
+  }
   const urls=[APDC_FIREBASE_PLAYERS_URL,APDC_SEARCH_PLAYERS_URL,'./players.json'];
   let lastError=null;
   for(const url of urls){
@@ -65,9 +73,12 @@ function applySearchEntryCounts(rows,counts){
   const seen=new Set();
   return rows.map(row=>{
     const sourceNo=String(row?.sourceEventNo??'').trim();
-    const linkedBackNos=sourceNo&&backNumbersByEvent.has(sourceNo)
-      ? Array.from(backNumbersByEvent.get(sourceNo)).sort((a,b)=>Number(a)-Number(b))
-      : (Array.isArray(row?.backNumbers)?row.backNumbers:[]);
+    const sourceNos=Array.isArray(row?.sourceEventNos)?row.sourceEventNos.map(x=>String(x).trim()).filter(Boolean):(sourceNo?[sourceNo]:[]);
+    const linkedSet=new Set();
+    sourceNos.forEach(no=>{if(backNumbersByEvent.has(no))backNumbersByEvent.get(no).forEach(x=>linkedSet.add(String(x)));});
+    const linkedBackNos=linkedSet.size
+      ? Array.from(linkedSet).sort((a,b)=>Number(a)-Number(b))
+      : (Array.isArray(row?.backNumbers)?row.backNumbers.map(String).sort((a,b)=>Number(a)-Number(b)):[]);
     row={...row,backNumbers:linkedBackNos};
     const eventName=String(row?.event??'').trim();
     if(eventName.includes('+')){
@@ -215,6 +226,7 @@ function loadLocal(){
 }
 
 async function loadDefault(){
+  if(!isLegacyCompetition) return null;
   const urls=[
     'timetable-data.json?v=20260728-recovered-order-v4',
     './timetable-data.json?v=20260728-recovered-order-v4'
@@ -252,26 +264,26 @@ async function connectFirebase(){
 
     // Firebase timetableOverride is the live schedule source; packaged JSON is fallback only.
     try{
-      const ov=await get(ref(ttDb,'timetableOverride'));
+      const ov=await get(ref(ttDb,competitionPath('timetableOverride')));
       const value=ov.val();
       const rows=normalizeRows(value?.rows ?? value);
       if(rows.length){TT=applySearchEntryCounts(rows,searchEntryCounts);saveLocal(TT);render();}
     }catch(e){console.warn('Saved timetable read failed',e);}
-    onValue(ref(ttDb,'timetableOverride'),snap=>{
+    onValue(ref(ttDb,competitionPath('timetableOverride')),snap=>{
       const value=snap.val();
       const rows=normalizeRows(value?.rows ?? value);
       if(rows.length){TT=applySearchEntryCounts(rows,searchEntryCounts);saveLocal(TT);currentFloorIndex=Math.min(currentFloorIndex,TT.length-1);render();}
     });
-    try{const qs=await get(ref(ttDb,'qualifiers'));QUALIFIERS=qs.val()||{};render();}catch(_){QUALIFIERS={};}
-    onValue(ref(ttDb,'qualifiers'),snap=>{QUALIFIERS=snap.val()||{};render();});
+    try{const qs=await get(ref(ttDb,competitionPath('qualifiers')));QUALIFIERS=qs.val()||{};render();}catch(_){QUALIFIERS={};}
+    onValue(ref(ttDb,competitionPath('qualifiers')),snap=>{QUALIFIERS=snap.val()||{};render();});
 
     try{
-      const fs=await get(ref(ttDb,'floorStatus'));
+      const fs=await get(ref(ttDb,competitionPath('floorStatus')));
       const idx=Number(fs.val()?.timetableIndex);
       if(Number.isInteger(idx)){currentFloorIndex=idx;render();}
     }catch(e){console.warn('Current floor position read failed',e)}
 
-    onValue(ref(ttDb,'floorStatus'),snap=>{
+    onValue(ref(ttDb,competitionPath('floorStatus')),snap=>{
       const idx=Number(snap.val()?.timetableIndex);
       if(Number.isInteger(idx)&&idx!==currentFloorIndex){
         currentFloorIndex=idx;

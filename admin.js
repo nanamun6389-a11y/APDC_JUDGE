@@ -107,27 +107,135 @@ entryList?.addEventListener("click",async e=>{
 });
 onValue(ref(db,"entries"),snap=>{competitionEntries=snap.val()||{};renderEntries();});
 
+// ===== TIMETABLE BUILDER + FINAL SEARCH PUBLISH =====
 const publishSearchBtn=document.getElementById("publishSearchBtn");
 const publishSearchMessage=document.getElementById("publishSearchMessage");
+const ttBuilderStart=document.getElementById("ttBuilderStart");
+const buildTimetableBtn=document.getElementById("buildTimetableBtn");
+const combineTimetableBtn=document.getElementById("combineTimetableBtn");
+const uncombineTimetableBtn=document.getElementById("uncombineTimetableBtn");
+const ttBuilderList=document.getElementById("ttBuilderList");
+const ttBuilderMessage=document.getElementById("ttBuilderMessage");
+let timetableRows=[];
+
 function currentCompetitionMeta(){
   let list=[]; try{list=JSON.parse(localStorage.getItem("apdc-competitions-v2")||"[]");if(!Array.isArray(list))list=[]}catch(e){}
   const found=list.find(x=>x&&x.id===competitionId)||{};
   return {id:competitionId,name:found.name||competitionId,date:found.date||"",venue:found.venue||""};
 }
-publishSearchBtn?.addEventListener("click",async()=>{
-  if(isLegacyCompetition){
-    publishSearchMessage.textContent="2026 APDC는 기존 SEARCH 데이터로 이미 공개되어 있습니다.";return;
+function danceCodes(eventName){
+  const n=String(eventName||"").toUpperCase();
+  if(/FORMATION/.test(n)) return ["Formation"];
+  if(/5\s*DANCE/.test(n)) return ["C","S","R","P","J"];
+  const m=n.match(/(?:SOLO\s+|LATIN\s+|STANDARD\s+)(WTFQ|WTF|WTQ|CRSJ|CSRJ|CRJ|CRS|CSR|CR|RJ|CJ|CS|WQ|WT|[CSRPJWTQF])\b/);
+  if(m){
+    const code=m[1];
+    if(/^[WTFQ]+$/.test(code)) return [...code];
+    return [...code];
   }
+  if(/STANDARD\s*3\s*DANCE/.test(n)) return ["W","T","F"];
+  if(/SENIOR\s*50\s*CR/.test(n)) return ["C","R"];
+  return ["R"];
+}
+function roundPlan(count){
+  if(count>=14) return ["Quarter Final","Semi Final","Final"];
+  if(count>=8) return ["Semi Final","Final"];
+  return ["Final"];
+}
+function secToClock(sec){
+  sec=Math.max(0,Math.round(sec)); const h=Math.floor(sec/3600)%24,m=Math.floor(sec%3600/60),ss=sec%60;
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}${ss?`:${String(ss).padStart(2,"0")}`:""}`;
+}
+function startSeconds(){ const [h,m]=(ttBuilderStart?.value||"11:30").split(":").map(Number); return (h||0)*3600+(m||0)*60; }
+function renumberAndRetimestamp(rows){
+  let cursor=startSeconds();
+  return rows.map((r,i)=>{const durationSeconds=Number(r.durationSeconds)||80;const x={...r,no:String(i+1),start:secToClock(cursor),durationSeconds,duration:Math.round(durationSeconds/60*1000)/1000,durationText:durationSeconds%60?`${Math.floor(durationSeconds/60)}:${String(durationSeconds%60).padStart(2,"0")}`:`${Math.floor(durationSeconds/60)}:00`};cursor+=durationSeconds;return x;});
+}
+function eventIdentity(x){return `${x.event||""}||${x.section||""}||${x.style||""}`;}
+async function buildTimetableFromEntries(){
+  const rows=Object.values(competitionEntries||{}).filter(x=>x&&x.backNo&&x.competitor&&x.event);
+  if(!rows.length){ttBuilderMessage.textContent="먼저 엔트리를 등록하세요.";return;}
+  const settingsSnap=await get(ref(db,"eventSettings")); const settings=Object.values(settingsSnap.val()||{});
+  const byEvent=new Map();
+  rows.forEach(x=>{const k=eventIdentity(x);if(!byEvent.has(k))byEvent.set(k,[]);byEvent.get(k).push(x)});
+  const built=[];
+  for(const [key,ents] of byEvent){
+    const sample=ents[0];
+    const setting=settings.find(z=>eventIdentity(z)===key)||{};
+    const evDef=EVENTS.find(z=>eventIdentity(z)===key)||{};
+    const sourceNo=String(setting.eventNumber||sample.eventNo||evDef.eventNumber||EVENTS.findIndex(z=>eventIdentity(z)===key)+1);
+    const backs=[...new Set(ents.map(x=>String(x.backNo).trim()).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
+    const dances=danceCodes(sample.event); const rounds=roundPlan(ents.length);
+    for(const round of rounds){
+      const durationSeconds=/formation/i.test(sample.event)?600:Math.max(80,dances.length*80);
+      built.push({no:"",start:"",round,style:sample.style||"",section:sample.section||"",division:sample.division||"",event:sample.event||"",entries:String(ents.length),danceOrder:dances.join(" → "),durationSeconds,durationText:"",sourceEventNo:sourceNo,sourceEventNos:[sourceNo],sourceEvents:[sample.event],backNumbers:backs,note:"",combined:false});
+    }
+  }
+  built.sort((a,b)=>Number(a.sourceEventNo)-Number(b.sourceEventNo)||({"Quarter Final":0,"Semi Final":1,"Final":2}[a.round]??9)-({"Quarter Final":0,"Semi Final":1,"Final":2}[b.round]??9));
+  timetableRows=renumberAndRetimestamp(built);
+  await saveTimetableRows();
+  ttBuilderMessage.textContent=`타임테이블 생성 완료 · ${timetableRows.length} 경기`;
+  renderTimetableBuilder();
+}
+async function saveTimetableRows(){
+  timetableRows=renumberAndRetimestamp(timetableRows);
+  await set(ref(db,"timetableOverride"),{summary:`${currentCompetitionMeta().name} · generated from entries`,rows:timetableRows,updatedAt:Date.now()});
+}
+function renderTimetableBuilder(){
+  if(!ttBuilderList)return;
+  ttBuilderList.innerHTML=timetableRows.length?timetableRows.map((r,i)=>`<div class="tt-builder-row ${r.combined?'combined':''}">
+    <input type="checkbox" data-tt-select="${i}" aria-label="select event ${r.no}">
+    <div class="tt-builder-no">${r.start}<br>EVENT ${r.no}</div>
+    <div class="tt-builder-main"><strong>${r.combined?'[합동] ':''}${r.event}</strong><div class="tt-builder-meta">${r.round} · ${r.entries||0} ENTRIES · ${r.danceOrder||''}</div><div class="tt-builder-backs"><b>BACK NO.</b> ${(r.backNumbers||[]).join(' · ')||'—'}</div>${r.combined&&r.sourceEvents?.length?`<div class="tt-builder-meta">SOURCE: ${r.sourceEvents.join(' + ')}</div>`:''}</div>
+    <div class="tt-builder-duration">${r.durationText||''}</div>
+  </div>`).join(""):'<div class="entry-empty">타임테이블이 없습니다. 엔트리 완성 후 위 버튼을 눌러주세요.</div>';
+}
+function selectedTimetableIndexes(){return [...ttBuilderList.querySelectorAll('[data-tt-select]:checked')].map(x=>Number(x.dataset.ttSelect)).filter(Number.isInteger).sort((a,b)=>a-b);}
+combineTimetableBtn?.addEventListener("click",async()=>{
+  const idx=selectedTimetableIndexes(); if(idx.length<2){ttBuilderMessage.textContent="합동할 경기를 2개 이상 선택하세요.";return;}
+  const rows=idx.map(i=>timetableRows[i]); const rounds=[...new Set(rows.map(r=>r.round))];
+  if(rounds.length>1&&!confirm("서로 다른 라운드가 선택되었습니다. 그래도 합동할까요?"))return;
+  const allBacks=[...new Set(rows.flatMap(r=>r.backNumbers||[]).map(String).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
+  const sourceEventNos=[...new Set(rows.flatMap(r=>r.sourceEventNos||[r.sourceEventNo]).map(String).filter(Boolean))];
+  const sourceEvents=[...new Set(rows.flatMap(r=>r.sourceEvents||[r.event]).filter(Boolean))];
+  const danceList=[...new Set(rows.flatMap(r=>String(r.danceOrder||'').split('→').map(x=>x.trim()).filter(Boolean)))];
+  const combined={...rows[0],event:sourceEvents.join(" + "),entries:String(rows.reduce((n,r)=>n+Number(r.entries||0),0)),backNumbers:allBacks,sourceEventNos,sourceEventNo:sourceEventNos[0]||"",sourceEvents,danceOrder:danceList.join(" → "),durationSeconds:Math.max(...rows.map(r=>Number(r.durationSeconds)||80)),combined:true,note:"COMBINED · all source back numbers retained"};
+  const first=idx[0], selectedSet=new Set(idx); timetableRows=timetableRows.filter((_,i)=>!selectedSet.has(i)); timetableRows.splice(first,0,combined);
+  await saveTimetableRows();renderTimetableBuilder();ttBuilderMessage.textContent=`합동 완료 · BACK NO. ${allBacks.join(' · ')}`;
+});
+uncombineTimetableBtn?.addEventListener("click",async()=>{
+  const idx=selectedTimetableIndexes(); if(idx.length!==1){ttBuilderMessage.textContent="합동 취소할 경기 1개를 선택하세요.";return;}
+  const row=timetableRows[idx[0]]; if(!row?.combined||!(row.sourceEvents?.length>1)){ttBuilderMessage.textContent="선택한 경기는 합동경기가 아닙니다.";return;}
+  const sourceSet=new Set(row.sourceEvents); const entryGroups=new Map();
+  Object.values(competitionEntries||{}).filter(x=>x&&sourceSet.has(x.event)).forEach(x=>{const k=eventIdentity(x);if(!entryGroups.has(k))entryGroups.set(k,[]);entryGroups.get(k).push(x)});
+  const restored=[];
+  for(const ents of entryGroups.values()){
+    const sample=ents[0], backs=[...new Set(ents.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
+    const sourceIndex=row.sourceEvents.indexOf(sample.event), sourceNo=String(row.sourceEventNos?.[sourceIndex]||""); const dances=danceCodes(sample.event);
+    restored.push({...row,event:sample.event,section:sample.section,style:sample.style,division:sample.division,entries:String(ents.length),backNumbers:backs,sourceEventNo:sourceNo,sourceEventNos:[sourceNo],sourceEvents:[sample.event],danceOrder:dances.join(" → "),durationSeconds:/formation/i.test(sample.event)?600:Math.max(80,dances.length*80),combined:false,note:""});
+  }
+  if(!restored.length){ttBuilderMessage.textContent="원래 경기 엔트리를 찾지 못했습니다.";return;}
+  timetableRows.splice(idx[0],1,...restored);await saveTimetableRows();renderTimetableBuilder();ttBuilderMessage.textContent="합동 취소 완료";
+});
+buildTimetableBtn?.addEventListener("click",()=>{if(timetableRows.length&&!confirm("현재 타임테이블을 엔트리 기준으로 다시 만들까요? 기존 합동 설정은 초기화됩니다."))return;buildTimetableFromEntries();});
+ttBuilderStart?.addEventListener("change",async()=>{if(!timetableRows.length)return;await saveTimetableRows();renderTimetableBuilder();});
+onValue(ref(db,"timetableOverride"),snap=>{const v=snap.val();const rows=Array.isArray(v?.rows)?v.rows:(Array.isArray(v)?v:[]);if(rows.length){timetableRows=rows;renderTimetableBuilder();}else{timetableRows=[];renderTimetableBuilder();}});
+
+publishSearchBtn?.addEventListener("click",async()=>{
+  if(isLegacyCompetition){publishSearchMessage.textContent="2026 APDC는 기존 SEARCH 데이터로 이미 공개되어 있습니다.";return;}
   const rows=Object.values(competitionEntries||{}).filter(x=>x&&x.backNo&&x.competitor&&x.event);
   if(!rows.length){publishSearchMessage.textContent="먼저 엔트리를 등록하세요.";return;}
-  if(!confirm(`${rows.length}개 엔트리를 APDC SEARCH에 공개할까요?`))return;
+  if(!timetableRows.length){publishSearchMessage.textContent="엔트리 완성 후 타임테이블을 먼저 만드세요.";return;}
+  if(!confirm(`엔트리 ${rows.length}개와 타임테이블 ${timetableRows.length}경기를 APDC SEARCH에 송출할까요?`))return;
   publishSearchBtn.disabled=true; publishSearchMessage.textContent="송출 중…";
   try{
     const meta=currentCompetitionMeta();
     const publicRows=rows.map(x=>({eventNo:String(x.eventNo||""),section:x.section||"",style:x.style||"",division:x.division||"",event:x.event||"",backNo:String(x.backNo||""),competitor:x.competitor||"",entryType:x.entryType||""}));
+    const publicTT=timetableRows.map(r=>({...r,backNumbers:Array.isArray(r.backNumbers)?r.backNumbers.map(String):[]}));
     await set(firebaseRef(db,`competitions/${competitionId}/publicEntries`),publicRows);
-    await set(firebaseRef(db,`publishedCompetitions/${competitionId}`),{...meta,entryCount:publicRows.length,published:true,publishedAt:Date.now()});
-    publishSearchMessage.textContent=`SEARCH 송출 완료 · ${publicRows.length} ENTRIES`;
+    await set(firebaseRef(db,`competitions/${competitionId}/publicTimetable`),{rows:publicTT,updatedAt:Date.now()});
+    await set(firebaseRef(db,`publishedCompetitions/${competitionId}`),{...meta,entryCount:publicRows.length,timetableCount:publicTT.length,published:true,publishedAt:Date.now()});
+    publishSearchMessage.textContent=`SEARCH 송출 완료 · ${publicRows.length} ENTRIES · ${publicTT.length} EVENTS`;
   }catch(err){console.error(err);publishSearchMessage.textContent="송출 실패. Firebase 연결을 확인하세요."}
   finally{publishSearchBtn.disabled=false;}
 });
@@ -349,14 +457,15 @@ const sponsorNameInput=document.getElementById("sponsorNameInput"),sponsorUrlInp
 document.getElementById("addSponsorBtn")?.addEventListener("click",async()=>{const name=sponsorNameInput.value.trim(),url=sponsorUrlInput.value.trim();if(!url){sponsorMessage.textContent="ENTER LOGO URL";return}const key=`sponsor_${Date.now()}`;await set(ref(db,`sponsors/${key}`),{name:name||"Sponsor",url,active:true,createdAt:Date.now()});sponsorNameInput.value="";sponsorUrlInput.value="";sponsorMessage.textContent="LOGO ADDED"});
 onValue(ref(db,"sponsors"),s=>{const rows=Object.entries(s.val()||{});sponsorList.innerHTML=rows.length?rows.map(([key,x])=>`<div class="sponsor-admin-row"><img src="${x.url}" alt=""><span>${x.name||"Sponsor"}</span><button data-remove-sponsor="${key}">REMOVE</button></div>`).join(""):'<div class="message">NO SPONSOR LOGOS</div>';sponsorList.querySelectorAll("[data-remove-sponsor]").forEach(b=>b.onclick=async()=>{if(confirm("Remove this sponsor logo?"))await remove(ref(db,`sponsors/${b.dataset.removeSponsor}`))})});
 
-function activateAdminTab(tab){
-  const target=document.querySelector(`[data-admin-tab="${tab}"]`);
-  if(!target)return;
-  document.querySelectorAll("[data-admin-tab]").forEach(b=>b.classList.toggle("active",b===target));
-  document.querySelectorAll("[data-admin-panel]").forEach(panel=>panel.classList.toggle("hidden",panel.dataset.adminPanel!==tab));
-}
 document.querySelectorAll("[data-admin-tab]").forEach(btn=>{
-  btn.addEventListener("click",()=>activateAdminTab(btn.dataset.adminTab));
+  btn.addEventListener("click",()=>{
+    const tab=btn.dataset.adminTab;
+    document.querySelectorAll("[data-admin-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+    document.querySelectorAll("[data-admin-panel]").forEach(panel=>{
+      panel.classList.toggle("hidden",panel.dataset.adminPanel!==tab);
+    });
+  });
 });
-const requestedAdminTab=new URL(location.href).searchParams.get("tab");
-if(requestedAdminTab)activateAdminTab(requestedAdminTab);
+const initialTab=new URL(location.href).searchParams.get("tab");
+if(initialTab){document.querySelector(`[data-admin-tab="${initialTab}"]`)?.click();}
+
