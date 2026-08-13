@@ -83,6 +83,18 @@
     </div>
     <div id="entryEventChecks" class="entry-event-checks"></div>
   </div>
+  <div class="custom-event-manager">
+    <div class="small-label">EVENT LIST MANAGEMENT</div>
+    <h3>없는 이벤트 추가 / 수정 / 삭제</h3>
+    <p class="muted">목록에 없는 이벤트를 여기서 추가하세요. 수정하면 기존 선수 엔트리와 타임테이블도 같은 이벤트로 이어집니다.</p>
+    <div class="entry-player-grid">
+      <label>EVENT NAME<input id="customEventName" type="text" placeholder="Under 21 Solo CR"></label>
+      <label>SECTION<input id="customEventSection" type="text" placeholder="Under 21"></label>
+      <label>STYLE<select id="customEventStyle"><option>Latin</option><option>Modern</option><option>Other</option></select></label>
+    </div>
+    <div class="entry-save-actions"><button id="customEventSaveBtn" type="button">+ NEW EVENT 저장</button><button id="customEventCancelBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+    <div id="customEventMessage" class="message"></div><div id="customEventList" class="custom-event-list"></div>
+  </div>
   <div class="entry-save-actions">
     <button id="saveEntryBtn" type="button">SAVE PLAYER ENTRIES</button>
     <button id="cancelEntryEditBtn" class="light hidden" type="button">CANCEL EDIT</button>
@@ -95,7 +107,7 @@
 <section class="timetable-manager admin-tab-panel hidden" data-admin-panel="timetable">
   <div class="small-label">TIMETABLE BUILDER</div>
   <h2>TIMETABLE</h2>
-  <p class="muted">엔트리가 완성된 뒤 타임테이블을 만드세요. 합동경기는 체크한 경기들을 하나로 묶으며, 타임테이블에는 합동된 모든 경기의 백넘버가 전부 표시됩니다.</p>
+  <p class="muted">처음 한 번 타임테이블을 만든 뒤에는 엔트리 추가·수정·삭제가 타임테이블에 자동 반영됩니다. 새 이벤트도 자동으로 추가됩니다. 합동경기는 체크한 경기들을 하나로 묶으며, 타임테이블에는 합동된 모든 경기의 백넘버가 전부 표시됩니다.</p>
   <div class="tt-builder-tools">
     <label>START TIME<input id="ttBuilderStart" type="time" value="11:30" step="20"></label>
     <button id="buildTimetableBtn" class="dark" type="button">엔트리로 타임테이블 만들기</button>
