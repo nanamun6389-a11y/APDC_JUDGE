@@ -245,7 +245,7 @@ async function connectFirebase(){
     ]);
     const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
     ttDb=getDatabase(app);
-    ttRef=ref;
+    ttRef=(db,path)=>ref(db, path===".info/connected"?path:competitionPath(path));
     ttOnValue=onValue;
     ttSet=set;
     firebaseReady=true;

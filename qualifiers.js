@@ -1,6 +1,8 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, get, onValue, set } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref as firebaseRef, get, onValue, set } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
+import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
+const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
 const db=getDatabase(app);

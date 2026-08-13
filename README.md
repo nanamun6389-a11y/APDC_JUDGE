@@ -32,3 +32,11 @@ Upload every file directly to the root of the APDC_JUDGE repository.
 - Certificate overlay fix: removed opaque boxes behind player/event/place text; original certificate artwork remains fully visible.
 
 - Full certificate artwork fix: replaced the truncated PNG with a complete valid certificate image and realigned player/place/event text.
+
+## Long-term free operation foundation (2026-08-13)
+- `competition-context.js` added.
+- `2026-apdc` stays in legacy Firebase paths for backwards compatibility.
+- Any new competition ID uses `competitions/<competition-id>/...` Firebase paths.
+- New Competition creates a local draft, activates the competition ID, provides competition-specific Admin/Judge/Control/MC URLs, and can download a config JSON.
+- The 2026 archive under `archive/2026/` remains static/read-only and does not require Firebase for viewing saved entry/timetable/result data.
+- New competitions intentionally start with no embedded 2026 judge entries, preventing accidental cross-year mixing.

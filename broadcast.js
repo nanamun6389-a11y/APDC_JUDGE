@@ -1,6 +1,8 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref as firebaseRef, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
+import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
+const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig),db=getDatabase(app);
 const rt=r=>r==="quarter"?"QUARTER FINAL":r==="semi"?"SEMI FINAL":r==="final"?"FINAL":String(r||"").toUpperCase();
 onValue(ref(db,"activeEvent"),s=>{const a=s.val();if(!a){document.getElementById("broadcastNow").textContent="WAITING";document.getElementById("broadcastRound").textContent="";document.getElementById("broadcastKo").textContent="다음 경기 준비";document.getElementById("broadcastEn").textContent="Next Event";return;}document.getElementById("broadcastNow").textContent=a.label||"";document.getElementById("broadcastRound").textContent=rt(a.round);const kr=a.round==="quarter"?"쿼터 파이널":a.round==="semi"?"세미 파이널":"파이널";document.getElementById("broadcastKo").textContent=`현재 경기 · ${a.label||""} · ${kr}`;document.getElementById("broadcastEn").textContent=`${a.label||""} · ${rt(a.round)}`});

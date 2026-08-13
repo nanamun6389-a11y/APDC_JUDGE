@@ -1,6 +1,8 @@
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, get, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import { getDatabase, ref as firebaseRef, get, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
+import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
+const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
 apdcBuildLanguageUI();
 
