@@ -27,3 +27,5 @@ export function setActiveCompetition(id){
   const clean=safeId(id); localStorage.setItem(KEY,clean); return clean;
 }
 export function activeCompetitionLabel(){ return isLegacyCompetition ? '2026 APDC · LEGACY' : competitionId; }
+
+export function getActiveCompetition(){ return competitionId; }

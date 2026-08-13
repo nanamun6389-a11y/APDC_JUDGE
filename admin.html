@@ -32,6 +32,7 @@
 
 <div class="admin-section-tabs">
   <button type="button" data-admin-tab="event" class="active">EVENT</button>
+  <button type="button" data-admin-tab="entries">ENTRIES</button>
   <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
@@ -60,6 +61,28 @@
     <button id="startEventBtn" class="dark" type="button">START FIRST EVENT</button>
   </div>
   <div id="setupMessage" class="message"></div>
+</section>
+
+<section class="entry-manager admin-tab-panel hidden" data-admin-panel="entries">
+  <div class="small-label">ENTRY MANAGEMENT</div>
+  <h2>ENTRIES</h2>
+  <p class="muted">2026 APDC에서 사용한 이벤트 목록을 그대로 사용할 수 있습니다. 이벤트를 선택하고 백넘버와 선수 이름을 등록하세요.</p>
+  <div class="entry-form-grid">
+    <label class="event-field">EVENT<select id="entryEvent"></select></label>
+    <label>BACK NO.<input id="entryBackNo" type="text" inputmode="numeric" placeholder="44"></label>
+    <label class="name-field">NAME<input id="entryName" type="text" placeholder="Yul BAEK"></label>
+    <button id="saveEntryBtn" type="button">ADD ENTRY</button>
+  </div>
+  <div class="entry-tools"><strong id="entryCount">0 ENTRIES</strong><button id="cancelEntryEditBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+  <div id="entryMessage" class="message"></div>
+  <div class="search-publish-box" style="margin:22px 0 12px;padding:18px;border:2px solid #111;background:#f7f7f7">
+    <div class="small-label">PUBLIC SEARCH</div>
+    <h3 style="margin:6px 0 8px">SEARCH에 새 대회 송출</h3>
+    <p class="muted" style="margin:0 0 12px">엔트리가 완성된 뒤 눌러주세요. 누른 시점의 이벤트·백넘버·선수 이름이 APDC SEARCH에 공개됩니다.</p>
+    <button id="publishSearchBtn" class="dark" type="button" style="width:100%">SEARCH에 새 대회 송출</button>
+    <div id="publishSearchMessage" class="message"></div>
+  </div>
+  <div id="entryList" class="entry-list"></div>
 </section>
 
 <section class="controls admin-tab-panel" data-admin-panel="event">

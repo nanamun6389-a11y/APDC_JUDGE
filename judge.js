@@ -414,9 +414,26 @@ fetch("event-settings.json", {cache:"no-store"})
   .then(r => r.json())
   .catch(() => ({events:[]}))
   .then(settingsData => {
+    const template = settingsData || {events:[]};
     entries = isLegacyCompetition ? EMBEDDED_PLAYERS : [];
-    eventSettings = isLegacyCompetition ? (settingsData || {events:[]}) : {events:[]};
+    // New competitions inherit the same event catalogue, while their assignments/numbers live in Firebase.
+    eventSettings = template;
     renderJudgeButtons();
+
+    if(!isLegacyCompetition){
+      onValue(ref(db,"eventSettings"), snap => {
+        const overrides = Object.values(snap.val()||{});
+        const merged = new Map((template.events||[]).map(e=>[e.eventKey,{...e}]));
+        overrides.forEach(e=>{ if(e?.eventKey) merged.set(e.eventKey,{...(merged.get(e.eventKey)||{}),...e}); });
+        eventSettings = {events:[...merged.values()]};
+        renderJudgeButtons();
+        if(currentJudge){ populateEventsForJudge(); render(); }
+      });
+      onValue(ref(db,"entries"), snap => {
+        entries = Object.values(snap.val()||{}).filter(Boolean);
+        if(currentJudge){ populateEventsForJudge(); render(); }
+      });
+    }
 
     const requestedJudge = new URL(location.href).searchParams.get("judge");
     if (requestedJudge && JUDGES[requestedJudge]) {

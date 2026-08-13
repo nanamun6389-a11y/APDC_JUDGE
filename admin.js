@@ -40,6 +40,99 @@ setupEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e
 adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
 judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
 
+
+// ===== ENTRY MANAGEMENT (V4) =====
+const entryEvent=document.getElementById("entryEvent");
+const entryBackNo=document.getElementById("entryBackNo");
+const entryName=document.getElementById("entryName");
+const entryList=document.getElementById("entryList");
+const entryCount=document.getElementById("entryCount");
+const entryMessage=document.getElementById("entryMessage");
+const saveEntryBtn=document.getElementById("saveEntryBtn");
+const cancelEntryEditBtn=document.getElementById("cancelEntryEditBtn");
+let competitionEntries={};
+let editingEntryKey=null;
+
+if(entryEvent){
+  entryEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
+}
+function firebaseSafeKey(){ return `entry_${Date.now()}_${Math.random().toString(36).slice(2,9)}`; }
+function selectedEntryEvent(){ return EVENTS.find(e=>e.eventKey===entryEvent?.value); }
+function entryTypeFor(event){
+  if(!event) return "Solo";
+  if(/formation/i.test(event.event)) return "Formation";
+  if(/amateur latin|rising star|couple|pro-am/i.test(event.event) && !/solo/i.test(event.event)) return "Couple";
+  return "Solo";
+}
+function renderEntries(){
+  if(!entryList||!entryEvent) return;
+  const event=selectedEntryEvent();
+  const rows=Object.entries(competitionEntries||{})
+    .filter(([,x])=>x && event && x.event===event.event && x.section===event.section && x.style===event.style)
+    .sort((a,b)=>String(a[1].backNo||"").localeCompare(String(b[1].backNo||""),undefined,{numeric:true}));
+  entryCount.textContent=`${rows.length} ENTR${rows.length===1?'Y':'IES'}`;
+  entryList.innerHTML=rows.length?rows.map(([key,x])=>`<div class="entry-row">
+    <div class="backno">#${x.backNo||''}</div><div class="name">${x.competitor||''}</div>
+    <div class="entry-row-actions"><button type="button" data-entry-edit="${key}">EDIT</button><button type="button" class="delete" data-entry-delete="${key}">DELETE</button></div>
+  </div>`).join(""):'<div class="entry-empty">NO ENTRIES YET</div>';
+}
+function resetEntryForm(){
+  editingEntryKey=null; if(entryBackNo)entryBackNo.value=""; if(entryName)entryName.value="";
+  if(saveEntryBtn)saveEntryBtn.textContent="ADD ENTRY"; cancelEntryEditBtn?.classList.add("hidden");
+}
+entryEvent?.addEventListener("change",()=>{resetEntryForm();renderEntries();});
+cancelEntryEditBtn?.addEventListener("click",resetEntryForm);
+saveEntryBtn?.addEventListener("click",async()=>{
+  const event=selectedEntryEvent(); const backNo=entryBackNo.value.trim(); const competitor=entryName.value.trim();
+  if(!event||!backNo||!competitor){entryMessage.textContent="EVENT / BACK NO. / NAME을 모두 입력하세요.";return;}
+  // Same event + back number updates instead of making a duplicate.
+  let key=editingEntryKey;
+  if(!key){
+    const found=Object.entries(competitionEntries||{}).find(([,x])=>x&&x.event===event.event&&x.section===event.section&&x.style===event.style&&String(x.backNo)===backNo);
+    key=found?.[0]||firebaseSafeKey();
+  }
+  const settingSnap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
+  const setting=settingSnap.val()||event;
+  await set(ref(db,`entries/${key}`),{
+    eventNo:String(setting.eventNumber||event.eventNumber||""),section:event.section,style:event.style,
+    division:event.event.replace(/\s+(C|S|R|J|CR|CJ|RJ|CS|CRS|CRJ|CSRJ|5 Dance|W|T|F|Q|WTFQ)$/i,""),
+    event:event.event,backNo,competitor,entryType:entryTypeFor(event),updatedAt:Date.now()
+  });
+  entryMessage.textContent=editingEntryKey?"ENTRY UPDATED":"ENTRY ADDED"; resetEntryForm(); setTimeout(()=>entryMessage.textContent="",1200);
+});
+entryList?.addEventListener("click",async e=>{
+  const edit=e.target.closest('[data-entry-edit]'); const del=e.target.closest('[data-entry-delete]');
+  if(edit){ const key=edit.dataset.entryEdit,x=competitionEntries[key]; if(!x)return; editingEntryKey=key; entryBackNo.value=x.backNo||"";entryName.value=x.competitor||"";saveEntryBtn.textContent="SAVE CHANGES";cancelEntryEditBtn.classList.remove("hidden");window.scrollTo({top:entryEvent.getBoundingClientRect().top+scrollY-120,behavior:"smooth"}); }
+  if(del){ const key=del.dataset.entryDelete,x=competitionEntries[key]; if(x&&confirm(`Delete #${x.backNo} ${x.competitor}?`)) await remove(ref(db,`entries/${key}`)); }
+});
+onValue(ref(db,"entries"),snap=>{competitionEntries=snap.val()||{};renderEntries();});
+
+const publishSearchBtn=document.getElementById("publishSearchBtn");
+const publishSearchMessage=document.getElementById("publishSearchMessage");
+function currentCompetitionMeta(){
+  let list=[]; try{list=JSON.parse(localStorage.getItem("apdc-competitions-v2")||"[]");if(!Array.isArray(list))list=[]}catch(e){}
+  const found=list.find(x=>x&&x.id===competitionId)||{};
+  return {id:competitionId,name:found.name||competitionId,date:found.date||"",venue:found.venue||""};
+}
+publishSearchBtn?.addEventListener("click",async()=>{
+  if(isLegacyCompetition){
+    publishSearchMessage.textContent="2026 APDC는 기존 SEARCH 데이터로 이미 공개되어 있습니다.";return;
+  }
+  const rows=Object.values(competitionEntries||{}).filter(x=>x&&x.backNo&&x.competitor&&x.event);
+  if(!rows.length){publishSearchMessage.textContent="먼저 엔트리를 등록하세요.";return;}
+  if(!confirm(`${rows.length}개 엔트리를 APDC SEARCH에 공개할까요?`))return;
+  publishSearchBtn.disabled=true; publishSearchMessage.textContent="송출 중…";
+  try{
+    const meta=currentCompetitionMeta();
+    const publicRows=rows.map(x=>({eventNo:String(x.eventNo||""),section:x.section||"",style:x.style||"",division:x.division||"",event:x.event||"",backNo:String(x.backNo||""),competitor:x.competitor||"",entryType:x.entryType||""}));
+    await set(firebaseRef(db,`competitions/${competitionId}/publicEntries`),publicRows);
+    await set(firebaseRef(db,`publishedCompetitions/${competitionId}`),{...meta,entryCount:publicRows.length,published:true,publishedAt:Date.now()});
+    publishSearchMessage.textContent=`SEARCH 송출 완료 · ${publicRows.length} ENTRIES`;
+  }catch(err){console.error(err);publishSearchMessage.textContent="송출 실패. Firebase 연결을 확인하세요."}
+  finally{publishSearchBtn.disabled=false;}
+});
+
+
 async function loadSetup(){
  const event=EVENTS.find(e=>e.eventKey===setupEvent.value);
  const snap=await get(ref(db,`eventSettings/${encodeKey(event.eventKey)}`));
