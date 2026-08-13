@@ -31,15 +31,14 @@
 <div id="adminProtected" class="hidden">
 
 <div class="admin-section-tabs">
-  <button type="button" data-admin-tab="event" class="active">EVENT</button>
-  <button type="button" data-admin-tab="entries">ENTRIES</button>
+  <button type="button" data-admin-tab="entries" class="active">ENTRIES</button>
   <button type="button" data-admin-tab="timetable">TIMETABLE</button>
   <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
 </div>
 
-<section class="setup-card admin-tab-panel" data-admin-panel="event">
+<section class="setup-card admin-tab-panel hidden" data-admin-panel="event">
   <div class="small-label">EVENT MANAGEMENT</div>
   <h1>EVENT SETUP</h1>
   <label>SECTION / EVENT<select id="setupEvent"></select></label>
@@ -64,7 +63,7 @@
   <div id="setupMessage" class="message"></div>
 </section>
 
-<section class="entry-manager admin-tab-panel hidden" data-admin-panel="entries">
+<section class="entry-manager admin-tab-panel" data-admin-panel="entries">
   <div class="small-label">ENTRY MANAGEMENT</div>
   <h2>ENTRIES</h2>
   <p class="muted">선수 한 명의 백넘버와 이름을 먼저 입력한 뒤, 출전할 이벤트를 여러 개 선택해서 한 번에 저장하세요. 저장한 선수는 아래에서 다시 열어 이벤트를 언제든 추가하거나 빼실 수 있습니다.</p>
@@ -106,6 +105,24 @@
   <div id="ttBuilderMessage" class="message"></div>
   <div class="tt-builder-note">합동경기는 같은 라운드끼리 선택하는 것을 권장합니다. 합동 후에도 각 원래 경기의 선수 백넘버가 모두 유지됩니다.</div>
   <div id="ttBuilderList" class="tt-builder-list"></div>
+  <div id="ttJudgeEditor" class="tt-judge-editor hidden">
+    <div class="small-label">SELECTED EVENT SETTING</div>
+    <h3 id="ttJudgeEditorTitle">JUDGE SETUP</h3>
+    <label>ROUND
+      <select id="ttJudgeRound">
+        <option value="quarter">Quarter Final</option>
+        <option value="semi">Semi Final</option>
+        <option value="final">Final</option>
+      </select>
+    </label>
+    <div class="small-label judge-label">ASSIGNED JUDGES</div>
+    <div id="ttJudgeChecks" class="judge-check-grid"></div>
+    <div class="assignment-tools">
+      <button id="ttJudgeClearBtn" class="light" type="button">CLEAR ALL</button>
+      <button id="ttJudgeSaveBtn" class="dark" type="button">SAVE JUDGE SETTING</button>
+    </div>
+    <div id="ttJudgeMessage" class="message"></div>
+  </div>
   <div class="search-publish-box">
     <div class="small-label">FINAL PUBLISH</div>
     <h3>SEARCH에 새로운 시합 송출</h3>
@@ -115,7 +132,7 @@
   </div>
 </section>
 
-<section class="controls admin-tab-panel" data-admin-panel="event">
+<section class="controls admin-tab-panel hidden" data-admin-panel="event">
   <label>SECTION<select id="adminEvent"></select></label>
   <label>ROUND<select id="adminRound">
     <option value="quarter">Quarter Final</option>
@@ -129,7 +146,7 @@
   </select></label>
 </section>
 
-<section class="score admin-tab-panel" data-admin-panel="event">
+<section class="score admin-tab-panel hidden" data-admin-panel="event">
   <div class="score-head">
     <div><h1 id="adminTitle"></h1><div id="submissionCount" class="muted"></div></div>
     <div id="completeBadge" class="badge">IN PROGRESS</div>
@@ -145,7 +162,7 @@
 </section>
 
 
-<section class="auto-advance-card">
+<section class="auto-advance-card hidden">
   <div>
     <div class="small-label">AUTOMATIC RUNNING ORDER</div>
     <h2>AUTO ADVANCE</h2>
