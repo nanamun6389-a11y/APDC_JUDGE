@@ -20,6 +20,7 @@ let selected = new Set();
 let currentJudge = "";
 let currentSubmissionUnsubscribe = null;
 let currentRoundSubmitted = false;
+let resultsCache = {};
 
 const judgeGate = document.getElementById("judgeGate");
 const scoreScreen = document.getElementById("scoreScreen");
@@ -194,8 +195,19 @@ function currentCompetitors() {
   const map = new Map();
   entries
     .filter(x => x.event===event && x.section===section && x.style===style)
-    .forEach(x => map.set(x.backNo, {backNo:x.backNo,name:x.competitor}));
-  return [...map.values()].sort((a,b)=>natural(a.backNo,b.backNo));
+    .forEach(x => map.set(String(x.backNo), {backNo:String(x.backNo),name:x.competitor}));
+  let list=[...map.values()].sort((a,b)=>natural(a.backNo,b.backNo));
+  const encoded=btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","");
+  const round=roundSelect.value;
+  if(round==="semi"){
+    const q=resultsCache?.[encoded]?.quarter?.qualifiedBackNos;
+    if(Array.isArray(q)&&q.length){const setQ=new Set(q.map(String));list=list.filter(x=>setQ.has(String(x.backNo)));}
+  }
+  if(round==="final"){
+    const q=resultsCache?.[encoded]?.semi?.qualifiedBackNos;
+    if(Array.isArray(q)&&q.length){const setQ=new Set(q.map(String));list=list.filter(x=>setQ.has(String(x.backNo)));}
+  }
+  return list;
 }
 
 function roundKey() {
@@ -394,6 +406,8 @@ function populateEventsForJudge() {
   }
 }
 
+
+onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge)render();});
 
 onValue(ref(db,"eventSettings"),snap=>{
   firebaseEventSettings=snap.val()||{};
