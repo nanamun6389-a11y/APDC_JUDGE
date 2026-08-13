@@ -43,9 +43,8 @@ const judgeGroup=document.getElementById("judgeGroup");
 const plainLabel=e=>`${e.section} · ${e.event}`;
 function eventFromEntry(x){return {eventKey:x.eventKey||`entry:${encodeKey(eventId(x))}`,eventNumber:x.eventNo||"",event:x.event||"",section:x.section||"",style:x.style||"Other",assignedJudges:[],recovered:true};}
 function refreshEventSources(){
-  const saved=Object.values(customEvents||{}).filter(Boolean);
-  const recovered=Object.values(competitionEntries||{}).filter(x=>x&&x.event).map(eventFromEntry);
-  EVENTS=[...saved,...recovered].filter((e,i,a)=>e.event&&a.findIndex(x=>eventId(x)===eventId(e))===i);
+  const saved=Object.values(customEvents||{}).filter(x=>x && !x.importedFrom2026);
+  EVENTS=saved.filter((e,i,a)=>e.event&&a.findIndex(x=>eventId(x)===eventId(e))===i);
   if(setupEvent) setupEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
   if(adminEvent) adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
   renderEventChecks(); renderCustomEventList();
@@ -126,14 +125,6 @@ function danceSignature(e){
   return (name.slice(0,m.index).trim().toLowerCase().replace(/\s+/g," ")+"||"+chars+"||"+String(e.section||"").toLowerCase()+"||"+String(e.style||"").toLowerCase());
 }
 function sameLogicalEvent(a,b){return danceSignature(a)===danceSignature(b);}
-const openImport2026Btn=document.getElementById("openImport2026Btn"),import2026Box=document.getElementById("import2026Box"),import2026Search=document.getElementById("import2026Search"),import2026Checks=document.getElementById("import2026Checks"),import2026SelectVisible=document.getElementById("import2026SelectVisible"),import2026Cancel=document.getElementById("import2026Cancel"),import2026Save=document.getElementById("import2026Save");
-function renderImport2026(){if(!import2026Checks)return;const q=(import2026Search?.value||"").trim().toLowerCase();import2026Checks.innerHTML=BASE_EVENTS.map((e,i)=>{const label=`${e.section} · ${e.event}`;const exists=EVENTS.some(x=>sameLogicalEvent(x,e));const show=!q||label.toLowerCase().includes(q);return `<label class="entry-event-check ${show?'':'hidden-by-search'}"><input type="checkbox" data-import-index="${i}" ${exists?'disabled':''}><span><b>${e.event}</b><small>${e.section} · ${e.style}${exists?' · ALREADY ADDED':''}</small></span></label>`}).join('');}
-openImport2026Btn?.addEventListener('click',()=>{import2026Box.classList.remove('hidden');renderImport2026();});
-import2026Cancel?.addEventListener('click',()=>import2026Box.classList.add('hidden'));
-import2026Search?.addEventListener('input',renderImport2026);
-import2026SelectVisible?.addEventListener('click',()=>import2026Checks.querySelectorAll('.entry-event-check:not(.hidden-by-search) input:not(:disabled)').forEach(x=>x.checked=true));
-import2026Save?.addEventListener('click',async()=>{const idx=[...import2026Checks.querySelectorAll('input:checked')].map(x=>Number(x.dataset.importIndex));if(!idx.length)return alert('가져올 이벤트를 선택하세요.');for(const i of idx){const src=BASE_EVENTS[i];if(!src||EVENTS.some(x=>sameLogicalEvent(x,src)))continue;const id=customId();await set(ref(db,`customEvents/${id}`),{...src,id,eventKey:`custom:${id}`,custom:true,importedFrom2026:true,updatedAt:Date.now()});}import2026Box.classList.add('hidden');});
-
 const customEventName=document.getElementById("customEventName");
 const customEventSection=document.getElementById("customEventSection");
 const customEventStyle=document.getElementById("customEventStyle");
@@ -142,11 +133,32 @@ const customEventCancelBtn=document.getElementById("customEventCancelBtn");
 const customEventList=document.getElementById("customEventList");
 const customEventMessage=document.getElementById("customEventMessage");
 let editingCustomEventId="";
+const eventBuilderType=document.getElementById("eventBuilderType");
+const eventBuilderStyle=document.getElementById("eventBuilderStyle");
+const eventBuilderSection=document.getElementById("eventBuilderSection");
+const eventBuilderDance=document.getElementById("eventBuilderDance");
+const eventBuilderAddBtn=document.getElementById("eventBuilderAddBtn");
+const LATIN_DANCES=["C","S","R","P","J","CR","RJ","CS","SR","CRJ","CRS","CSRJ","5 Dance"];
+const STANDARD_DANCES=["W","T","V","F","Q","WT","WQ","TQ","WTF","WTQ","WTFQ","5 Dance"];
+function refreshBuilderDances(){
+  const arr=eventBuilderStyle?.value==="Modern"?STANDARD_DANCES:LATIN_DANCES;
+  if(eventBuilderDance) eventBuilderDance.innerHTML=arr.map(x=>`<option value="${x}">${x}</option>`).join("");
+}
+eventBuilderStyle?.addEventListener("change",refreshBuilderDances); refreshBuilderDances();
+eventBuilderAddBtn?.addEventListener("click",async()=>{
+  const type=eventBuilderType.value, style=eventBuilderStyle.value, section=eventBuilderSection.value, dance=eventBuilderDance.value;
+  const styleWord=style==="Modern"?"Standard":"";
+  const danceWord=dance==="5 Dance"?(style==="Modern"?"Standard 5 Dance":"Latin 5 Dance"):dance;
+  const event=[section,type,styleWord,danceWord].filter(Boolean).join(" ").replace(/\s+/g," ").trim();
+  const id=customId(); const item={id,event,section,style,eventKey:`custom:${id}`,eventNumber:"",assignedJudges:[],custom:true,updatedAt:Date.now()};
+  if(EVENTS.some(e=>sameLogicalEvent(e,item))){customEventMessage.textContent="이미 같은 이벤트가 추가되어 있습니다. CRS/CSR처럼 순서만 다른 조합도 중복으로 추가되지 않습니다.";return;}
+  await set(ref(db,`customEvents/${id}`),item); customEventMessage.textContent=`${event} 추가 완료`;
+});
 function customId(){return `event_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;}
 function renderCustomEventList(){
   if(!customEventList)return;
   const rows=EVENTS;
-  customEventList.innerHTML=rows.length?rows.map(x=>{const stored=Object.entries(customEvents||{}).find(([,v])=>v&&eventId(v)===eventId(x));const id=stored?.[0]||"";return `<div class="custom-event-row"><div><b>${x.event}</b><small>${x.section} · ${x.style}${x.importedFrom2026?' · 2026 IMPORT':''}</small></div><div>${id?`<button type="button" class="light" data-event-edit="${id}">EDIT</button><button type="button" class="light delete" data-event-delete="${id}">DELETE</button>`:`<button type="button" class="light" data-recovered-edit="${encodeURIComponent(eventId(x))}">EDIT</button><button type="button" class="light delete" data-recovered-delete="${encodeURIComponent(eventId(x))}">DELETE</button>`}</div></div>`}).join(""):'<div class="entry-empty">이 대회에 등록된 이벤트가 없습니다. + NEW EVENT 또는 2026 이벤트 가져오기를 사용하세요.</div>';
+  customEventList.innerHTML=rows.length?rows.map(x=>{const stored=Object.entries(customEvents||{}).find(([,v])=>v&&eventId(v)===eventId(x));const id=stored?.[0]||"";return `<div class="custom-event-row"><div><b>${x.event}</b><small>${x.section} · ${x.style}${x.importedFrom2026?'':''}</small></div><div>${id?`<button type="button" class="light" data-event-edit="${id}">EDIT</button><button type="button" class="light delete" data-event-delete="${id}">DELETE</button>`:`<button type="button" class="light" data-recovered-edit="${encodeURIComponent(eventId(x))}">EDIT</button><button type="button" class="light delete" data-recovered-delete="${encodeURIComponent(eventId(x))}">DELETE</button>`}</div></div>`}).join(""):'<div class="entry-empty">추가된 이벤트가 없습니다. 위에서 종류를 선택해 + EVENT ADD를 누르세요.</div>';
 }
 function resetCustomEventForm(){editingCustomEventId=""; if(customEventName)customEventName.value="";if(customEventSection)customEventSection.value="";if(customEventStyle)customEventStyle.value="Latin";customEventSaveBtn.textContent="+ NEW EVENT 저장";customEventCancelBtn?.classList.add("hidden");}
 customEventCancelBtn?.addEventListener("click",resetCustomEventForm);

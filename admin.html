@@ -87,16 +87,23 @@
   </div>
   <div class="custom-event-manager">
     <div class="small-label">EVENT LIST MANAGEMENT</div>
-    <h3>없는 이벤트 추가 / 수정 / 삭제</h3>
-    <p class="muted">이 대회에서 실제로 사용할 이벤트만 관리합니다. 새 대회는 빈 목록으로 시작하며, 직접 추가하거나 2026 이벤트에서 필요한 것만 골라 가져올 수 있습니다.</p>
-    <div class="entry-save-actions"><button id="openImport2026Btn" class="light" type="button">2026 이벤트에서 가져오기</button></div>
-    <div id="import2026Box" class="custom-event-import hidden"><div class="entry-event-tools"><input id="import2026Search" type="search" placeholder="2026 이벤트 검색"><button id="import2026SelectVisible" class="light" type="button">SELECT VISIBLE</button><button id="import2026Cancel" class="light" type="button">CANCEL</button></div><div id="import2026Checks" class="entry-event-checks"></div><div class="entry-save-actions"><button id="import2026Save" type="button">선택 이벤트 가져오기</button></div></div>
-    <div class="entry-player-grid">
-      <label>EVENT NAME<input id="customEventName" type="text" placeholder="Under 21 Solo CR"></label>
-      <label>SECTION<input id="customEventSection" type="text" placeholder="Under 21"></label>
-      <label>STYLE<select id="customEventStyle"><option>Latin</option><option>Modern</option><option>Other</option></select></label>
+    <h3>이벤트 추가 / 수정 / 삭제</h3>
+    <p class="muted">2026 목록은 사용하지 않습니다. 아래에서 종류를 고르고 추가하세요. 실제로 추가한 이벤트만 위 선수 엔트리 선택 목록에 표시됩니다.</p>
+    <div class="entry-player-grid event-builder-grid">
+      <label>TYPE<select id="eventBuilderType"><option value="Solo">Solo</option><option value="Couple">Couple</option></select></label>
+      <label>STYLE<select id="eventBuilderStyle"><option value="Latin">Latin</option><option value="Modern">Standard / Modern</option></select></label>
+      <label>SECTION<select id="eventBuilderSection"><option>Under 10</option><option>Under 12</option><option>Under 15</option><option>Under 18</option><option>Under 21</option><option>Amateur</option><option>Over 19</option><option>Over 35</option><option>Senior 50</option><option>Pro-Am</option><option>Mania</option></select></label>
+      <label>DANCE<select id="eventBuilderDance"></select></label>
     </div>
-    <div class="entry-save-actions"><button id="customEventSaveBtn" type="button">+ NEW EVENT 저장</button><button id="customEventCancelBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+    <div class="entry-save-actions"><button id="eventBuilderAddBtn" type="button">+ EVENT ADD</button></div>
+    <details class="manual-event-details"><summary>직접 이름 입력 (특별 이벤트)</summary>
+      <div class="entry-player-grid">
+        <label>EVENT NAME<input id="customEventName" type="text" placeholder="예: Formation"></label>
+        <label>SECTION<input id="customEventSection" type="text" placeholder="예: Formation"></label>
+        <label>STYLE<select id="customEventStyle"><option>Latin</option><option>Modern</option><option>Other</option></select></label>
+      </div>
+      <div class="entry-save-actions"><button id="customEventSaveBtn" type="button">+ CUSTOM EVENT 저장</button><button id="customEventCancelBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+    </details>
     <div id="customEventMessage" class="message"></div><div id="customEventList" class="custom-event-list"></div>
   </div>
   <div class="entry-save-actions">
