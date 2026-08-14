@@ -26,10 +26,12 @@ const protectedBox=document.getElementById("adminProtected");
 const passInput=document.getElementById("adminPasswordInput");
 const passBtn=document.getElementById("adminPasswordBtn");
 const passMsg=document.getElementById("adminPasswordMessage");
-function unlock(){sessionStorage.setItem("apdcAdminUnlocked","yes");gate.classList.add("hidden");protectedBox.classList.remove("hidden");}
-passBtn.onclick=()=>{if(passInput.value==="0808")unlock();else passMsg.textContent="WRONG PASSWORD";};
+async function sha256(v){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+const unlockKey=`apdcAdminUnlocked:${competitionId}`;
+function unlock(){sessionStorage.setItem(unlockKey,"yes");gate.classList.add("hidden");protectedBox.classList.remove("hidden");}
+passBtn.onclick=async()=>{const meta=(await get(ref(db,"meta"))).val()||{};const ok=meta.adminPasswordHash?(await sha256(passInput.value))===meta.adminPasswordHash:(isLegacyCompetition&&passInput.value==="0808");if(ok)unlock();else passMsg.textContent="WRONG PASSWORD";};
 passInput.onkeydown=e=>{if(e.key==="Enter")passBtn.click();};
-if(sessionStorage.getItem("apdcAdminUnlocked")==="yes")unlock();
+if(sessionStorage.getItem(unlockKey)==="yes")unlock();
 
 const setupEvent=document.getElementById("setupEvent");
 const setupEventNumber=document.getElementById("setupEventNumber");
@@ -279,11 +281,28 @@ function resetEntryForm(){
 }
 cancelEntryEditBtn?.addEventListener("click",resetEntryForm);
 
+const reorganizeBackNoBtn=document.getElementById("reorganizeBackNoBtn");
+reorganizeBackNoBtn?.addEventListener("click",async()=>{
+  const sections=[...new Set(Object.values(competitionEntries||{}).map(x=>x?.section).filter(Boolean))].sort();
+  if(!sections.length){entryMessage.textContent="재정리할 엔트리가 없습니다.";return;}
+  const section=prompt(`재정리할 SECTION을 정확히 입력하세요.\n\n${sections.join(" / ")}`,sections[0]); if(!section)return;
+  if(!sections.includes(section)){entryMessage.textContent="존재하지 않는 SECTION입니다.";return;}
+  const startRaw=prompt("시작 백넘버를 입력하세요.","1"); if(startRaw===null)return; let next=Number(startRaw); if(!Number.isInteger(next)||next<1){entryMessage.textContent="시작 번호는 1 이상의 숫자여야 합니다.";return;}
+  const targetNames=[...new Set(Object.values(competitionEntries||{}).filter(x=>x&&x.section===section).map(x=>String(x.competitor||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const targetSet=new Set(targetNames.map(x=>x.toLowerCase()));
+  const reserved=new Set(Object.values(competitionEntries||{}).filter(x=>x&&!targetSet.has(String(x.competitor||"").trim().toLowerCase())).map(x=>String(x.backNo||"").trim()).filter(Boolean));
+  const mapping=new Map(); for(const name of targetNames){while(reserved.has(String(next)))next++;mapping.set(name.toLowerCase(),String(next++));}
+  if(!confirm(`${section} 선수 ${targetNames.length}명의 백넘버를 ${startRaw}부터 중복 없이 재정리할까요?\n선수가 다른 섹션에도 출전하면 그 선수의 모든 엔트리 백넘버가 함께 변경됩니다.`))return;
+  reorganizeBackNoBtn.disabled=true; try{for(const [key,row] of Object.entries(competitionEntries||{})){const n=mapping.get(String(row?.competitor||"").trim().toLowerCase());if(n&&String(row.backNo)!==n)await set(ref(db,`entries/${key}/backNo`),n);}entryMessage.textContent=`${section} 백넘버 재정리 완료 · ${targetNames.length} PLAYERS`;}finally{reorganizeBackNoBtn.disabled=false;}
+});
+
 saveEntryBtn?.addEventListener("click",async()=>{
   const backNo=entryBackNo.value.trim();
   const competitor=entryName.value.trim();
   const chosen=new Set(selectedEventIds());
   if(!backNo||!competitor){entryMessage.textContent="BACK NO. / NAME을 입력하세요.";return;}
+  const duplicateOwner=Object.values(competitionEntries||{}).find(x=>x&&String(x.backNo).trim()===backNo&&String(x.competitor||"").trim().toLowerCase()!==competitor.toLowerCase()&&String(x.backNo).trim()!==String(editingOriginalBackNo||"").trim());
+  if(duplicateOwner){entryMessage.textContent=`BACK NO. ${backNo}는 이미 ${duplicateOwner.competitor} 선수가 사용 중입니다.`;entryBackNo.focus();return;}
   if(!chosen.size){entryMessage.textContent="출전할 EVENT를 하나 이상 선택하세요.";return;}
   saveEntryBtn.disabled=true;
   entryMessage.textContent="SAVING...";
