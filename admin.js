@@ -526,6 +526,27 @@ function selectedTimetableIndexes(){return [...ttBuilderList.querySelectorAll('[
 combineTimetableBtn?.addEventListener("click",async()=>{
   const idx=selectedTimetableIndexes(); if(idx.length<2){ttBuilderMessage.textContent="합동할 경기를 2개 이상 선택하세요.";return;}
   const rows=idx.map(i=>timetableRows[i]); const rounds=[...new Set(rows.map(r=>r.round))];
+
+  // 합동경기 안전장치: 선택한 경기들 사이에 같은 BACK NO.가 있으면 합동 금지
+  const backNoSources=new Map();
+  rows.forEach((row,rowIndex)=>{
+    const label=row.event||`선택 경기 ${rowIndex+1}`;
+    const uniqueBacks=[...new Set((row.backNumbers||[]).map(x=>String(x).trim()).filter(Boolean))];
+    uniqueBacks.forEach(backNo=>{
+      if(!backNoSources.has(backNo))backNoSources.set(backNo,[]);
+      backNoSources.get(backNo).push(label);
+    });
+  });
+  const duplicateBacks=[...backNoSources.entries()]
+    .filter(([,events])=>events.length>1)
+    .sort((a,b)=>(Number(a[0])||0)-(Number(b[0])||0));
+  if(duplicateBacks.length){
+    const detail=duplicateBacks.map(([backNo,events])=>`#${backNo} (${events.join(' / ')})`).join(' · ');
+    ttBuilderMessage.textContent=`합동 불가 · 중복 백넘버 ${detail}`;
+    alert(`합동할 수 없습니다.\n같은 백넘버가 선택한 경기들에 중복되어 있습니다.\n\n${detail}`);
+    return;
+  }
+
   if(rounds.length>1&&!confirm("서로 다른 라운드가 선택되었습니다. 그래도 합동할까요?"))return;
   const allBacks=[...new Set(rows.flatMap(r=>r.backNumbers||[]).map(String).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
   const sourceEventNos=[...new Set(rows.flatMap(r=>r.sourceEventNos||[r.sourceEventNo]).map(String).filter(Boolean))];
