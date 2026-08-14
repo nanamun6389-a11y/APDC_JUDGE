@@ -5,8 +5,7 @@ import { firebaseConfig } from "./firebase-config.js";
 import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
 const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
-const LEGACY_JUDGES = {"T1": "Raymond KIM", "T2": "Lorencia", "T3": "Marcus", "T4": "Crystal", "T5": "Tomohiro", "T6": "Annie Oo", "T7": "Nancy Chang", "T8": "Max Yim", "W1": "이종률", "W2": "김도영", "W3": "엄혜리", "W4": "구채림", "W5": "고재호", "W6": "임채성", "W7": "은일", "W8": "블라디", "W9": "이세영"};
-let JUDGES = isLegacyCompetition ? {...LEGACY_JUDGES} : {};
+const JUDGES = {"T1": "Raymond KIM", "T2": "Lorencia", "T3": "Marcus", "T4": "Crystal", "T5": "Tomohiro", "T6": "Annie Oo", "T7": "Nancy Chang", "T8": "Max Yim", "W1": "이종률", "W2": "김도영", "W3": "엄혜리", "W4": "구채림", "W5": "고재호", "W6": "임채성", "W7": "은일", "W8": "블라디", "W9": "이세영"};
 const JUDGE_LIST = [{"code": "T1", "name": "Raymond KIM"}, {"code": "T2", "name": "Lorencia"}, {"code": "T3", "name": "Marcus"}, {"code": "T4", "name": "Crystal"}, {"code": "T5", "name": "Tomohiro"}, {"code": "T6", "name": "Annie Oo"}, {"code": "T7", "name": "Nancy Chang"}, {"code": "T8", "name": "Max Yim"}, {"code": "W1", "name": "이종률"}, {"code": "W2", "name": "김도영"}, {"code": "W3", "name": "엄혜리"}, {"code": "W4", "name": "구채림"}, {"code": "W5", "name": "고재호"}, {"code": "W6", "name": "임채성"}, {"code": "W7", "name": "은일"}, {"code": "W8", "name": "블라디"}, {"code": "W9", "name": "이세영"}];
 
 const app = initializeApp(firebaseConfig);
@@ -436,11 +435,6 @@ fetch("event-settings.json", {cache:"no-store"})
     renderJudgeButtons();
 
     if(!isLegacyCompetition){
-      onValue(ref(db,"judges"), snap => {
-        JUDGES={}; Object.values(snap.val()||{}).forEach(j=>{if(j?.code&&j?.name)JUDGES[j.code]=j.name;});
-        if(currentJudge && !JUDGES[currentJudge]) currentJudge="";
-        renderJudgeButtons();
-      });
       onValue(ref(db,"eventSettings"), snap => {
         const overrides = Object.values(snap.val()||{});
         const merged = new Map((template.events||[]).map(e=>[e.eventKey,{...e}]));

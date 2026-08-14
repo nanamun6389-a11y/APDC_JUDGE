@@ -35,16 +35,12 @@
   <button type="button" data-admin-tab="timetable">TIMETABLE</button>
   <button type="button" data-admin-tab="judging">JUDGING</button>
   <button type="button" data-admin-tab="results">RESULTS</button>
+  <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
 </div>
 
-<section class="setup-card admin-tab-panel hidden" data-admin-panel="judging">
-  <div class="small-label">JUDGE MANAGEMENT</div><h2>JUDGES</h2>
-  <p class="muted">이 대회에서 사용할 심사위원만 등록합니다. 새 대회에는 이전 대회 심사위원이 자동으로 들어오지 않습니다.</p>
-  <div class="entry-player-grid"><label>JUDGE CODE<input id="judgeCodeInput" type="text" placeholder="A1"></label><label>NAME<input id="judgeNameInput" type="text" placeholder="Judge Name"></label></div>
-  <div class="entry-save-actions"><button id="saveJudgeBtn" type="button">ADD / UPDATE JUDGE</button></div><div id="judgeRosterMessage" class="message"></div><div id="judgeRosterList" class="entry-list"></div>
-  <hr style="margin:24px 0">
+<section class="setup-card admin-tab-panel hidden" data-admin-panel="event">
   <div class="small-label">EVENT MANAGEMENT</div>
   <h1>EVENT SETUP</h1>
   <label>SECTION / EVENT<select id="setupEvent"></select></label>
@@ -128,8 +124,6 @@
     <button id="combineTimetableBtn" type="button">선택 경기 합동</button>
     <button id="uncombineTimetableBtn" class="light" type="button">합동 취소</button>
   </div>
-  <div class="tt-builder-tools" style="margin-top:10px"><label style="min-width:260px">심사 코드 일괄 설정<input id="bulkJudgeCodes" type="text" placeholder="예: A1, A2, B1 또는 A1 A2 B1"></label><button id="bulkJudgeApplyBtn" class="dark" type="button">선택 경기 심사 일괄 적용</button></div>
-  <div class="tt-builder-note">경기가 많을 때 왼쪽 체크박스로 여러 경기를 선택하고 심사 코드를 한 번에 입력하세요.</div>
   <div id="ttBuilderMessage" class="message"></div>
   <div class="tt-builder-note">합동경기는 같은 라운드끼리 선택하는 것을 권장합니다. 합동 후에도 각 원래 경기의 선수 백넘버가 모두 유지됩니다.</div>
   <div id="ttBuilderList" class="tt-builder-list"></div>
@@ -160,7 +154,7 @@
   </div>
 </section>
 
-<section class="controls admin-tab-panel hidden" data-admin-panel="judging">
+<section class="controls admin-tab-panel hidden" data-admin-panel="event">
   <label>SECTION<select id="adminEvent"></select></label>
   <label>ROUND<select id="adminRound">
     <option value="quarter">Quarter Final</option>
@@ -174,7 +168,7 @@
   </select></label>
 </section>
 
-<section class="score admin-tab-panel hidden" data-admin-panel="results">
+<section class="score admin-tab-panel hidden" data-admin-panel="event">
   <div class="score-head">
     <div><h1 id="adminTitle"></h1><div id="submissionCount" class="muted"></div></div>
     <div id="completeBadge" class="badge">IN PROGRESS</div>
@@ -206,7 +200,7 @@
 <section class="sponsor-admin-card admin-tab-panel hidden" data-admin-panel="sponsor"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
 <label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
 <label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
-<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="_internal_floor" aria-hidden="true" style="display:none">
+<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
   <h2>FLOOR CONTROL</h2>
   <label>NOW<input id="nowEventInput" type="text"></label>
   <label>ON DECK<input id="onDeckEventInput" type="text"></label>
