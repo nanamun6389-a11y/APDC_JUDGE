@@ -11,11 +11,8 @@ let customEvents={};
 // EVENTS는 이 대회에서 실제로 선택/생성한 이벤트 + 이미 저장된 엔트리에서 복구한 이벤트만 사용합니다.
 let EVENTS=[];
 
-const JUDGES=[
-{code:"T1",name:"Raymond KIM"},{code:"T2",name:"Lorencia"},{code:"T3",name:"Marcus"},{code:"T4",name:"Crystal"},
-{code:"T5",name:"Tomohiro"},{code:"T6",name:"Annie Oo"},{code:"T7",name:"Nancy Chang"},{code:"T8",name:"Max Yim"},
-{code:"W1",name:"이종률"},{code:"W2",name:"김도영"},{code:"W3",name:"엄혜리"},{code:"W4",name:"구채림"},
-{code:"W5",name:"고재호"},{code:"W6",name:"임채성"},{code:"W7",name:"은일"},{code:"W8",name:"블라디"},{code:"W9",name:"이세영"}];
+const DEFAULT_JUDGE_CODES=['T1','T2','T3','T4','T5','T6','T7','T8','W1','W2','W3','W4','W5','W6','W7','W8','W9'];
+let JUDGES=DEFAULT_JUDGE_CODES.map(code=>({code}));
 
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
@@ -27,6 +24,12 @@ const protectedBox=document.getElementById("adminProtected");
 const passInput=document.getElementById("adminPasswordInput");
 const passBtn=document.getElementById("adminPasswordBtn");
 const passMsg=document.getElementById("adminPasswordMessage");
+let judgeCodesLoaded=false;
+const normalizeJudgeCode=v=>String(v||'').trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'').slice(0,12);
+async function ensureJudgeCodes(){const snap=await get(ref(db,'judges'));let raw=snap.val();if(!raw){raw={};DEFAULT_JUDGE_CODES.forEach((code,i)=>raw[code]={code,order:i});await set(ref(db,'judges'),raw);}applyJudgeCodes(raw);}
+function applyJudgeCodes(raw){const arr=Object.values(raw||{}).map(x=>typeof x==='string'?{code:x}:x).map(x=>({code:normalizeJudgeCode(x.code)})).filter(x=>x.code);arr.sort((a,b)=>a.code.localeCompare(b.code,undefined,{numeric:true}));JUDGES=arr.length?arr:DEFAULT_JUDGE_CODES.map(code=>({code}));judgeCodesLoaded=true;renderAllJudgeCodeUIs();}
+function renderAllJudgeCodeUIs(){if(typeof judgeChecks!=='undefined'&&judgeChecks)judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code}</span></label>`).join('');const jac=document.getElementById('judgeAllocationChecks');if(jac){jac.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b></span></label>`).join('');jac.querySelectorAll('input').forEach(c=>c.addEventListener('change',()=>saveJudgeAllocationInstant().catch(err=>{console.error(err);judgeAllocationMessage.textContent='저장 실패 · 연결을 확인하세요.';})));}renderJudgeCodeManager();if(typeof loadJudgeAllocationSelection==='function')loadJudgeAllocationSelection().catch(()=>{});}
+
 async function sha256(v){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
 const unlockKey=`apdcAdminUnlocked:${competitionId}`;
 function unlock(){sessionStorage.setItem(unlockKey,"yes");gate.classList.add("hidden");protectedBox.classList.remove("hidden");}
@@ -108,7 +111,7 @@ function refreshEventSources(){
   if(adminEvent) adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
   renderEventChecks(); renderCustomEventList();
 }
-judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
+judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code}</span></label>`).join("");
 
 
 // ===== ENTRY MANAGEMENT (V5 · PLAYER MULTI-EVENT) =====
@@ -668,7 +671,7 @@ function renderStatus(){
  const submitted=judges.filter(j=>currentData[j.code]);
  document.getElementById("submissionCount").textContent=`${submitted.length} / ${judges.length} SUBMITTED`;
  document.getElementById("completeBadge").textContent=submitted.length===judges.length&&judges.length?"COMPLETE":"IN PROGRESS";
- document.getElementById("judgeStatus").innerHTML=judges.map(j=>`<div class="status-row"><strong>${j.code}</strong><span>${j.name}</span><span>${currentData[j.code]?"SUBMITTED ✓":"WAITING"}</span></div>`).join("");
+ document.getElementById("judgeStatus").innerHTML=judges.map(j=>`<div class="status-row"><strong>${j.code}</strong><span>${currentData[j.code]?"SUBMITTED ✓":"WAITING"}</span></div>`).join("");
  document.getElementById("aggregateResults").innerHTML=submitted.length?`<div class="message">${submitted.length} ballots received.</div>`:'<div class="message">NO RESULTS YET</div>';
 }
 adminEvent.onchange=listen;adminRound.onchange=listen;judgeGroup.onchange=renderStatus;
@@ -834,12 +837,19 @@ function eventCompetitors(key){
 }
 async function getEventSetting(key){const s=await get(ref(db,`eventSettings/${encodeKey(key)}`));return s.val()||{};}
 
+
+const judgeCodeInput=document.getElementById('judgeCodeInput');const judgeCodeSaveBtn=document.getElementById('judgeCodeSaveBtn');const judgeCodeCancelBtn=document.getElementById('judgeCodeCancelBtn');const judgeCodeList=document.getElementById('judgeCodeList');const judgeCodeMessage=document.getElementById('judgeCodeMessage');let editingJudgeCode='';
+function renderJudgeCodeManager(){if(!judgeCodeList)return;judgeCodeList.innerHTML=JUDGES.map(j=>`<div class="custom-event-row"><div><strong>${j.code}</strong></div><div class="custom-event-actions"><button class="light" type="button" data-judge-edit="${j.code}">EDIT</button><button class="danger" type="button" data-judge-delete="${j.code}">DELETE</button></div></div>`).join('');judgeCodeList.querySelectorAll('[data-judge-edit]').forEach(b=>b.onclick=()=>{editingJudgeCode=b.dataset.judgeEdit;judgeCodeInput.value=editingJudgeCode;judgeCodeSaveBtn.textContent='SAVE CODE';judgeCodeCancelBtn.classList.remove('hidden');judgeCodeInput.focus();});judgeCodeList.querySelectorAll('[data-judge-delete]').forEach(b=>b.onclick=async()=>{const code=b.dataset.judgeDelete;if(!confirm(`${code} 심사 코드를 삭제할까요?`))return;const settingsSnap=await get(ref(db,'eventSettings'));const settings=settingsSnap.val()||{};for(const [k,v] of Object.entries(settings)){if(Array.isArray(v?.assignedJudges)&&v.assignedJudges.includes(code)){await set(ref(db,`eventSettings/${k}/assignedJudges`),v.assignedJudges.filter(x=>x!==code));}}await remove(ref(db,`judges/${code}`));judgeCodeMessage.textContent=`${code} 삭제 완료`;});}
+judgeCodeCancelBtn?.addEventListener('click',()=>{editingJudgeCode='';judgeCodeInput.value='';judgeCodeSaveBtn.textContent='+ CODE ADD';judgeCodeCancelBtn.classList.add('hidden');});
+judgeCodeSaveBtn?.addEventListener('click',async()=>{const code=normalizeJudgeCode(judgeCodeInput.value);if(!code){judgeCodeMessage.textContent='심사 코드를 입력하세요.';return;}if(editingJudgeCode&&editingJudgeCode!==code){const old=editingJudgeCode;const settingsSnap=await get(ref(db,'eventSettings'));const settings=settingsSnap.val()||{};for(const [k,v] of Object.entries(settings)){if(Array.isArray(v?.assignedJudges)&&v.assignedJudges.includes(old)){await set(ref(db,`eventSettings/${k}/assignedJudges`),v.assignedJudges.map(x=>x===old?code:x));}}await remove(ref(db,`judges/${old}`));}await set(ref(db,`judges/${code}`),{code,updatedAt:Date.now()});editingJudgeCode='';judgeCodeInput.value='';judgeCodeSaveBtn.textContent='+ CODE ADD';judgeCodeCancelBtn.classList.add('hidden');judgeCodeMessage.textContent=`${code} 저장 완료`;});
+onValue(ref(db,'judges'),snap=>applyJudgeCodes(snap.val()||{}));ensureJudgeCodes().catch(console.error);
+
 const judgeAllocationEventSelect=document.getElementById('judgeAllocationEventSelect');
 const judgeAllocationTitle=document.getElementById('judgeAllocationTitle');
 const judgeAllocationChecks=document.getElementById('judgeAllocationChecks');
 const judgeAllocationMessage=document.getElementById('judgeAllocationMessage');
 let allocationKey='';
-if(judgeAllocationChecks) judgeAllocationChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b><small>${j.name}</small></span></label>`).join('');
+if(judgeAllocationChecks) judgeAllocationChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b></span></label>`).join('');
 
 function judgingEventList(){
   return judgableEventsFromTimetable().sort((a,b)=>Number(a.eventNumber||999999)-Number(b.eventNumber||999999)||String(a.event).localeCompare(String(b.event)));

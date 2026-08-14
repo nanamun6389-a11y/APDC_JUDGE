@@ -152,6 +152,14 @@
     <button id="judgeAllocationClear" class="light" type="button">CLEAR ALL</button>
   </div>
   <div id="judgeAllocationMessage" class="message">체크하면 바로 저장됩니다.</div>
+  <div class="judge-code-manager" style="margin-top:26px;border-top:1px solid #ddd;padding-top:20px">
+    <div class="small-label">JUDGE CODE MANAGEMENT</div>
+    <h3>심사 코드 관리</h3>
+    <p class="muted">심사 화면에는 코드만 표시됩니다. 코드를 추가·수정·삭제하면 배부 목록과 심사 페이지에 즉시 반영됩니다.</p>
+    <div class="entry-player-grid"><label>JUDGE CODE<input id="judgeCodeInput" type="text" placeholder="T1 / W1 / A1" maxlength="12" autocomplete="off"></label></div>
+    <div class="entry-save-actions"><button id="judgeCodeSaveBtn" type="button">+ CODE ADD</button><button id="judgeCodeCancelBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
+    <div id="judgeCodeMessage" class="message"></div><div id="judgeCodeList" class="custom-event-list"></div>
+  </div>
 </section>
 
 <section class="controls admin-tab-panel hidden" data-admin-panel="event">
