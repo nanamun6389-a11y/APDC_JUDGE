@@ -459,3 +459,12 @@ main {
 
 /* V15 competition safety */
 .event-manager-details{border:1px solid #ccc;padding:0!important}.event-manager-details>summary{cursor:pointer;list-style:none;padding:16px 18px;display:flex;align-items:center;justify-content:space-between}.event-manager-details>summary::-webkit-details-marker{display:none}.event-manager-details>summary:after{content:"＋";font-size:22px}.event-manager-details[open]>summary:after{content:"−"}.event-manager-details>summary span{display:flex;flex-direction:column;gap:4px}.event-manager-details>summary small{font-weight:400;color:#666}.event-manager-body{padding:0 18px 18px;border-top:1px solid #ddd}
+
+/* V18 · compact timetable judge summary + judging assignment */
+.tt-judge-summary{margin-top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px}
+.tt-judge-summary>b{margin-right:2px;font-size:11px;letter-spacing:.06em}
+.tt-judge-code{display:inline-flex;align-items:center;padding:3px 7px;border:1px solid #d7d7d7;border-radius:999px;font-weight:800;line-height:1.2;background:#fff}
+.tt-judge-none{opacity:.5;font-weight:700}
+.judging-manager .judge-allocation-title{margin:14px 0;padding:14px 16px;border:1px solid #ddd;border-radius:12px;font-weight:800;font-size:16px;background:#fafafa}
+.judging-manager .judge-check-grid{margin-top:8px}
+@media(max-width:700px){.tt-judge-summary{gap:4px}.tt-judge-code{padding:3px 6px;font-size:11px}.judging-manager .judge-check-grid{grid-template-columns:1fr 1fr}}

@@ -127,24 +127,6 @@
   <div id="ttBuilderMessage" class="message"></div>
   <div class="tt-builder-note">합동경기는 같은 라운드끼리 선택하는 것을 권장합니다. 합동 후에도 각 원래 경기의 선수 백넘버가 모두 유지됩니다.</div>
   <div id="ttBuilderList" class="tt-builder-list"></div>
-  <div id="ttJudgeEditor" class="tt-judge-editor hidden">
-    <div class="small-label">SELECTED EVENT SETTING</div>
-    <h3 id="ttJudgeEditorTitle">JUDGE SETUP</h3>
-    <label>ROUND
-      <select id="ttJudgeRound">
-        <option value="quarter">Quarter Final</option>
-        <option value="semi">Semi Final</option>
-        <option value="final">Final</option>
-      </select>
-    </label>
-    <div class="small-label judge-label">ASSIGNED JUDGES</div>
-    <div id="ttJudgeChecks" class="judge-check-grid"></div>
-    <div class="assignment-tools">
-      <button id="ttJudgeClearBtn" class="light" type="button">CLEAR ALL</button>
-      <button id="ttJudgeSaveBtn" class="dark" type="button">SAVE JUDGE SETTING</button>
-    </div>
-    <div id="ttJudgeMessage" class="message"></div>
-  </div>
   <div class="search-publish-box">
     <div class="small-label">FINAL PUBLISH</div>
     <h3>SEARCH에 새로운 시합 송출</h3>
@@ -152,6 +134,24 @@
     <button id="publishSearchBtn" class="dark" type="button">SEARCH에 새로운 시합 송출</button>
     <div id="publishSearchMessage" class="message"></div>
   </div>
+</section>
+
+<section class="judging-manager admin-tab-panel hidden" data-admin-panel="judging">
+  <div class="small-label">JUDGE ASSIGNMENT</div>
+  <h2>JUDGING</h2>
+  <p class="muted">타임테이블 EVENT 번호를 선택한 뒤 심사위원을 체크하세요. 체크/해제 즉시 저장되며, TIMETABLE에는 코드만 간단히 표시됩니다.</p>
+  <div class="entry-player-grid">
+    <label>EVENT NO. / EVENT
+      <select id="judgeAllocationEventSelect"></select>
+    </label>
+  </div>
+  <div id="judgeAllocationTitle" class="judge-allocation-title">SELECT EVENT</div>
+  <div class="small-label judge-label">ASSIGNED JUDGES</div>
+  <div id="judgeAllocationChecks" class="judge-check-grid"></div>
+  <div class="assignment-tools">
+    <button id="judgeAllocationClear" class="light" type="button">CLEAR ALL</button>
+  </div>
+  <div id="judgeAllocationMessage" class="message">체크하면 바로 저장됩니다.</div>
 </section>
 
 <section class="controls admin-tab-panel hidden" data-admin-panel="event">
