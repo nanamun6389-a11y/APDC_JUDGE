@@ -14,6 +14,7 @@
   <a href="index.html">COMPETITIONS</a>
   <a href="control-room.html">DASHBOARD</a>
   <a href="judge-live.html">JUDGE</a>
+  <a id="liveResultNav" href="live-results.html">RESULTS</a>
   <a href="admin.html">SETTINGS</a>
 </nav>
 
@@ -64,6 +65,14 @@
     <div class="status-line">
       <span><span id="connectionDot" class="dot"></span><span id="connectionText">Connecting</span></span>
     </div>
+
+    <section class="judge-progress-card" style="border:1px solid #ccc;background:#fff;padding:14px;margin:12px 0 18px">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+        <div><div class="small-label">MY EVENT STATUS</div><strong id="judgeProgressSummary">LOADING…</strong></div>
+        <a id="judgeResultLink" class="dark" href="live-results.html" style="text-decoration:none;padding:10px 12px;font-size:11px">RESULT</a>
+      </div>
+      <div id="judgeProgressList" style="margin-top:10px;font-size:12px;line-height:1.7"></div>
+    </section>
 
     <section class="score">
       <div class="score-head">

@@ -913,3 +913,4 @@ resultEvent?.addEventListener('change',refreshResultPanel);resultRound?.addEvent
 const originalRenderTimetableBuilderV11=renderTimetableBuilder;
 renderTimetableBuilder=function(){originalRenderTimetableBuilderV11();setTimeout(()=>{renderJudgeAllocation().catch(console.error);refreshResultEvents();},0)};
 setTimeout(()=>{renderJudgeAllocation().catch(console.error);refreshResultEvents();const a=document.getElementById('certificateLiveLink');if(a)a.href=`certificate-live.html?competition=${encodeURIComponent(competitionId)}`;document.querySelectorAll('a[href="certificate-live.html"]').forEach(x=>x.href=`certificate-live.html?competition=${encodeURIComponent(competitionId)}`);},500);
+setTimeout(()=>{const q=`?competition=${encodeURIComponent(competitionId)}`;const r=document.getElementById('liveResultsAdminLink');const c=document.getElementById('certificateAdminLink');if(r)r.href='live-results.html'+q;if(c)c.href='certificate-live.html'+q;},300);

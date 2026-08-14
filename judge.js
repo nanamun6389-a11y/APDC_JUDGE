@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import { getDatabase, ref as firebaseRef, set, get, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
+import { aggregateRecall, aggregateFinalSkating } from "./results-engine.js";
 const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
 const DEFAULT_JUDGE_CODES=['T1','T2','T3','T4','T5','T6','T7','T8','W1','W2','W3','W4','W5','W6','W7','W8','W9'];
@@ -129,6 +130,7 @@ function chooseJudge(code) {
     history.replaceState(null, "", url);
     populateEventsForJudge();
     render();
+    renderJudgeProgress().catch(console.error);
   }, 220);
 }
 
@@ -317,6 +319,31 @@ function render() {
   watchCurrentSubmission();
 }
 
+
+function encodedEventKey(key){return btoa(unescape(encodeURIComponent(String(key||'')))).replaceAll("=","");}
+async function autoSaveCompletedResult(eventKey,round){
+  const setting=getSetting(eventKey)||{}; const assigned=setting.assignedJudges||[]; if(!assigned.length)return false;
+  const encoded=encodedEventKey(eventKey); const snap=await get(ref(db,`submissions/${encoded}_${round}`)); const all=snap.val()||{};
+  if(!assigned.every(j=>all[j]))return false;
+  const subs=Object.fromEntries(assigned.map(j=>[j,all[j]]));
+  let comps=currentCompetitors();
+  if(eventSelect.value!==eventKey){
+    const [event,section,style]=eventKey.split("||"); const map=new Map(); entries.filter(x=>x.event===event&&x.section===section&&x.style===style).forEach(x=>map.set(String(x.backNo),{backNo:String(x.backNo),name:x.competitor})); comps=[...map.values()].sort((a,b)=>natural(a.backNo,b.backNo));
+    if(round==='semi'){const q=resultsCache?.[encoded]?.quarter?.qualifiedBackNos;if(Array.isArray(q)&&q.length){const z=new Set(q.map(String));comps=comps.filter(x=>z.has(x.backNo));}}
+    if(round==='final'){const q=resultsCache?.[encoded]?.semi?.qualifiedBackNos;if(Array.isArray(q)&&q.length){const z=new Set(q.map(String));comps=comps.filter(x=>z.has(x.backNo));}}
+  }
+  const calc=round==='final'?aggregateFinalSkating(subs,comps.map(x=>x.backNo)):aggregateRecall(subs,comps.map(x=>x.backNo),round==='quarter'?12:6);
+  const payload={...calc,eventKey,eventLabel:eventSelect.value===eventKey?(eventSelect.selectedOptions[0]?.dataset.originalLabel||eventSelect.selectedOptions[0]?.textContent||eventKey):eventKey,round,assignedJudges:assigned,submittedJudges:assigned,calculatedAt:Date.now(),autoCalculated:true};
+  await set(ref(db,`results/${encoded}/${round}`),payload); return true;
+}
+async function renderJudgeProgress(){
+  const host=document.getElementById('judgeProgressList'),sum=document.getElementById('judgeProgressSummary'); if(!host||!sum||!currentJudge)return;
+  const items=uniqueEvents(entries); let complete=0; const rows=[];
+  for(const item of items){const encoded=encodedEventKey(item.key); const setting=getSetting(item.key)||{}; const rounds=['quarter','semi','final']; let doneRound=''; let pendingRound=''; for(const r of rounds){const snap=await get(ref(db,`submissions/${encoded}_${r}/${currentJudge}`)); if(snap.exists())doneRound=r; else if(!pendingRound)pendingRound=r;} const isFinal=doneRound==='final'; if(isFinal)complete++; const n=setting.eventNumber||'—'; rows.push(`<div style="display:flex;justify-content:space-between;border-top:1px solid #eee;padding:5px 0"><span>EVENT ${n} · ${item.event}</span><b>${isFinal?'완료 ✓':'남음'}</b></div>`);}
+  sum.textContent=`완료 ${complete} · 남은 경기 ${Math.max(0,items.length-complete)}`; host.innerHTML=rows.join('')||'배정된 경기가 없습니다.';
+  const link=document.getElementById('judgeResultLink'),nav=document.getElementById('liveResultNav'); const q=`?competition=${encodeURIComponent(competitionId)}`; if(link)link.href='live-results.html'+q;if(nav)nav.href='live-results.html'+q;
+}
+
 async function submitBallot() {
   if (!currentJudge) return;
   if (currentRoundSubmitted) {
@@ -361,6 +388,8 @@ async function submitBallot() {
   message.className = "message submitted-message";
   setBallotLocked(true);
   refreshEventOptionStatuses();
+  await autoSaveCompletedResult(eventSelect.value,round).catch(console.error);
+  renderJudgeProgress().catch(console.error);
 }
 
 document.getElementById("submitBtn").onclick = submitBallot;
@@ -410,7 +439,7 @@ function populateEventsForJudge() {
 }
 
 
-onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge)render();});
+onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge){render();renderJudgeProgress().catch(console.error);}});
 
 onValue(ref(db,"eventSettings"),snap=>{
   firebaseEventSettings=snap.val()||{};
