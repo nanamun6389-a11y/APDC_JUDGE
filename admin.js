@@ -11,11 +11,12 @@ let customEvents={};
 // EVENTS는 이 대회에서 실제로 선택/생성한 이벤트 + 이미 저장된 엔트리에서 복구한 이벤트만 사용합니다.
 let EVENTS=[];
 
-const JUDGES=[
+const LEGACY_JUDGES=[
 {code:"T1",name:"Raymond KIM"},{code:"T2",name:"Lorencia"},{code:"T3",name:"Marcus"},{code:"T4",name:"Crystal"},
 {code:"T5",name:"Tomohiro"},{code:"T6",name:"Annie Oo"},{code:"T7",name:"Nancy Chang"},{code:"T8",name:"Max Yim"},
 {code:"W1",name:"이종률"},{code:"W2",name:"김도영"},{code:"W3",name:"엄혜리"},{code:"W4",name:"구채림"},
 {code:"W5",name:"고재호"},{code:"W6",name:"임채성"},{code:"W7",name:"은일"},{code:"W8",name:"블라디"},{code:"W9",name:"이세영"}];
+let JUDGES=isLegacyCompetition?[...LEGACY_JUDGES]:[];
 
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
@@ -107,7 +108,12 @@ function refreshEventSources(){
   if(adminEvent) adminEvent.innerHTML=EVENTS.map(e=>`<option value="${e.eventKey}">${plainLabel(e)}</option>`).join("");
   renderEventChecks(); renderCustomEventList();
 }
-judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
+function renderJudgePickers(){
+  const html=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code} · ${j.name}</span></label>`).join("");
+  if(judgeChecks) judgeChecks.innerHTML=html;
+  if(ttJudgeChecks) ttJudgeChecks.innerHTML=html;
+}
+renderJudgePickers();
 
 
 // ===== ENTRY MANAGEMENT (V5 · PLAYER MULTI-EVENT) =====
@@ -420,6 +426,12 @@ function renumberAndRetimestamp(rows){
   return rows.map((r,i)=>{const durationSeconds=Number(r.durationSeconds)||80;const x={...r,no:String(i+1),start:secToClock(cursor),durationSeconds,duration:Math.round(durationSeconds/60*1000)/1000,durationText:durationSeconds%60?`${Math.floor(durationSeconds/60)}:${String(durationSeconds%60).padStart(2,"0")}`:`${Math.floor(durationSeconds/60)}:00`};cursor+=durationSeconds;return x;});
 }
 function eventIdentity(x){return `${x.event||""}||${x.section||""}||${x.style||""}`;}
+function rowBackSet(row){return new Set((row?.backNumbers||[]).map(String).filter(Boolean));}
+function overlappingBacks(rows){
+  const seen=new Set(), dup=new Set();
+  for(const row of rows){for(const b of rowBackSet(row)){if(seen.has(b))dup.add(b);else seen.add(b);}}
+  return [...dup].sort((a,b)=>Number(a)-Number(b));
+}
 
 async function syncTimetableWithEntries(){
   if(!timetableRows.length)return;
@@ -428,11 +440,26 @@ async function syncTimetableWithEntries(){
   const covered=new Set(); const next=[];
   for(const row of timetableRows){
     if(row.combined&&row.sourceEvents?.length){
-      const sourceEntries=entries.filter(x=>row.sourceEvents.includes(x.event));
+      const sourceGroups=row.sourceEvents.map((eventName,sourceIndex)=>{
+        const group=entries.filter(x=>x.event===eventName);
+        return {eventName,sourceIndex,group,backs:[...new Set(group.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b))};
+      }).filter(x=>x.group.length);
+      const conflictBacks=overlappingBacks(sourceGroups.map(x=>({backNumbers:x.backs})));
+      if(conflictBacks.length){
+        // A dancer cannot be placed on the floor in two source events at the same time.
+        // Automatically split an existing combined game if entry edits create a duplicate back number.
+        for(const g of sourceGroups){
+          const sample=g.group[0], dances=danceCodes(sample.event);
+          g.group.forEach(x=>covered.add(eventIdentity(x)));
+          next.push({...row,event:sample.event,section:sample.section||row.section||"",style:sample.style||row.style||"",division:sample.division||row.division||"",entries:String(g.backs.length),backNumbers:g.backs,sourceEventNo:String(row.sourceEventNos?.[g.sourceIndex]||""),sourceEventNos:[String(row.sourceEventNos?.[g.sourceIndex]||"")].filter(Boolean),sourceEvents:[sample.event],danceOrder:dances.join(" → "),durationSeconds:/formation/i.test(sample.event)?600:Math.max(80,dances.length*80),combined:false,note:`AUTO SPLIT · duplicate back no. ${conflictBacks.join(", ")}`});
+        }
+        continue;
+      }
+      const sourceEntries=sourceGroups.flatMap(x=>x.group);
       if(!sourceEntries.length)continue;
       const backs=[...new Set(sourceEntries.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
       sourceEntries.forEach(x=>covered.add(eventIdentity(x)));
-      next.push({...row,entries:String(sourceEntries.length),backNumbers:backs}); continue;
+      next.push({...row,entries:String(backs.length),backNumbers:backs}); continue;
     }
     const key=eventIdentity(row), ents=byEvent.get(key)||[]; if(!ents.length)continue; covered.add(key);
     const backs=[...new Set(ents.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
@@ -495,7 +522,30 @@ const ttJudgeSaveBtn=document.getElementById("ttJudgeSaveBtn");
 const ttJudgeClearBtn=document.getElementById("ttJudgeClearBtn");
 const ttJudgeMessage=document.getElementById("ttJudgeMessage");
 let editingTimetableIndex=-1;
-if(ttJudgeChecks) ttJudgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b><small>${j.name}</small></span></label>`).join("");
+renderJudgePickers();
+
+// V17 competition-specific judge roster. New competitions never inherit the 2026 roster.
+const judgeCodeInput=document.getElementById("judgeCodeInput"), judgeNameInput=document.getElementById("judgeNameInput"), judgeRosterList=document.getElementById("judgeRosterList"), judgeRosterMessage=document.getElementById("judgeRosterMessage");
+function renderJudgeRoster(){
+  renderJudgePickers();
+  if(!judgeRosterList)return;
+  judgeRosterList.innerHTML=JUDGES.length?JUDGES.map(j=>`<div class="entry-list-row"><strong>${j.code}</strong><span>${j.name}</span><button class="light" data-judge-edit="${j.code}">EDIT</button><button class="danger" data-judge-delete="${j.code}">DELETE</button></div>`).join(""):'<div class="entry-empty">심사위원을 추가하세요.</div>';
+}
+if(!isLegacyCompetition){
+  onValue(ref(db,"judges"),snap=>{JUDGES=Object.values(snap.val()||{}).filter(x=>x?.code&&x?.name).sort((x,y)=>x.code.localeCompare(y.code,undefined,{numeric:true}));renderJudgeRoster();});
+}
+document.getElementById("saveJudgeBtn")?.addEventListener("click",async()=>{
+  const code=(judgeCodeInput?.value||"").trim().toUpperCase(), name=(judgeNameInput?.value||"").trim();
+  if(!code||!name){judgeRosterMessage.textContent="CODE와 NAME을 입력하세요.";return;}
+  if(!/^[A-Z0-9_-]+$/.test(code)){judgeRosterMessage.textContent="CODE는 영문/숫자로 입력하세요. 예: A1, B2";return;}
+  await set(ref(db,`judges/${code}`),{code,name,updatedAt:Date.now()}); judgeCodeInput.value="";judgeNameInput.value="";judgeRosterMessage.textContent=`${code} 저장 완료`;
+});
+judgeRosterList?.addEventListener("click",async e=>{
+  const edit=e.target.closest("[data-judge-edit]"), del=e.target.closest("[data-judge-delete]");
+  if(edit){const j=JUDGES.find(x=>x.code===edit.dataset.judgeEdit);if(j){judgeCodeInput.value=j.code;judgeNameInput.value=j.name;}}
+  if(del){const code=del.dataset.judgeDelete;if(confirm(`${code} 심사위원을 삭제할까요?`))await remove(ref(db,`judges/${code}`));}
+});
+renderJudgeRoster();
 function timetableEventKey(row){
   const exact=EVENTS.find(e=>e.event===row.event && (!row.section||e.section===row.section));
   return exact?.eventKey || `${row.event||""}||${row.section||""}||${row.style||""}`;
@@ -523,17 +573,52 @@ ttJudgeSaveBtn?.addEventListener("click",async()=>{
 });
 
 function selectedTimetableIndexes(){return [...ttBuilderList.querySelectorAll('[data-tt-select]:checked')].map(x=>Number(x.dataset.ttSelect)).filter(Number.isInteger).sort((a,b)=>a-b);}
+document.getElementById("bulkJudgeApplyBtn")?.addEventListener("click",async()=>{
+  const idx=selectedTimetableIndexes();
+  if(!idx.length){ttBuilderMessage.textContent="심사를 묶어서 설정할 경기를 먼저 체크하세요.";return;}
+  const raw=(document.getElementById("bulkJudgeCodes")?.value||"").toUpperCase();
+  const codes=[...new Set(raw.split(/[\s,;+/]+/).map(x=>x.trim()).filter(Boolean))];
+  const valid=new Set(JUDGES.map(j=>j.code)); const bad=codes.filter(c=>!valid.has(c));
+  if(bad.length){ttBuilderMessage.textContent=`등록되지 않은 심사 코드: ${bad.join(" · ")}`;return;}
+  for(const i of idx){
+    const row=timetableRows[i], key=timetableEventKey(row);
+    const round=String(row.round||"final").toLowerCase().startsWith("quarter")?"quarter":String(row.round||"final").toLowerCase().startsWith("semi")?"semi":"final";
+    await set(ref(db,`eventSettings/${encodeKey(key)}`),{eventKey:key,eventNumber:String(row.no||""),event:row.event||"",section:row.section||"",style:row.style||"",round,assignedJudges:codes,updatedAt:Date.now()});
+    timetableRows[i]={...row,assignedJudges:codes};
+  }
+  await saveTimetableRows();renderTimetableBuilder();ttBuilderMessage.textContent=`${idx.length}개 경기 · ${codes.join(" · ")||"심사 없음"} 일괄 설정 완료`;
+});
 combineTimetableBtn?.addEventListener("click",async()=>{
   const idx=selectedTimetableIndexes(); if(idx.length<2){ttBuilderMessage.textContent="합동할 경기를 2개 이상 선택하세요.";return;}
-  const rows=idx.map(i=>timetableRows[i]); const rounds=[...new Set(rows.map(r=>r.round))];
+
+  // Automatically reject any selected event that shares a back number with an already accepted event.
+  // This prevents the same dancer/couple from being scheduled in two events on the same combined floor.
+  const acceptedIdx=[], rejected=[]; const usedBacks=new Set();
+  for(const i of idx){
+    const row=timetableRows[i], backs=rowBackSet(row);
+    const conflicts=[...backs].filter(b=>usedBacks.has(b)).sort((a,b)=>Number(a)-Number(b));
+    if(conflicts.length){rejected.push({i,row,conflicts});continue;}
+    acceptedIdx.push(i); backs.forEach(b=>usedBacks.add(b));
+  }
+  if(acceptedIdx.length<2){
+    const nums=[...new Set(rejected.flatMap(x=>x.conflicts))].sort((a,b)=>Number(a)-Number(b));
+    ttBuilderMessage.textContent=`합동 불가 · 중복 백넘버 ${nums.join(" · ")} · 같은 선수/커플이 있는 경기는 자동 제외됩니다.`;
+    return;
+  }
+
+  const rows=acceptedIdx.map(i=>timetableRows[i]); const rounds=[...new Set(rows.map(r=>r.round))];
   if(rounds.length>1&&!confirm("서로 다른 라운드가 선택되었습니다. 그래도 합동할까요?"))return;
   const allBacks=[...new Set(rows.flatMap(r=>r.backNumbers||[]).map(String).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
   const sourceEventNos=[...new Set(rows.flatMap(r=>r.sourceEventNos||[r.sourceEventNo]).map(String).filter(Boolean))];
   const sourceEvents=[...new Set(rows.flatMap(r=>r.sourceEvents||[r.event]).filter(Boolean))];
   const danceList=[...new Set(rows.flatMap(r=>String(r.danceOrder||'').split('→').map(x=>x.trim()).filter(Boolean)))];
-  const combined={...rows[0],event:sourceEvents.join(" + "),entries:String(rows.reduce((n,r)=>n+Number(r.entries||0),0)),backNumbers:allBacks,sourceEventNos,sourceEventNo:sourceEventNos[0]||"",sourceEvents,danceOrder:danceList.join(" → "),durationSeconds:Math.max(...rows.map(r=>Number(r.durationSeconds)||80)),combined:true,note:"COMBINED · all source back numbers retained"};
-  const first=idx[0], selectedSet=new Set(idx); timetableRows=timetableRows.filter((_,i)=>!selectedSet.has(i)); timetableRows.splice(first,0,combined);
-  await saveTimetableRows();renderTimetableBuilder();ttBuilderMessage.textContent=`합동 완료 · BACK NO. ${allBacks.join(' · ')}`;
+  const combined={...rows[0],event:sourceEvents.join(" + "),entries:String(allBacks.length),backNumbers:allBacks,sourceEventNos,sourceEventNo:sourceEventNos[0]||"",sourceEvents,danceOrder:danceList.join(" → "),durationSeconds:Math.max(...rows.map(r=>Number(r.durationSeconds)||80)),combined:true,note:"COMBINED · duplicate back numbers blocked"};
+  const first=acceptedIdx[0], selectedSet=new Set(acceptedIdx); timetableRows=timetableRows.filter((_,i)=>!selectedSet.has(i)); timetableRows.splice(first,0,combined);
+  await saveTimetableRows();renderTimetableBuilder();
+  const rejectedNums=[...new Set(rejected.flatMap(x=>x.conflicts))].sort((a,b)=>Number(a)-Number(b));
+  ttBuilderMessage.textContent=rejected.length
+    ? `합동 완료 · 중복 백넘버 ${rejectedNums.join(" · ")} 포함 경기 ${rejected.length}개는 자동 제외`
+    : `합동 완료 · BACK NO. ${allBacks.join(' · ')}`;
 });
 uncombineTimetableBtn?.addEventListener("click",async()=>{
   const idx=selectedTimetableIndexes(); if(idx.length!==1){ttBuilderMessage.textContent="합동 취소할 경기 1개를 선택하세요.";return;}
