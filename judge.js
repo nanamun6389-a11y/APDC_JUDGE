@@ -208,10 +208,12 @@ function currentCompetitors() {
   const round=roundSelect.value;
   if(round==="semi"){
     const q=resultsCache?.[encoded]?.quarter?.qualifiedBackNos;
+    if(baseCompetitorCount()>=15 && !(Array.isArray(q)&&q.length)) return [];
     if(Array.isArray(q)&&q.length){const setQ=new Set(q.map(String));list=list.filter(x=>setQ.has(String(x.backNo)));}
   }
   if(round==="final"){
     const q=resultsCache?.[encoded]?.semi?.qualifiedBackNos;
+    if(baseCompetitorCount()>=7 && !(Array.isArray(q)&&q.length)) return [];
     if(Array.isArray(q)&&q.length){const setQ=new Set(q.map(String));list=list.filter(x=>setQ.has(String(x.backNo)));}
   }
   return list;
@@ -232,6 +234,21 @@ function allowedRoundsForCount(count) {
   return ["final"];
 }
 
+function roundUnlocked(round) {
+  const count = baseCompetitorCount();
+  if (!eventSelect.value) return false;
+  const encoded=btoa(unescape(encodeURIComponent(eventSelect.value))).replaceAll("=","");
+  if(round==="semi" && count>=15){
+    const q=resultsCache?.[encoded]?.quarter?.qualifiedBackNos;
+    return Array.isArray(q)&&q.length>0;
+  }
+  if(round==="final" && count>=7){
+    const s=resultsCache?.[encoded]?.semi?.qualifiedBackNos;
+    return Array.isArray(s)&&s.length>0;
+  }
+  return true;
+}
+
 function configureRoundSelect(preferredRound) {
   const count = baseCompetitorCount();
   const allowed = allowedRoundsForCount(count);
@@ -241,10 +258,13 @@ function configureRoundSelect(preferredRound) {
     semi: "Semi Final · Select 6",
     final: "Final · Rank All"
   };
-  roundSelect.innerHTML = allowed.map(round =>
-    `<option value="${round}">${labels[round]}</option>`
-  ).join("");
-  roundSelect.value = allowed.includes(wanted) ? wanted : allowed[0];
+  roundSelect.innerHTML = allowed.map(round => {
+    const unlocked=roundUnlocked(round);
+    const wait=round==="semi"?" · WAIT QF":round==="final"?" · WAIT SF":"";
+    return `<option value="${round}" ${unlocked?"":"disabled"}>${labels[round]}${unlocked?"":wait}</option>`;
+  }).join("");
+  const enabled=allowed.filter(round=>roundUnlocked(round));
+  roundSelect.value = enabled.includes(wanted) ? wanted : (enabled[0] || allowed[0]);
   return allowed;
 }
 
@@ -366,6 +386,11 @@ async function submitBallot() {
   }
   const round = roundSelect.value;
   let result;
+  if(!roundUnlocked(round)){
+    message.textContent = round==="semi" ? "QUARTER FINAL RESULT REQUIRED" : "SEMI FINAL RESULT REQUIRED";
+    message.className = "message error";
+    return;
+  }
 
   if (round === "final") {
     const rows = [...ballot.querySelectorAll(".rank-select")];
@@ -490,7 +515,7 @@ function populateEventsForJudge() {
 }
 
 
-onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge)render();});
+onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge){configureRoundSelect(roundSelect.value);render();refreshEventOptionStatuses();}});
 
 onValue(ref(db,"eventSettings"),snap=>{
   firebaseEventSettings=snap.val()||{};
