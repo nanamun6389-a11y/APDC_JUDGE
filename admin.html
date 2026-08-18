@@ -200,7 +200,23 @@
 <section class="sponsor-admin-card admin-tab-panel hidden" data-admin-panel="sponsor"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
 <label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
 <label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
-<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
+<button id="addSponsorBtn" class="dark" type="button">ADD LOGO</button><div id="sponsorMessage" class="message"></div><div id="sponsorList" class="sponsor-admin-list"></div></section><section class="entry-manager admin-tab-panel hidden" data-admin-panel="judging">
+  <div class="small-label">JUDGE ASSIGNMENT</div><h2>JUDGING</h2>
+  <div id="judgeAllocationList"></div>
+  <div id="judgeAllocationEditor" class="hidden" style="margin-top:20px">
+    <h3 id="judgeAllocationTitle"></h3><div id="judgeAllocationChecks" class="judge-check-grid"></div>
+    <div class="setup-actions"><button id="judgeAllocationClear" class="light" type="button">CLEAR ALL</button><button id="judgeAllocationSave" class="dark" type="button">SAVE JUDGES</button></div>
+    <div id="judgeAllocationMessage" class="message"></div>
+  </div>
+</section>
+<section class="entry-manager admin-tab-panel hidden" data-admin-panel="results">
+  <div class="small-label">COMPETITION RESULTS</div><h2>RESULTS</h2>
+  <div class="entry-player-grid"><label>EVENT<select id="resultEvent"></select></label><label>ROUND<select id="resultRound"><option value="quarter">Quarter Final</option><option value="semi">Semi Final</option><option value="final">Final</option></select></label></div>
+  <div id="resultSubmissionStatus" class="message"></div>
+  <div class="setup-actions"><button id="calculateResultBtn" class="dark" type="button">CALCULATE / SAVE RESULT</button><a id="certificateLiveLink" class="button light" href="certificate-live.html">CERTIFICATE PRINT</a></div>
+  <div id="resultOutput" style="margin-top:18px"></div>
+</section>
+<section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
   <h2>FLOOR CONTROL</h2>
   <label>NOW<input id="nowEventInput" type="text"></label>
   <label>ON DECK<input id="onDeckEventInput" type="text"></label>

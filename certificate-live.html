@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css"><style>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css"><style>
 body{background:#f4f4f4}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #ccc;padding:18px;margin-bottom:18px}.toolbar select,.toolbar input{width:100%;padding:12px;margin:6px 0 12px}.toolbar button{padding:13px 18px}.list{background:#fff;border:1px solid #ccc}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:12px;border-bottom:1px solid #eee;align-items:center}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
 </style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div style="font-size:12px;font-weight:800;margin:6px 0 12px">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><label>EVENT<select id="event"></select></label><label><input id="all" type="checkbox"> 전체 선택</label><button id="print">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue,set}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';import{aggregateFinalSkating}from'./results-engine.js';
@@ -6,9 +6,19 @@ const db=getDatabase(initializeApp(firebaseConfig));const ref=p=>fbRef(db,compet
 let results={},entries=[],meta={},submissions={},eventSettings={},finals=[],repairing=false;const sel=document.getElementById('event');
 const eventKeyOf=x=>[x?.event||'',x?.section||'',x?.style||''].join('||');
 function asArray(value){return Array.isArray(value)?value:Object.values(value||{}).filter(Boolean)}
+function judgeCodes(value){
+  if(Array.isArray(value))return value.map(String).filter(Boolean);
+  if(value&&typeof value==='object')return Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k,v])=>typeof v==='string'&&/^[TW]\d+$/i.test(v)?v:k).map(String).filter(Boolean);
+  if(typeof value==='string')return value.split(/[\s,;|]+/).map(x=>x.trim()).filter(Boolean);
+  return [];
+}
+function settingsEntries(){
+  if(Array.isArray(eventSettings?.events))return eventSettings.events.map(x=>[btoa(unescape(encodeURIComponent(x.eventKey||''))).replaceAll('=',''),x]);
+  return Object.entries(eventSettings||{}).filter(([k])=>k!=='events');
+}
 function isFinalComplete(encoded,f){
   const setting=eventSettings?.[encoded]||{};
-  const assigned=asArray(f?.assignedJudges).length?asArray(f.assignedJudges).map(String):asArray(setting?.assignedJudges).map(String);
+  const assigned=judgeCodes(f?.assignedJudges).length?judgeCodes(f.assignedJudges):judgeCodes(setting?.assignedJudges);
   if(!assigned.length)return false;
   const ballots=submissions?.[`${encoded}_final`]||{};
   return assigned.every(code=>!!ballots?.[code]);
@@ -20,8 +30,8 @@ function rebuildFinals(){
 
   // Build the certificate event list from COMPLETED FINAL submissions first.
   // A pre-existing results node is no longer required for an event to appear.
-  Object.entries(eventSettings||{}).forEach(([encoded,setting])=>{
-    const assigned=asArray(setting?.assignedJudges).map(String).filter(Boolean);
+  settingsEntries().forEach(([encoded,setting])=>{
+    const assigned=judgeCodes(setting?.assignedJudges);
     if(!assigned.length)return;
     const ballots=submissions?.[`${encoded}_final`]||{};
     if(!assigned.every(code=>!!ballots?.[code]))return;
@@ -76,9 +86,9 @@ function rebuildFinals(){
 async function repairCompletedFinals(){
   if(repairing)return;repairing=true;
   try{
-    for(const [encoded,setting] of Object.entries(eventSettings||{})){
+    for(const [encoded,setting] of settingsEntries()){
       if(results?.[encoded]?.final?.ranking)continue;
-      const assigned=(setting?.assignedJudges||[]).map(String);if(!assigned.length)continue;
+      const assigned=judgeCodes(setting?.assignedJudges);if(!assigned.length)continue;
       const ballots=submissions?.[`${encoded}_final`]||{};if(!assigned.every(code=>ballots[code]))continue;
       const eventKey=setting.eventKey||'';
       const rankedBackNos=assigned.flatMap(code=>asArray(ballots[code]?.result).map(x=>String(x?.backNo??'')).filter(Boolean));

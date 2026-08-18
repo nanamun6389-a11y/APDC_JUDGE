@@ -853,7 +853,17 @@ async function roundCompetitors(key,round){
 }
 async function refreshResultPanel(){
   if(!resultEvent?.value)return;const key=resultEvent.value,round=resultRound.value,encoded=encodeKey(key),setting=await getEventSetting(key),assigned=setting.assignedJudges||[];const s=await get(ref(db,`submissions/${encoded}_${round}`)),subs=s.val()||{};const done=assigned.filter(x=>subs[x]).length;resultSubmissionStatus.textContent=`${done} / ${assigned.length} ASSIGNED JUDGES SUBMITTED${assigned.length&&done===assigned.length?' · COMPLETE':' · WAITING'}`;
-  const saved=await get(ref(db,`results/${encoded}/${round}`));const data=saved.val();if(!data){resultOutput.innerHTML='<div style="padding:18px">아직 저장된 결과가 없습니다.</div>';return;}renderStoredResult(data);
+  const saved=await get(ref(db,`results/${encoded}/${round}`));let data=saved.val();
+  // When every assigned judge has submitted, finalize automatically. This makes the event immediately available to Certificate Print.
+  if(!data && assigned.length && done===assigned.length){
+    const filtered=Object.fromEntries(assigned.filter(j=>subs[j]).map(j=>[j,subs[j]]));
+    const comps=await roundCompetitors(key,round);
+    const calc=round==='final'?aggregateFinalSkating(filtered,comps.map(x=>x.backNo)):aggregateRecall(filtered,comps.map(x=>x.backNo),round==='quarter'?12:6);
+    const label=judgableEventsFromTimetable().find(x=>x.eventKey===key)?.event||key;
+    data={...calc,eventKey:key,eventLabel:label,round,assignedJudges:assigned,submittedJudges:Object.keys(filtered),calculatedAt:Date.now(),autoFinalized:true};
+    await set(ref(db,`results/${encoded}/${round}`),data);
+  }
+  if(!data){resultOutput.innerHTML='<div style="padding:18px">아직 저장된 결과가 없습니다.</div>';return;}renderStoredResult(data);
 }
 function renderStoredResult(data){const rows=data.ranking||[];if(data.round==='final'){resultOutput.innerHTML=`<div class="res-row res-head"><span>PLACE</span><span>BACK</span><span>NAME</span><span>JUDGE MARKS</span></div>`+rows.map(r=>{const c=eventCompetitors(data.eventKey).find(x=>x.backNo===String(r.backNo))||{};return `<div class="res-row"><b>${r.place}</b><b>${r.backNo}</b><span>${c.name||''}</span><span>${(r.marks||[]).join(' · ')}</span></div>`}).join('');}else{resultOutput.innerHTML=`<div class="res-row res-head"><span>ORDER</span><span>BACK</span><span>NAME</span><span>RECALLS</span></div>`+rows.map((r,i)=>{const c=eventCompetitors(data.eventKey).find(x=>x.backNo===String(r.backNo))||{};const q=(data.qualifiedBackNos||[]).map(String).includes(String(r.backNo));return `<div class="res-row"><b>${i+1}${q?' ✓':''}</b><b>${r.backNo}</b><span>${c.name||''}</span><span>${r.recalls} RECALLS</span></div>`}).join('')+(data.tieAtCutoff?'<div class="message">동점 커트라인은 같은 recall 수의 선수까지 모두 다음 라운드로 올렸습니다.</div>':'');}}
 
