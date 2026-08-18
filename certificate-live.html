@@ -1,9 +1,56 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css?v=20260818-round-auto-v9"><style>
-body{background:#f5f5f5}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #d7d7d7;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.045)}.toolbar h1{margin:0 0 8px;font-size:24px;letter-spacing:-.02em}.toolbar #meta{font-size:13px;color:#555;font-weight:800;margin-bottom:6px}.cert-note{font-size:12px;font-weight:800;color:#666;margin:6px 0 16px;line-height:1.5}.bg-slot{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;border:1px solid #e1e1e1;border-radius:10px;padding:10px;margin:8px 0 14px;background:#fafafa}.bg-slot img{width:72px;height:96px;object-fit:cover;border:1px solid #ddd;background:#fff}.bg-slot b{display:block;font-size:11px;letter-spacing:.04em}.bg-slot span{display:block;font-size:11px;color:#777;margin-top:4px;line-height:1.4}.toolbar label{display:block;margin-top:10px}.toolbar select{width:100%;min-height:48px;border:1px solid #bbb;border-radius:9px;background:#fff;padding:0 12px;margin:6px 0 10px;font-weight:800}.select-all-line{display:flex!important;align-items:center;gap:9px;margin:6px 0 16px!important;font-size:13px}.select-all-line input{width:18px!important;height:18px;margin:0!important}.cert-print-btn{width:100%;min-height:52px;border:1px solid #111;border-radius:10px;background:#111;color:#fff;font-weight:900;letter-spacing:.04em;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.cert-print-btn:hover{box-shadow:0 5px 14px rgba(0,0,0,.12);transform:translateY(-1px)}.cert-print-btn:active{transform:translateY(0);box-shadow:none}.list{background:#fff;border:1px solid #d7d7d7;border-radius:14px;overflow:hidden}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:13px 14px;border-bottom:1px solid #eee;align-items:center}.row:last-child{border-bottom:0}.row:hover{background:#fafafa}.row input[type=checkbox]{width:18px;height:18px}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media(max-width:720px){.wrap{padding:14px}.toolbar{padding:17px;border-radius:11px}.row{grid-template-columns:36px 62px 1fr 58px}.row>*:nth-child(4){grid-column:3/5;color:#666;font-size:12px}}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
-</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div class="cert-note">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><div class="bg-slot"><img src="certificate-background.png" alt="Certificate background preview"><div><b>DEFAULT CERTIFICATE IMAGE</b><span>certificate-background.png 파일을 교체하면 모든 상장 출력에 동일하게 적용됩니다.</span></div></div><label>EVENT<select id="event"></select></label><label class="select-all-line"><input id="all" type="checkbox"> 전체 선택</label><button id="print" class="cert-print-btn">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue,set}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';import{aggregateFinalSkating}from'./results-engine.js';
+body{background:#f5f5f5}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #d7d7d7;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.045)}.toolbar h1{margin:0 0 8px;font-size:24px;letter-spacing:-.02em}.toolbar #meta{font-size:13px;color:#555;font-weight:800;margin-bottom:6px}.cert-note{font-size:12px;font-weight:800;color:#666;margin:6px 0 16px;line-height:1.5}.bg-slot{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;border:1px solid #e1e1e1;border-radius:10px;padding:12px;margin:8px 0 14px;background:#fafafa}.bg-preview{width:82px;height:116px;border:1px solid #ddd;background:#fff;display:grid;place-items:center;overflow:hidden;border-radius:4px}.bg-preview img{width:100%;height:100%;object-fit:cover;display:none}.bg-preview span{font-size:9px;color:#999;text-align:center;line-height:1.35;padding:6px}.bg-slot b{display:block;font-size:11px;letter-spacing:.04em}.bg-slot .desc{display:block;font-size:11px;color:#777;margin-top:4px;line-height:1.45}.bg-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.bg-btn{min-height:34px;border:1px solid #222;border-radius:8px;background:#fff;color:#111;padding:0 12px;font-size:11px;font-weight:900;cursor:pointer}.bg-btn.primary{background:#111;color:#fff}.bg-btn.danger{border-color:#bbb;color:#666}.bg-status{font-size:10px;color:#777;margin-top:7px;min-height:14px}.toolbar label{display:block;margin-top:10px}.toolbar select{width:100%;min-height:48px;border:1px solid #bbb;border-radius:9px;background:#fff;padding:0 12px;margin:6px 0 10px;font-weight:800}.select-all-line{display:flex!important;align-items:center;gap:9px;margin:6px 0 16px!important;font-size:13px}.select-all-line input{width:18px!important;height:18px;margin:0!important}.cert-print-btn{width:100%;min-height:52px;border:1px solid #111;border-radius:10px;background:#111;color:#fff;font-weight:900;letter-spacing:.04em;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.cert-print-btn:hover{box-shadow:0 5px 14px rgba(0,0,0,.12);transform:translateY(-1px)}.cert-print-btn:active{transform:translateY(0);box-shadow:none}.list{background:#fff;border:1px solid #d7d7d7;border-radius:14px;overflow:hidden}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:13px 14px;border-bottom:1px solid #eee;align-items:center}.row:last-child{border-bottom:0}.row:hover{background:#fafafa}.row input[type=checkbox]{width:18px;height:18px}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media(max-width:720px){.wrap{padding:14px}.toolbar{padding:17px;border-radius:11px}.row{grid-template-columns:36px 62px 1fr 58px}.row>*:nth-child(4){grid-column:3/5;color:#666;font-size:12px}}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
+</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div class="cert-note">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><div class="bg-slot"><div class="bg-preview"><img id="bgPreview" alt="Certificate background preview"><span id="bgEmpty">NO IMAGE<br>상장 이미지 없음</span></div><div><b>CERTIFICATE IMAGE</b><span class="desc">이 대회에서 사용할 상장 이미지를 등록하세요. A4 세로 이미지 권장.</span><div class="bg-actions"><button type="button" id="bgChange" class="bg-btn primary">상장 이미지 변경</button><button type="button" id="bgRemove" class="bg-btn danger">이미지 삭제</button><input id="bgFile" type="file" accept="image/*" hidden></div><div id="bgStatus" class="bg-status">상장 이미지가 설정되지 않았습니다.</div></div></div><label>EVENT<select id="event"></select></label><label class="select-all-line"><input id="all" type="checkbox"> 전체 선택</label><button id="print" class="cert-print-btn">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue,set,remove}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';import{aggregateFinalSkating}from'./results-engine.js';
 const db=getDatabase(initializeApp(firebaseConfig));const ref=p=>fbRef(db,competitionPath(p));const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-let results={},entries=[],meta={},submissions={},eventSettings={},finals=[],repairing=false;const sel=document.getElementById('event');
+let results={},entries=[],meta={},submissions={},eventSettings={},finals=[],repairing=false,certificateBg='';
+const sel=document.getElementById('event');
+const bgPreview=document.getElementById('bgPreview'),bgEmpty=document.getElementById('bgEmpty'),bgStatus=document.getElementById('bgStatus'),bgFile=document.getElementById('bgFile'),bgChange=document.getElementById('bgChange'),bgRemove=document.getElementById('bgRemove');
+function paintCertificateBg(){
+  if(certificateBg){
+    bgPreview.src=certificateBg;bgPreview.style.display='block';bgEmpty.style.display='none';
+    bgStatus.textContent='현재 상장 이미지가 적용되어 있습니다.';
+  }else{
+    bgPreview.removeAttribute('src');bgPreview.style.display='none';bgEmpty.style.display='block';
+    bgStatus.textContent='상장 이미지가 설정되지 않았습니다.';
+  }
+}
+function imageToCertificateDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('파일을 읽을 수 없습니다.'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('이미지 형식을 확인해주세요.'));
+      img.onload=()=>{
+        const maxW=1600,maxH=2263,scale=Math.min(1,maxW/img.width,maxH/img.height);
+        const w=Math.max(1,Math.round(img.width*scale)),h=Math.max(1,Math.round(img.height*scale));
+        const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg',0.9));
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+bgChange.onclick=()=>bgFile.click();
+bgFile.onchange=async()=>{
+  const file=bgFile.files?.[0];if(!file)return;
+  if(!file.type.startsWith('image/')){alert('이미지 파일을 선택해주세요.');bgFile.value='';return;}
+  bgStatus.textContent='이미지 저장 중...';
+  try{
+    const dataUrl=await imageToCertificateDataUrl(file);
+    await set(ref('certificateSettings/background'),{dataUrl,fileName:file.name,updatedAt:Date.now()});
+    bgStatus.textContent='상장 이미지가 변경되었습니다.';
+  }catch(err){console.error(err);alert('상장 이미지를 저장하지 못했습니다.');bgStatus.textContent='저장 실패';}
+  bgFile.value='';
+};
+bgRemove.onclick=async()=>{
+  if(!certificateBg)return;
+  if(!confirm('현재 상장 이미지를 삭제할까요?'))return;
+  await remove(ref('certificateSettings/background'));
+};
 const eventKeyOf=x=>[x?.event||'',x?.section||'',x?.style||''].join('||');
 function asArray(value){return Array.isArray(value)?value:Object.values(value||{}).filter(Boolean)}
 function judgeCodes(value){
@@ -132,5 +179,7 @@ onValue(ref('entries'),snap=>{entries=asArray(snap.val());rebuildFinals();repair
 onValue(ref('meta'),snap=>{meta=snap.val()||{};rebuildFinals()});
 onValue(ref('submissions'),snap=>{submissions=snap.val()||{};rebuildFinals();repairCompletedFinals()});
 onValue(ref('eventSettings'),snap=>{eventSettings=snap.val()||{};rebuildFinals();repairCompletedFinals()});
-const cert=r=>`<section class="cert"><img src="certificate-background.png"><div class="cover name">${esc(r.name)}</div><div class="cover place">${r.place}${r.place===1?'ST':r.place===2?'ND':r.place===3?'RD':'TH'}</div><div class="cover event">${esc(r.event)}</div></section>`;document.getElementById('print').onclick=()=>{const rr=rows(),picked=[...document.querySelectorAll('[data-i]:checked')].map(x=>rr[Number(x.dataset.i)]).filter(Boolean);if(!picked.length)return alert('출력할 결과를 선택하세요.');document.getElementById('batch').innerHTML=picked.map(cert).join('');setTimeout(()=>window.print(),100)};
+onValue(ref('certificateSettings/background'),snap=>{certificateBg=snap.val()?.dataUrl||'';paintCertificateBg();});
+const cert=r=>`<section class="cert">${certificateBg?`<img src="${certificateBg}" alt="">`:''}<div class="cover name">${esc(r.name)}</div><div class="cover place">${r.place}${r.place===1?'ST':r.place===2?'ND':r.place===3?'RD':'TH'}</div><div class="cover event">${esc(r.event)}</div></section>`;
+document.getElementById('print').onclick=()=>{if(!certificateBg)return alert('먼저 상장 이미지를 등록해주세요.');const rr=rows(),picked=[...document.querySelectorAll('[data-i]:checked')].map(x=>rr[Number(x.dataset.i)]).filter(Boolean);if(!picked.length)return alert('출력할 결과를 선택하세요.');document.getElementById('batch').innerHTML=picked.map(cert).join('');setTimeout(()=>window.print(),100)};
 </script></body></html>

@@ -1,0 +1,3 @@
+certificate-background.png
+APDC_Certificate_Background.png
+APDC_Certificate_Background_v2.png

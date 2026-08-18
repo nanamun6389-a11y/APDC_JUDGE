@@ -130,7 +130,7 @@ button.light{background:#fff;color:#111}.gold{background:#9b6f17;border-color:#9
   </div>
   <div class="preview-panel">
    <div class="preview-shell">
-    <div class="certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1807" alt=""><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
+    <div class="certificate"><div id="pName" class="cover name-cover">Select a result</div><div id="pEvent" class="cover event-cover">Event</div><div id="pPlace" class="cover place-cover">Place</div></div>
    </div>
    <aside class="side">
     <h3>SELECTED CERTIFICATE</h3>
@@ -176,7 +176,7 @@ function renderRows(){
 }
 function showPreview(r){$('pName').textContent=r.name;$('pEvent').textContent=r.event;$('pPlace').textContent=r.place.toUpperCase();$('dName').textContent=r.name;$('dBack').textContent=r.backNo||'—';$('dEvent').textContent=r.event;$('dPlace').textContent=r.place;$('dGroup').textContent=r.group;$('dCert').textContent=r.certNo||'—'}
 function updateSelectedStatus(){$('selectedStatus').textContent=selected.size+' selected'}
-function certHTML(r){return `<section class="print-certificate"><img class="certificate-bg" src="APDC_Certificate_Background_v2.png?v=20260810-1807" alt=""><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
+function certHTML(r){return `<section class="print-certificate"><div class="cover name-cover">${esc(r.name)}</div><div class="cover event-cover">${esc(r.event)}</div><div class="cover place-cover">${esc(r.place).toUpperCase()}</div></section>`}
 function doPrint(arr){if(!arr.length)return alert('출력할 상장이 없습니다.');$('batchHolder').innerHTML=arr.map(certHTML).join('');setTimeout(()=>window.print(),100)}
 $('q').addEventListener('input',applyFilters);
 $('groupFilter').addEventListener('change',()=>{selected.clear();applyFilters()});
