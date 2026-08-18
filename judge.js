@@ -8,6 +8,12 @@ const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPa
 
 const JUDGES = Object.fromEntries(["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"].map(code=>[code,code]));
 const JUDGE_LIST = Object.keys(JUDGES).map(code=>({code}));
+function judgeCodes(value){
+  if(Array.isArray(value)) return value.map(String).filter(Boolean);
+  if(value && typeof value === "object") return Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k,v])=>typeof v==="string"&&/^[TW]\d+$/i.test(v)?v:k).map(String).filter(Boolean);
+  if(typeof value === "string") return value.split(/[\s,;|]+/).map(x=>x.trim()).filter(Boolean);
+  return [];
+}
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -173,7 +179,7 @@ function uniqueEvents(data) {
   if (currentJudge) {
     list = list.filter(item => {
       const setting = getSetting(item.key);
-      const assigned = setting?.assignedJudges || [];
+      const assigned = judgeCodes(setting?.assignedJudges);
       return assigned.includes(currentJudge);
     });
   }
@@ -221,8 +227,8 @@ function baseCompetitorCount() {
 }
 
 function allowedRoundsForCount(count) {
-  if (count >= 14) return ["quarter", "semi", "final"];
-  if (count >= 8) return ["semi", "final"];
+  if (count >= 15) return ["quarter", "semi", "final"];
+  if (count >= 7) return ["semi", "final"];
   return ["final"];
 }
 
@@ -311,6 +317,11 @@ function render() {
   const round = roundSelect.value;
   eventTitle.textContent = eventSelect.selectedOptions[0]?.textContent || "";
   roundTitle.textContent = round==="quarter" ? "QUARTER FINAL" : round==="semi" ? "SEMI FINAL" : "FINAL";
+  const ruleHint=document.getElementById("roundRuleHint");
+  if(ruleHint){
+    const total=baseCompetitorCount();
+    ruleHint.textContent = total>=15 ? `${total} ENTRIES · QF PICK 12 → SF PICK 6 → FINAL 6` : total>=7 ? `${total} ENTRIES · SF PICK 6 → FINAL 6` : `${total} ENTRIES · FINAL ONLY`;
+  }
 
   if (round === "final") {
     ballot.innerHTML = comps.map(c => `
@@ -413,7 +424,7 @@ async function competitorsForCalculation(eventKey, round) {
 async function autoSaveCompletedRound(round) {
   const eventKey=eventSelect.value;
   const setting=getSetting(eventKey)||{};
-  const assigned=(setting.assignedJudges||[]).map(String);
+  const assigned=judgeCodes(setting.assignedJudges);
   if(!assigned.length)return false;
   const encoded=btoa(unescape(encodeURIComponent(eventKey))).replaceAll("=","");
   const saved=await get(ref(db,`results/${encoded}/${round}`));

@@ -131,6 +131,31 @@ function entryTypeFor(event){
   return "Solo";
 }
 function eventId(e){ return `${e.event}||${e.section}||${e.style}`; }
+async function cleanupCompletedDataForEmptyEvents(affectedEventIds){
+  const ids=[...new Set((affectedEventIds||[]).filter(Boolean))];
+  if(!ids.length)return;
+  const entriesSnap=await get(ref(db,"entries"));
+  const liveEntries=Object.values(entriesSnap.val()||{}).filter(Boolean);
+  const emptyIds=ids.filter(id=>!liveEntries.some(x=>eventId(x)===id));
+  if(!emptyIds.length)return;
+
+  const settingsSnap=await get(ref(db,"eventSettings"));
+  const settings=settingsSnap.val()||{};
+  const pairs=Array.isArray(settings?.events)
+    ? settings.events.map(x=>[btoa(unescape(encodeURIComponent(x.eventKey||''))).replaceAll('=',''),x])
+    : Object.entries(settings).filter(([k])=>k!=="events");
+
+  for(const id of emptyIds){
+    for(const [encoded,setting] of pairs){
+      const sid=setting?.eventKey||eventId(setting||{});
+      if(sid!==id && eventId(setting||{})!==id)continue;
+      await remove(ref(db,`results/${encoded}`));
+      await remove(ref(db,`submissions/${encoded}_quarter`));
+      await remove(ref(db,`submissions/${encoded}_semi`));
+      await remove(ref(db,`submissions/${encoded}_final`));
+    }
+  }
+}
 function selectedEventIds(){
   return [...entryEventChecks.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.value);
 }
@@ -231,10 +256,10 @@ customEventSaveBtn?.addEventListener("click",async()=>{
 customEventList?.addEventListener("click",async e=>{
   const reb=e.target.closest("[data-recovered-edit]"), rdb=e.target.closest("[data-recovered-delete]");
   if(reb){const eid=decodeURIComponent(reb.dataset.recoveredEdit),x=EVENTS.find(v=>eventId(v)===eid);if(x){const id=customId();await set(ref(db,`customEvents/${id}`),{...x,id,eventKey:`custom:${id}`,custom:true,updatedAt:Date.now()});setTimeout(()=>{const b=customEventList.querySelector(`[data-event-edit="${id}"]`);b?.click();},100);}return;}
-  if(rdb){const eid=decodeURIComponent(rdb.dataset.recoveredDelete),x=EVENTS.find(v=>eventId(v)===eid);const affected=Object.entries(competitionEntries||{}).filter(([,r])=>r&&eventId(r)===eid);if(x&&confirm(`${x.event} 이벤트를 삭제할까요?\n등록된 엔트리 ${affected.length}개도 함께 삭제됩니다.`)){for(const [key] of affected)await remove(ref(db,`entries/${key}`));}return;}
+  if(rdb){const eid=decodeURIComponent(rdb.dataset.recoveredDelete),x=EVENTS.find(v=>eventId(v)===eid);const affected=Object.entries(competitionEntries||{}).filter(([,r])=>r&&eventId(r)===eid);if(x&&confirm(`${x.event} 이벤트를 삭제할까요?\n등록된 엔트리 ${affected.length}개도 함께 삭제됩니다.`)){for(const [key] of affected)await remove(ref(db,`entries/${key}`));await cleanupCompletedDataForEmptyEvents([eid]);}return;}
   const eb=e.target.closest("[data-event-edit]"), dbtn=e.target.closest("[data-event-delete]");
   if(eb){const id=eb.dataset.eventEdit,x=customEvents[id];if(!x)return;editingCustomEventId=id;customEventName.value=x.event;customEventSection.value=x.section;customEventStyle.value=x.style||"Latin";customEventSaveBtn.textContent="SAVE EVENT CHANGES";customEventCancelBtn.classList.remove("hidden");customEventName.scrollIntoView({behavior:"smooth",block:"center"});}
-  if(dbtn){const id=dbtn.dataset.eventDelete,x=customEvents[id];if(!x)return;const affected=Object.entries(competitionEntries||{}).filter(([,r])=>r&&eventId(r)===eventId(x));if(!confirm(`${x.event} 이벤트를 삭제할까요?\n등록된 엔트리 ${affected.length}개도 함께 삭제됩니다.`))return;for(const [key] of affected)await remove(ref(db,`entries/${key}`));await remove(ref(db,`customEvents/${id}`));customEventMessage.textContent="이벤트 삭제 완료";}
+  if(dbtn){const id=dbtn.dataset.eventDelete,x=customEvents[id];if(!x)return;const affected=Object.entries(competitionEntries||{}).filter(([,r])=>r&&eventId(r)===eventId(x));if(!confirm(`${x.event} 이벤트를 삭제할까요?\n등록된 엔트리 ${affected.length}개도 함께 삭제됩니다.`))return;for(const [key] of affected)await remove(ref(db,`entries/${key}`));await cleanupCompletedDataForEmptyEvents([eventId(x)]);await remove(ref(db,`customEvents/${id}`));customEventMessage.textContent="이벤트 삭제 완료";}
 });
 onValue(ref(db,"customEvents"),async snap=>{customEvents=snap.val()||{};refreshEventSources();await ensureDefaultEvents();});
 
@@ -363,7 +388,9 @@ entryList?.addEventListener("click",async e=>{
     const rows=Object.entries(competitionEntries||{}).filter(([,x])=>x&&String(x.backNo).trim()===String(backNo).trim());
     const name=rows[0]?.[1]?.competitor||"";
     if(rows.length && confirm(`Delete #${backNo} ${name} and all ${rows.length} entries?`)){
+      const affectedEventIds=rows.map(([,x])=>eventId(x));
       for(const [key] of rows) await remove(ref(db,`entries/${key}`));
+      await cleanupCompletedDataForEmptyEvents(affectedEventIds);
       if(editingOriginalBackNo===backNo) resetEntryForm();
     }
   }

@@ -1,6 +1,6 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css"><style>
-body{background:#f5f5f5}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #d7d7d7;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.045)}.toolbar h1{margin:0 0 8px;font-size:24px;letter-spacing:-.02em}.toolbar #meta{font-size:13px;color:#555;font-weight:800;margin-bottom:6px}.cert-note{font-size:12px;font-weight:800;color:#666;margin:6px 0 16px;line-height:1.5}.toolbar label{display:block;margin-top:10px}.toolbar select{width:100%;min-height:48px;border:1px solid #bbb;border-radius:9px;background:#fff;padding:0 12px;margin:6px 0 10px;font-weight:800}.select-all-line{display:flex!important;align-items:center;gap:9px;margin:6px 0 16px!important;font-size:13px}.select-all-line input{width:18px!important;height:18px;margin:0!important}.cert-print-btn{width:100%;min-height:52px;border:1px solid #111;border-radius:10px;background:#111;color:#fff;font-weight:900;letter-spacing:.04em;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.cert-print-btn:hover{box-shadow:0 5px 14px rgba(0,0,0,.12);transform:translateY(-1px)}.cert-print-btn:active{transform:translateY(0);box-shadow:none}.list{background:#fff;border:1px solid #d7d7d7;border-radius:14px;overflow:hidden}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:13px 14px;border-bottom:1px solid #eee;align-items:center}.row:last-child{border-bottom:0}.row:hover{background:#fafafa}.row input[type=checkbox]{width:18px;height:18px}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media(max-width:720px){.wrap{padding:14px}.toolbar{padding:17px;border-radius:11px}.row{grid-template-columns:36px 62px 1fr 58px}.row>*:nth-child(4){grid-column:3/5;color:#666;font-size:12px}}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
-</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div class="cert-note">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><label>EVENT<select id="event"></select></label><label class="select-all-line"><input id="all" type="checkbox"> 전체 선택</label><button id="print" class="cert-print-btn">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css?v=20260818-round-auto-v9"><style>
+body{background:#f5f5f5}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #d7d7d7;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 16px rgba(0,0,0,.045)}.toolbar h1{margin:0 0 8px;font-size:24px;letter-spacing:-.02em}.toolbar #meta{font-size:13px;color:#555;font-weight:800;margin-bottom:6px}.cert-note{font-size:12px;font-weight:800;color:#666;margin:6px 0 16px;line-height:1.5}.bg-slot{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;border:1px solid #e1e1e1;border-radius:10px;padding:10px;margin:8px 0 14px;background:#fafafa}.bg-slot img{width:72px;height:96px;object-fit:cover;border:1px solid #ddd;background:#fff}.bg-slot b{display:block;font-size:11px;letter-spacing:.04em}.bg-slot span{display:block;font-size:11px;color:#777;margin-top:4px;line-height:1.4}.toolbar label{display:block;margin-top:10px}.toolbar select{width:100%;min-height:48px;border:1px solid #bbb;border-radius:9px;background:#fff;padding:0 12px;margin:6px 0 10px;font-weight:800}.select-all-line{display:flex!important;align-items:center;gap:9px;margin:6px 0 16px!important;font-size:13px}.select-all-line input{width:18px!important;height:18px;margin:0!important}.cert-print-btn{width:100%;min-height:52px;border:1px solid #111;border-radius:10px;background:#111;color:#fff;font-weight:900;letter-spacing:.04em;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.cert-print-btn:hover{box-shadow:0 5px 14px rgba(0,0,0,.12);transform:translateY(-1px)}.cert-print-btn:active{transform:translateY(0);box-shadow:none}.list{background:#fff;border:1px solid #d7d7d7;border-radius:14px;overflow:hidden}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:13px 14px;border-bottom:1px solid #eee;align-items:center}.row:last-child{border-bottom:0}.row:hover{background:#fafafa}.row input[type=checkbox]{width:18px;height:18px}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media(max-width:720px){.wrap{padding:14px}.toolbar{padding:17px;border-radius:11px}.row{grid-template-columns:36px 62px 1fr 58px}.row>*:nth-child(4){grid-column:3/5;color:#666;font-size:12px}}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
+</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div class="cert-note">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><div class="bg-slot"><img src="certificate-background.png" alt="Certificate background preview"><div><b>DEFAULT CERTIFICATE IMAGE</b><span>certificate-background.png 파일을 교체하면 모든 상장 출력에 동일하게 적용됩니다.</span></div></div><label>EVENT<select id="event"></select></label><label class="select-all-line"><input id="all" type="checkbox"> 전체 선택</label><button id="print" class="cert-print-btn">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue,set}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';import{aggregateFinalSkating}from'./results-engine.js';
 const db=getDatabase(initializeApp(firebaseConfig));const ref=p=>fbRef(db,competitionPath(p));const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 let results={},entries=[],meta={},submissions={},eventSettings={},finals=[],repairing=false;const sel=document.getElementById('event');
@@ -24,6 +24,14 @@ function isFinalComplete(encoded,f){
   return assigned.every(code=>!!ballots?.[code]);
 }
 function rebuildFinals(){
+  // Hard rule: no CURRENT entries = no certificates, regardless of any old saved results.
+  if(!entries.length){
+    finals=[];
+    sel.innerHTML='<option value="">ALL EVENTS</option>';
+    document.getElementById('meta').textContent=`${meta.name||competitionId} ${meta.date?'· '+meta.date:''} · 0 CERTIFICATES`;
+    render();
+    return;
+  }
   const byEventBack=new Map(),byLabelBack=new Map(),byBack=new Map();
   entries.forEach(x=>{if(!x?.backNo)return;const back=String(x.backNo),key=`${eventKeyOf(x)}__${back}`,label=`${x.event||''}__${back}`;byEventBack.set(key,x);byLabelBack.set(label,x);if(!byBack.has(back))byBack.set(back,x)});
   finals=[];
@@ -38,6 +46,15 @@ function rebuildFinals(){
 
     const eventKey=setting?.eventKey||'';
     const eventLabel=String(setting?.event||eventKey.split('||')[0]||encoded).replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
+
+    // Current entries are the source of truth.
+    // If an event has no current entries, old results/submissions must not keep certificates visible.
+    const currentEventEntries=entries.filter(x=>{
+      const k=eventKeyOf(x);
+      const label=String(x?.event||'').replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
+      return (eventKey&&k===eventKey)||(!eventKey&&label===eventLabel)||(eventLabel&&label===eventLabel);
+    });
+    if(!currentEventEntries.length)return;
     let f=results?.[encoded]?.final||null;
     let ranking=asArray(f?.ranking);
 
@@ -57,9 +74,10 @@ function rebuildFinals(){
     ranking.forEach(r=>{
       if(r?.backNo===undefined||r?.backNo===null)return;
       const back=String(r.backNo);
-      const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`)||byBack.get(back)||{};
+      const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`);
+      if(!entry)return; // deleted entry = deleted certificate row
       const place=Number(r.place??r.rank)||0;
-      finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:entry.competitor||entry.name||r.name||r.competitor||back,place});
+      finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:entry.competitor||entry.name||back,place});
     });
   });
 
@@ -71,9 +89,10 @@ function rebuildFinals(){
     ranking.forEach(r=>{
       if(r?.backNo===undefined||r?.backNo===null)return;
       const back=String(r.backNo),eventKey=f.eventKey||'',eventLabel=String(f.eventLabel||'').replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
-      const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`)||byBack.get(back)||{};
+      const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`);
+      if(!entry)return; // do not revive certificates from stale saved results
       const place=Number(r.place??r.rank)||0;
-      finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:entry.competitor||entry.name||r.name||r.competitor||back,place});
+      finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:entry.competitor||entry.name||back,place});
     });
   });
 
@@ -91,8 +110,15 @@ async function repairCompletedFinals(){
       const assigned=judgeCodes(setting?.assignedJudges);if(!assigned.length)continue;
       const ballots=submissions?.[`${encoded}_final`]||{};if(!assigned.every(code=>ballots[code]))continue;
       const eventKey=setting.eventKey||'';
-      const rankedBackNos=assigned.flatMap(code=>asArray(ballots[code]?.result).map(x=>String(x?.backNo??'')).filter(Boolean));
-      const competitors=[...new Set(rankedBackNos.length?rankedBackNos:entries.filter(x=>eventKeyOf(x)===eventKey).map(x=>String(x.backNo)).filter(Boolean))];
+      const eventLabel=String(setting?.event||eventKey.split('||')[0]||encoded).replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
+      const currentBackNos=[...new Set(entries.filter(x=>{
+        const label=String(x?.event||'').replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
+        return (eventKey&&eventKeyOf(x)===eventKey)||(eventLabel&&label===eventLabel);
+      }).map(x=>String(x.backNo||'')).filter(Boolean))];
+      if(!currentBackNos.length)continue;
+      const currentSet=new Set(currentBackNos);
+      const rankedBackNos=assigned.flatMap(code=>asArray(ballots[code]?.result).map(x=>String(x?.backNo??'')).filter(Boolean)).filter(back=>currentSet.has(back));
+      const competitors=[...new Set(rankedBackNos.length?rankedBackNos:currentBackNos)];
       if(!competitors.length)continue;
       const used=Object.fromEntries(assigned.map(code=>[code,ballots[code]]));
       const calc=aggregateFinalSkating(used,competitors);
@@ -106,5 +132,5 @@ onValue(ref('entries'),snap=>{entries=asArray(snap.val());rebuildFinals();repair
 onValue(ref('meta'),snap=>{meta=snap.val()||{};rebuildFinals()});
 onValue(ref('submissions'),snap=>{submissions=snap.val()||{};rebuildFinals();repairCompletedFinals()});
 onValue(ref('eventSettings'),snap=>{eventSettings=snap.val()||{};rebuildFinals();repairCompletedFinals()});
-const cert=r=>`<section class="cert"><img src="APDC_Certificate_Background_v2.png"><div class="cover name">${esc(r.name)}</div><div class="cover place">${r.place}${r.place===1?'ST':r.place===2?'ND':r.place===3?'RD':'TH'}</div><div class="cover event">${esc(r.event)}</div></section>`;document.getElementById('print').onclick=()=>{const rr=rows(),picked=[...document.querySelectorAll('[data-i]:checked')].map(x=>rr[Number(x.dataset.i)]).filter(Boolean);if(!picked.length)return alert('출력할 결과를 선택하세요.');document.getElementById('batch').innerHTML=picked.map(cert).join('');setTimeout(()=>window.print(),100)};
+const cert=r=>`<section class="cert"><img src="certificate-background.png"><div class="cover name">${esc(r.name)}</div><div class="cover place">${r.place}${r.place===1?'ST':r.place===2?'ND':r.place===3?'RD':'TH'}</div><div class="cover event">${esc(r.event)}</div></section>`;document.getElementById('print').onclick=()=>{const rr=rows(),picked=[...document.querySelectorAll('[data-i]:checked')].map(x=>rr[Number(x.dataset.i)]).filter(Boolean);if(!picked.length)return alert('출력할 결과를 선택하세요.');document.getElementById('batch').innerHTML=picked.map(cert).join('');setTimeout(()=>window.print(),100)};
 </script></body></html>

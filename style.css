@@ -468,3 +468,6 @@ main {
 .workflow-btn span{font-size:17px;line-height:1}.assignment-tools.single-action{grid-template-columns:1fr}
 .certificate-shortcut{margin:0 0 18px}.certificate-shortcut .workflow-btn{width:100%}
 @media(max-width:640px){.workflow-actions{grid-template-columns:1fr}.workflow-btn{min-height:50px}}
+
+/* APDC V9 round guidance */
+.round-rule-hint{font-size:10px;color:#8a8a8a;font-weight:700;letter-spacing:.02em;margin-top:3px;line-height:1.35}.round-rule-mini{font-size:10px;color:#888;font-weight:700;margin-top:4px;line-height:1.35}
