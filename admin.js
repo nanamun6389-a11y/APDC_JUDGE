@@ -479,19 +479,16 @@ function renderTimetableBuilder(){
     <div class="tt-builder-no">${r.start}<br>EVENT ${r.no}</div>
     <div class="tt-builder-main"><strong>${r.combined?'[합동] ':''}${r.event}</strong><div class="tt-builder-meta">${r.round} · ${r.entries||0} ENTRIES · ${r.danceOrder||''}</div><div class="tt-builder-backs"><b>BACK NO.</b> ${(r.backNumbers||[]).join(' · ')||'—'}</div>${r.combined&&r.sourceEvents?.length?`<div class="tt-builder-meta">SOURCE: ${r.sourceEvents.join(' + ')}</div>`:''}</div>
     <div class="tt-builder-duration">${r.durationText||''}</div>
-    <div class="tt-row-actions"><button type="button" class="light tt-setting-btn" data-tt-setting="${i}">경기 설정</button></div>
+    <div class="tt-row-actions"><button type="button" class="light tt-setting-btn" data-tt-setting="${i}">라운드 설정</button></div>
   </div>`).join(""):'<div class="entry-empty">타임테이블이 없습니다. 엔트리 완성 후 위 버튼을 눌러주세요.</div>';
   ttBuilderList.querySelectorAll('[data-tt-setting]').forEach(btn=>btn.addEventListener('click',()=>openTimetableJudgeEditor(Number(btn.dataset.ttSetting))));
 }
 const ttJudgeEditor=document.getElementById("ttJudgeEditor");
 const ttJudgeEditorTitle=document.getElementById("ttJudgeEditorTitle");
 const ttJudgeRound=document.getElementById("ttJudgeRound");
-const ttJudgeChecks=document.getElementById("ttJudgeChecks");
 const ttJudgeSaveBtn=document.getElementById("ttJudgeSaveBtn");
-const ttJudgeClearBtn=document.getElementById("ttJudgeClearBtn");
 const ttJudgeMessage=document.getElementById("ttJudgeMessage");
 let editingTimetableIndex=-1;
-if(ttJudgeChecks) ttJudgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b></span></label>`).join("");
 function timetableEventKey(row){
   const exact=EVENTS.find(e=>e.event===row.event && (!row.section||e.section===row.section));
   return exact?.eventKey || `${row.event||""}||${row.section||""}||${row.style||""}`;
@@ -501,21 +498,19 @@ async function openTimetableJudgeEditor(index){
   ttJudgeEditor.classList.remove("hidden");
   ttJudgeEditorTitle.textContent=`EVENT ${row.no} · ${row.event}`;
   ttJudgeRound.value=String(row.round||"Final").toLowerCase().startsWith("quarter")?"quarter":String(row.round||"Final").toLowerCase().startsWith("semi")?"semi":"final";
-  const key=timetableEventKey(row); const snap=await get(ref(db,`eventSettings/${encodeKey(key)}`)); const saved=snap.val()||{};
-  const assigned=saved.assignedJudges||row.assignedJudges||[];
-  ttJudgeChecks.querySelectorAll("input").forEach(c=>c.checked=assigned.includes(c.value));
   ttJudgeMessage.textContent=""; ttJudgeEditor.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
-ttJudgeClearBtn?.addEventListener("click",()=>ttJudgeChecks.querySelectorAll("input").forEach(c=>c.checked=false));
 ttJudgeSaveBtn?.addEventListener("click",async()=>{
   const row=timetableRows[editingTimetableIndex]; if(!row)return;
-  const assigned=[...ttJudgeChecks.querySelectorAll("input:checked")].map(c=>c.value);
   const roundValue=ttJudgeRound.value; const roundLabel=roundValue==="quarter"?"Quarter Final":roundValue==="semi"?"Semi Final":"Final";
   const key=timetableEventKey(row);
-  await set(ref(db,`eventSettings/${encodeKey(key)}`),{eventKey:key,eventNumber:String(row.no||""),event:row.event||"",section:row.section||"",style:row.style||"",round:roundValue,assignedJudges:assigned,updatedAt:Date.now()});
-  timetableRows[editingTimetableIndex]={...row,round:roundLabel,assignedJudges:assigned};
+  const snap=await get(ref(db,`eventSettings/${encodeKey(key)}`));
+  const old=snap.val()||{};
+  // Timetable edits only the round. Judge assignment is owned exclusively by the JUDGING tab.
+  await set(ref(db,`eventSettings/${encodeKey(key)}`),{...old,eventKey:key,eventNumber:String(row.no||""),event:row.event||"",section:row.section||"",style:row.style||"",round:roundValue,updatedAt:Date.now()});
+  timetableRows[editingTimetableIndex]={...row,round:roundLabel};
   await saveTimetableRows(); renderTimetableBuilder();
-  ttJudgeMessage.textContent=`자동저장 완료 · ${assigned.length} JUDGES`;
+  ttJudgeMessage.textContent=`라운드 저장 완료 · ${roundLabel}`;
 });
 
 function selectedTimetableIndexes(){return [...ttBuilderList.querySelectorAll('[data-tt-select]:checked')].map(x=>Number(x.dataset.ttSelect)).filter(Number.isInteger).sort((a,b)=>a-b);}

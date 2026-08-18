@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
@@ -129,7 +132,8 @@
   <div id="ttBuilderList" class="tt-builder-list"></div>
   <div id="ttJudgeEditor" class="tt-judge-editor hidden">
     <div class="small-label">SELECTED EVENT SETTING</div>
-    <h3 id="ttJudgeEditorTitle">JUDGE SETUP</h3>
+    <h3 id="ttJudgeEditorTitle">ROUND SETTING</h3>
+    <p class="muted">라운드만 변경합니다. 심사위원 배정은 JUDGING 메뉴에서 통합 관리합니다.</p>
     <label>ROUND
       <select id="ttJudgeRound">
         <option value="quarter">Quarter Final</option>
@@ -137,11 +141,8 @@
         <option value="final">Final</option>
       </select>
     </label>
-    <div class="small-label judge-label">ASSIGNED JUDGES</div>
-    <div id="ttJudgeChecks" class="judge-check-grid"></div>
-    <div class="assignment-tools">
-      <button id="ttJudgeClearBtn" class="light" type="button">CLEAR ALL</button>
-      <button id="ttJudgeSaveBtn" class="dark" type="button">SAVE JUDGE SETTING</button>
+    <div class="assignment-tools single-action">
+      <button id="ttJudgeSaveBtn" class="workflow-btn primary" type="button">SAVE ROUND</button>
     </div>
     <div id="ttJudgeMessage" class="message"></div>
   </div>
@@ -213,7 +214,7 @@
   <div class="small-label">COMPETITION RESULTS</div><h2>RESULTS</h2>
   <div class="entry-player-grid"><label>EVENT<select id="resultEvent"></select></label><label>ROUND<select id="resultRound"><option value="quarter">Quarter Final</option><option value="semi">Semi Final</option><option value="final">Final</option></select></label></div>
   <div id="resultSubmissionStatus" class="message"></div>
-  <div class="setup-actions"><button id="calculateResultBtn" class="dark" type="button">CALCULATE / SAVE RESULT</button><a id="certificateLiveLink" class="button light" href="certificate-live.html">CERTIFICATE PRINT</a></div>
+  <div class="workflow-actions"><button id="calculateResultBtn" class="workflow-btn primary" type="button">CALCULATE / SAVE RESULT</button><a id="certificateLiveLink" class="workflow-btn secondary" href="certificate-live.html">CERTIFICATE PRINT <span aria-hidden="true">→</span></a></div>
   <div id="resultOutput" style="margin-top:18px"></div>
 </section>
 <section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
@@ -234,7 +235,7 @@
 <section class="system-panel admin-tab-panel hidden" data-admin-panel="system">
   <div class="small-label">SYSTEM</div>
   <h2>SYSTEM STATUS</h2>
-  <div style="margin:0 0 18px"><a href="certificate-live.html" class="dark" style="display:block;text-align:center;text-decoration:none;padding:14px">OPEN LIVE CERTIFICATE PRINT</a></div>
+  <div class="certificate-shortcut"><a href="certificate-live.html" class="workflow-btn primary">OPEN LIVE CERTIFICATE PRINT <span aria-hidden="true">→</span></a></div>
   <div class="system-status-grid">
     <div><span>Firebase</span><strong>Connected</strong></div>
     <div><span>Auto Advance</span><strong>Ready</strong></div>
@@ -246,6 +247,22 @@
 
 </main>
 <script src="i18n.js?v=v11-workflow"></script>
-<script type="module" src="admin.js?v=20260818-code-only-cert-auto-v4"></script>
+
+<script>
+(function(){
+  function activateAdminTab(tab){
+    document.querySelectorAll('[data-admin-tab]').forEach(function(b){b.classList.toggle('active', b.dataset.adminTab===tab);});
+    document.querySelectorAll('[data-admin-panel]').forEach(function(p){p.classList.toggle('hidden', p.dataset.adminPanel!==tab);});
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('[data-admin-tab]').forEach(function(b){
+      b.addEventListener('click', function(){activateAdminTab(b.dataset.adminTab);});
+    });
+    var q=new URLSearchParams(location.search).get('tab');
+    if(q) activateAdminTab(q);
+  });
+})();
+</script>
+<script type="module" src="admin.js?v=20260818-ui-sync-v8"></script>
 </body>
 </html>
