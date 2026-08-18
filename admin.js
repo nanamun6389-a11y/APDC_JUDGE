@@ -11,8 +11,8 @@ let customEvents={};
 // EVENTS는 이 대회에서 실제로 선택/생성한 이벤트 + 이미 저장된 엔트리에서 복구한 이벤트만 사용합니다.
 let EVENTS=[];
 
-const DEFAULT_JUDGE_CODES=["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"];
-let JUDGES=DEFAULT_JUDGE_CODES.map(code=>({code}));
+const DEFAULT_JUDGE_CODES=[];
+let JUDGES=[];
 
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
@@ -951,7 +951,6 @@ judgeCodeCancelBtn?.addEventListener('click',()=>{editingJudgeCode='';judgeCodeI
 onValue(ref(db,'judgeCodes'),snap=>{
   const value=snap.val();
   let codes=value&&typeof value==='object'?Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k])=>normalizeJudgeCode(k)).filter(validJudgeCode):[];
-  if(!codes.length) codes=DEFAULT_JUDGE_CODES.slice();
   JUDGES=[...new Set(codes)].sort(judgeSort).map(code=>({code}));
   refreshJudgeDependentUI();
 });
