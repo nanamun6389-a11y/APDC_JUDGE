@@ -402,9 +402,16 @@ function danceCodes(eventName){
   return ["R"];
 }
 function roundPlan(count){
-  if(count>=14) return ["Quarter Final","Semi Final","Final"];
-  if(count>=8) return ["Semi Final","Final"];
+  // APDC round rule: 15+ start at Quarter Final, 7-14 start at Semi Final, 1-6 go straight to Final.
+  if(count>=15) return ["Quarter Final","Semi Final","Final"];
+  if(count>=7) return ["Semi Final","Final"];
   return ["Final"];
+}
+function roundOrder(round){return ({"Quarter Final":0,"Semi Final":1,"Final":2})[round]??9;}
+function autoTimetableRow(sample,ents,round,template={}){
+  const backs=[...new Set(ents.map(x=>String(x.backNo).trim()).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
+  const dances=danceCodes(sample.event);
+  return {...template,no:"",start:"",round,style:sample.style||"",section:sample.section||"",division:sample.division||"",event:sample.event||"",entries:String(backs.length),danceOrder:dances.join(" → "),durationSeconds:/formation/i.test(sample.event)?600:Math.max(80,dances.length*80),durationText:"",sourceEvents:[sample.event],backNumbers:backs,note:template.note||"AUTO FROM ENTRIES",combined:false};
 }
 function secToClock(sec){
   sec=Math.max(0,Math.round(sec)); const h=Math.floor(sec/3600)%24,m=Math.floor(sec%3600/60),ss=sec%60;
@@ -421,27 +428,55 @@ async function syncTimetableWithEntries(){
   if(!timetableRows.length)return;
   const entries=Object.values(competitionEntries||{}).filter(x=>x&&x.backNo&&x.competitor&&x.event);
   const byEvent=new Map(); entries.forEach(x=>{const k=eventIdentity(x);if(!byEvent.has(k))byEvent.set(k,[]);byEvent.get(k).push(x)});
-  const covered=new Set(); const next=[];
-  for(const row of timetableRows){
+  const original=timetableRows.slice();
+  const handled=new Set();
+  const next=[];
+
+  // Keep the existing event order, but rebuild each normal event's rounds from the CURRENT entry count.
+  // This means crossing 6/7 or 14/15 entries automatically creates/removes the required rounds.
+  for(let i=0;i<original.length;i++){
+    const row=original[i];
     if(row.combined&&row.sourceEvents?.length){
-      const sourceEntries=entries.filter(x=>row.sourceEvents.includes(x.event));
-      if(!sourceEntries.length)continue;
+      const rowRound=String(row.round||"Final");
+      const eligibleNames=[];
+      for(const name of row.sourceEvents){
+        const groups=[...byEvent.entries()].filter(([,es])=>es[0]?.event===name);
+        if(groups.some(([,es])=>roundPlan(new Set(es.map(x=>String(x.backNo))).size).includes(rowRound))) eligibleNames.push(name);
+      }
+      if(!eligibleNames.length)continue;
+      const sourceEntries=entries.filter(x=>eligibleNames.includes(x.event));
       const backs=[...new Set(sourceEntries.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
-      sourceEntries.forEach(x=>covered.add(eventIdentity(x)));
-      next.push({...row,entries:String(sourceEntries.length),backNumbers:backs}); continue;
+      sourceEntries.forEach(x=>handled.add(`${eventIdentity(x)}@@${rowRound}`));
+      const stillCombined=eligibleNames.length>1;
+      next.push({...row,event:eligibleNames.join(" + "),sourceEvents:eligibleNames,combined:stillCombined,entries:String(backs.length),backNumbers:backs});
+      continue;
     }
-    const key=eventIdentity(row), ents=byEvent.get(key)||[]; if(!ents.length)continue; covered.add(key);
-    const backs=[...new Set(ents.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
-    next.push({...row,entries:String(ents.length),backNumbers:backs});
+    const key=eventIdentity(row);
+    if(handled.has(`${key}@@GROUP`))continue;
+    const ents=byEvent.get(key)||[];
+    if(!ents.length){handled.add(`${key}@@GROUP`);continue;}
+    const plan=roundPlan(new Set(ents.map(x=>String(x.backNo))).size);
+    const templates=original.filter(r=>!r.combined&&eventIdentity(r)===key);
+    for(const round of plan){
+      const template=templates.find(r=>String(r.round)===round)||templates[0]||row;
+      next.push(autoTimetableRow(ents[0],ents,round,{...template,sourceEventNo:template.sourceEventNo||row.sourceEventNo||"",sourceEventNos:template.sourceEventNos||row.sourceEventNos||[]}));
+      handled.add(`${key}@@${round}`);
+    }
+    handled.add(`${key}@@GROUP`);
   }
-  // Any event newly used in ENTRIES appears automatically in the timetable.
+
+  // Newly added events, or rounds not represented because their only prior row was part of a combined floor.
   for(const [key,ents] of byEvent){
-    if(covered.has(key))continue; const sample=ents[0], backs=[...new Set(ents.map(x=>String(x.backNo)).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
-    const dances=danceCodes(sample.event), rounds=roundPlan(ents.length);
-    for(const round of rounds)next.push({no:"",start:"",round,style:sample.style||"",section:sample.section||"",division:sample.division||"",event:sample.event||"",entries:String(ents.length),danceOrder:dances.join(" → "),durationSeconds:/formation/i.test(sample.event)?600:Math.max(80,dances.length*80),durationText:"",sourceEventNo:"",sourceEventNos:[],sourceEvents:[sample.event],backNumbers:backs,note:"AUTO FROM ENTRIES",combined:false});
+    const sample=ents[0], plan=roundPlan(new Set(ents.map(x=>String(x.backNo))).size);
+    for(const round of plan){
+      if(handled.has(`${key}@@${round}`))continue;
+      const sourceNo=String(sample.eventNo||EVENTS.find(z=>eventIdentity(z)===key)?.eventNumber||"");
+      next.push(autoTimetableRow(sample,ents,round,{sourceEventNo:sourceNo,sourceEventNos:sourceNo?[sourceNo]:[]}));
+      handled.add(`${key}@@${round}`);
+    }
   }
   timetableRows=renumberAndRetimestamp(next); await saveTimetableRows(); renderTimetableBuilder();
-  if(ttBuilderMessage)ttBuilderMessage.textContent="엔트리 변경사항이 타임테이블에 자동 반영되었습니다.";
+  if(ttBuilderMessage)ttBuilderMessage.textContent="엔트리 수에 맞춰 Quarter / Semi / Final이 자동 반영되었습니다.";
 }
 async function buildTimetableFromEntries(){
   const rows=Object.values(competitionEntries||{}).filter(x=>x&&x.backNo&&x.competitor&&x.event);
@@ -456,13 +491,13 @@ async function buildTimetableFromEntries(){
     const evDef=EVENTS.find(z=>eventIdentity(z)===key)||{};
     const sourceNo=String(setting.eventNumber||sample.eventNo||evDef.eventNumber||EVENTS.findIndex(z=>eventIdentity(z)===key)+1);
     const backs=[...new Set(ents.map(x=>String(x.backNo).trim()).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
-    const dances=danceCodes(sample.event); const rounds=roundPlan(ents.length);
+    const dances=danceCodes(sample.event); const rounds=roundPlan(backs.length);
     for(const round of rounds){
       const durationSeconds=/formation/i.test(sample.event)?600:Math.max(80,dances.length*80);
       built.push({no:"",start:"",round,style:sample.style||"",section:sample.section||"",division:sample.division||"",event:sample.event||"",entries:String(ents.length),danceOrder:dances.join(" → "),durationSeconds,durationText:"",sourceEventNo:sourceNo,sourceEventNos:[sourceNo],sourceEvents:[sample.event],backNumbers:backs,note:"",combined:false});
     }
   }
-  built.sort((a,b)=>Number(a.sourceEventNo)-Number(b.sourceEventNo)||({"Quarter Final":0,"Semi Final":1,"Final":2}[a.round]??9)-({"Quarter Final":0,"Semi Final":1,"Final":2}[b.round]??9));
+  built.sort((a,b)=>Number(a.sourceEventNo)-Number(b.sourceEventNo)||roundOrder(a.round)-roundOrder(b.round));
   timetableRows=renumberAndRetimestamp(built);
   await saveTimetableRows();
   ttBuilderMessage.textContent=`타임테이블 생성 완료 · ${timetableRows.length} 경기`;
@@ -518,6 +553,28 @@ combineTimetableBtn?.addEventListener("click",async()=>{
   const idx=selectedTimetableIndexes(); if(idx.length<2){ttBuilderMessage.textContent="합동할 경기를 2개 이상 선택하세요.";return;}
   const rows=idx.map(i=>timetableRows[i]); const rounds=[...new Set(rows.map(r=>r.round))];
   if(rounds.length>1&&!confirm("서로 다른 라운드가 선택되었습니다. 그래도 합동할까요?"))return;
+
+  // A competitor cannot dance two source events at the same time.
+  // Block the combine before anything is written when a BACK NO. appears in 2+ selected events.
+  const backOwners=new Map();
+  rows.forEach((r,rowIndex)=>{
+    const rowBacks=[...new Set((r.backNumbers||[]).map(x=>String(x).trim()).filter(Boolean))];
+    rowBacks.forEach(back=>{
+      if(!backOwners.has(back))backOwners.set(back,new Set());
+      backOwners.get(back).add(rowIndex);
+    });
+  });
+  const duplicateBacks=[...backOwners.entries()]
+    .filter(([,owners])=>owners.size>1)
+    .map(([back])=>back)
+    .sort((a,b)=>Number(a)-Number(b)||String(a).localeCompare(String(b)));
+  if(duplicateBacks.length){
+    const msg=`합동할 수 없습니다.\n선택한 이벤트에 같은 백넘버가 있습니다.\n\n중복 BACK NO.: ${duplicateBacks.join(' · ')}\n\n해당 선수가 동시에 두 경기에 포함되므로 다른 이벤트를 선택해 주세요.`;
+    alert(msg);
+    if(ttBuilderMessage)ttBuilderMessage.textContent=`합동 불가 · 중복 BACK NO. ${duplicateBacks.join(' · ')}`;
+    return;
+  }
+
   const allBacks=[...new Set(rows.flatMap(r=>r.backNumbers||[]).map(String).filter(Boolean))].sort((a,b)=>Number(a)-Number(b));
   const sourceEventNos=[...new Set(rows.flatMap(r=>r.sourceEventNos||[r.sourceEventNo]).map(String).filter(Boolean))];
   const sourceEvents=[...new Set(rows.flatMap(r=>r.sourceEvents||[r.event]).filter(Boolean))];
@@ -831,7 +888,7 @@ if(judgeAllocationChecks) judgeAllocationChecks.innerHTML=JUDGES.map(j=>`<label 
 async function renderJudgeAllocation(){
   if(!judgeAllocationList)return; const list=judgableEventsFromTimetable();
   if(!list.length){judgeAllocationList.innerHTML='<div class="entry-empty">먼저 타임테이블을 만들어 주세요.</div>';return;}
-  const rows=[]; for(const e of list){const st=await getEventSetting(e.eventKey);const assigned=st.assignedJudges||[];rows.push(`<div class="tt-builder-row"><div class="tt-builder-no">EVENT ${e.eventNumber||'—'}</div><div class="tt-builder-main"><strong>${e.event}</strong><div class="judge-allocation-summary">${assigned.length?assigned.join(' · '):'NO JUDGES ASSIGNED'}${e.combined?' · COMBINED FLOOR':''}</div></div><div class="tt-row-actions"><button type="button" class="light" data-alloc="${encodeURIComponent(e.eventKey)}">SET JUDGES</button></div></div>`)}
+  const rows=[]; for(const e of list){const st=await getEventSetting(e.eventKey);const assigned=st.assignedJudges||[];const count=eventCompetitors(e.eventKey).length;const plan=roundPlan(count).map(x=>x==='Quarter Final'?'QF':x==='Semi Final'?'SF':'F').join(' → ');const rule=count>=15?'QF PICK 12 · SF PICK 6 · FINAL 6':count>=7?'SF PICK 6 · FINAL 6':'FINAL ONLY';rows.push(`<div class="tt-builder-row"><div class="tt-builder-no">EVENT ${e.eventNumber||'—'}</div><div class="tt-builder-main"><strong>${e.event}</strong><div class="judge-allocation-summary">${assigned.length?assigned.join(' · '):'NO JUDGES ASSIGNED'}${e.combined?' · COMBINED FLOOR':''}</div><div class="round-rule-mini">${count} ENTRIES · ${plan} · ${rule}</div></div><div class="tt-row-actions"><button type="button" class="light" data-alloc="${encodeURIComponent(e.eventKey)}">SET JUDGES</button></div></div>`)}
   judgeAllocationList.innerHTML=rows.join('');
   judgeAllocationList.querySelectorAll('[data-alloc]').forEach(b=>b.onclick=async()=>{allocationKey=decodeURIComponent(b.dataset.alloc);const e=list.find(x=>x.eventKey===allocationKey);const st=await getEventSetting(allocationKey);judgeAllocationTitle.textContent=`EVENT ${e?.eventNumber||'—'} · ${e?.event||''}`;judgeAllocationChecks.querySelectorAll('input').forEach(c=>c.checked=(st.assignedJudges||[]).includes(c.value));judgeAllocationEditor.classList.remove('hidden');judgeAllocationMessage.textContent='';judgeAllocationEditor.scrollIntoView({behavior:'smooth',block:'nearest'});});
 }
