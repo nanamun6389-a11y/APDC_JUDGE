@@ -6,8 +6,9 @@ import { competitionPath, competitionId, isLegacyCompetition } from "./competiti
 import { aggregateRecall, aggregateFinalSkating } from "./results-engine.js";
 const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
-const JUDGES = Object.fromEntries(["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"].map(code=>[code,code]));
-const JUDGE_LIST = Object.keys(JUDGES).map(code=>({code}));
+const DEFAULT_JUDGE_CODES=["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"];
+let JUDGES=Object.fromEntries(DEFAULT_JUDGE_CODES.map(code=>[code,code]));
+let JUDGE_LIST=Object.keys(JUDGES).map(code=>({code}));
 function judgeCodes(value){
   if(Array.isArray(value)) return value.map(String).filter(Boolean);
   if(value && typeof value === "object") return Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k,v])=>typeof v==="string"&&/^[TW]\d+$/i.test(v)?v:k).map(String).filter(Boolean);
@@ -514,6 +515,21 @@ function populateEventsForJudge() {
   }
 }
 
+
+onValue(ref(db,"judgeCodes"),snap=>{
+  const value=snap.val();
+  let codes=value&&typeof value==="object"?Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k])=>String(k).trim().toUpperCase()).filter(c=>/^[TW][A-Z0-9_-]{0,10}$/.test(c)):[];
+  if(!codes.length) codes=DEFAULT_JUDGE_CODES.slice();
+  codes=[...new Set(codes)].sort(natural);
+  JUDGES=Object.fromEntries(codes.map(code=>[code,code]));
+  JUDGE_LIST=codes.map(code=>({code}));
+  renderJudgeButtons();
+  if(currentJudge&&!JUDGES[currentJudge]){
+    currentJudge="";
+    scoreScreen.classList.add("hidden");
+    judgeGate.classList.remove("hidden");
+  }
+});
 
 onValue(ref(db,"results"),snap=>{resultsCache=snap.val()||{};if(currentJudge){configureRoundSelect(roundSelect.value);render();refreshEventOptionStatuses();}});
 

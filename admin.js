@@ -11,7 +11,8 @@ let customEvents={};
 // EVENTS는 이 대회에서 실제로 선택/생성한 이벤트 + 이미 저장된 엔트리에서 복구한 이벤트만 사용합니다.
 let EVENTS=[];
 
-const JUDGES=["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"].map(code=>({code}));
+const DEFAULT_JUDGE_CODES=["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"];
+let JUDGES=DEFAULT_JUDGE_CODES.map(code=>({code}));
 
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
@@ -856,7 +857,7 @@ autoAdvanceToggle.onchange=()=>{
   localStorage.setItem("apdcAutoAdvance",autoAdvanceToggle.checked?"on":"off");
   autoAdvanceStatus.textContent=autoAdvanceToggle.checked?"AUTO ADVANCE ON":"AUTO ADVANCE OFF";
 };
-autoAdvanceToggle.checked=localStorage.getItem("apdcAutoAdvance")!=="off";
+autoAdvanceToggle.checked=false; autoAdvanceToggle.disabled=true; autoAdvanceStatus.textContent="AUTO FLOW IS CONTROLLED BY DASHBOARD";
 
 loadSetup();listen();
 
@@ -877,6 +878,83 @@ const initialTab=new URL(location.href).searchParams.get("tab");
 if(initialTab && document.querySelector(`[data-admin-tab="${initialTab}"]`)){document.querySelector(`[data-admin-tab="${initialTab}"]`)?.click();}
 else{document.querySelector('[data-admin-tab="entries"]')?.click();}
 
+
+
+// ===== V16 JUDGE CODE MANAGEMENT =====
+const judgeCodeInput=document.getElementById('judgeCodeInput');
+const judgeCodeSaveBtn=document.getElementById('judgeCodeSaveBtn');
+const judgeCodeCancelBtn=document.getElementById('judgeCodeCancelBtn');
+const judgeCodeMessage=document.getElementById('judgeCodeMessage');
+const judgeCodeList=document.getElementById('judgeCodeList');
+let editingJudgeCode='';
+const judgeSort=(a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true,sensitivity:'base'});
+function normalizeJudgeCode(v){return String(v||'').trim().toUpperCase().replace(/\s+/g,'');}
+function validJudgeCode(v){return /^[TW][A-Z0-9_-]{0,10}$/.test(v);}
+function renderJudgeCodeList(){
+  if(!judgeCodeList)return;
+  const codes=JUDGES.map(j=>j.code).sort(judgeSort);
+  judgeCodeList.innerHTML=codes.length?codes.map(code=>`<div class="custom-event-row"><div><strong>${code}</strong><div class="muted">JUDGE CODE</div></div><div class="tt-row-actions"><button type="button" class="light" data-judge-edit="${code}">EDIT</button><button type="button" class="danger" data-judge-delete="${code}">DELETE</button></div></div>`).join(''):'<div class="entry-empty">NO JUDGES</div>';
+  judgeCodeList.querySelectorAll('[data-judge-edit]').forEach(b=>b.onclick=()=>{editingJudgeCode=b.dataset.judgeEdit;judgeCodeInput.value=editingJudgeCode;judgeCodeSaveBtn.textContent='SAVE CHANGE';judgeCodeCancelBtn.classList.remove('hidden');judgeCodeInput.focus();});
+  judgeCodeList.querySelectorAll('[data-judge-delete]').forEach(b=>b.onclick=()=>deleteJudgeCode(b.dataset.judgeDelete));
+}
+function refreshJudgeDependentUI(){
+  if(judgeChecks) judgeChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span>${j.code}</span></label>`).join('');
+  if(judgeAllocationChecks) judgeAllocationChecks.innerHTML=JUDGES.map(j=>`<label class="judge-check"><input type="checkbox" value="${j.code}"><span><b>${j.code}</b></span></label>`).join('');
+  if(typeof renderJudgeAllocation==='function') renderJudgeAllocation().catch(console.error);
+  renderJudgeCodeList();
+}
+async function saveJudgeCodes(codes){
+  const clean=[...new Set(codes.map(normalizeJudgeCode).filter(validJudgeCode))].sort(judgeSort);
+  await set(ref(db,'judgeCodes'),Object.fromEntries(clean.map(c=>[c,true])));
+}
+async function replaceJudgeInAssignments(oldCode,newCode){
+  const snap=await get(ref(db,'eventSettings')); const all=snap.val()||{};
+  await Promise.all(Object.entries(all).map(async([k,st])=>{
+    const assigned=Array.isArray(st?.assignedJudges)?st.assignedJudges:[];
+    if(!assigned.includes(oldCode))return;
+    const next=[...new Set(assigned.map(c=>c===oldCode?newCode:c).filter(Boolean))];
+    await set(ref(db,`eventSettings/${k}`),{...st,assignedJudges:next,updatedAt:Date.now()});
+  }));
+}
+async function removeJudgeFromAssignments(code){
+  const snap=await get(ref(db,'eventSettings')); const all=snap.val()||{};
+  await Promise.all(Object.entries(all).map(async([k,st])=>{
+    const assigned=Array.isArray(st?.assignedJudges)?st.assignedJudges:[];
+    if(!assigned.includes(code))return;
+    await set(ref(db,`eventSettings/${k}`),{...st,assignedJudges:assigned.filter(c=>c!==code),updatedAt:Date.now()});
+  }));
+}
+async function deleteJudgeCode(code){
+  if(!confirm(`${code} 심사위원 코드를 삭제할까요?\n배정된 이벤트에서도 자동으로 제거됩니다.`))return;
+  await removeJudgeFromAssignments(code);
+  await saveJudgeCodes(JUDGES.map(j=>j.code).filter(c=>c!==code));
+  judgeCodeMessage.textContent=`${code} 삭제 완료`;
+  if(editingJudgeCode===code){editingJudgeCode='';judgeCodeInput.value='';judgeCodeSaveBtn.textContent='+ ADD JUDGE';judgeCodeCancelBtn.classList.add('hidden');}
+}
+judgeCodeSaveBtn?.addEventListener('click',async()=>{
+  const code=normalizeJudgeCode(judgeCodeInput.value);
+  if(!validJudgeCode(code)){judgeCodeMessage.textContent='T 또는 W로 시작하는 코드만 입력하세요. 예: T1, W3';return;}
+  const current=JUDGES.map(j=>j.code);
+  if(editingJudgeCode){
+    if(code!==editingJudgeCode && current.includes(code)){judgeCodeMessage.textContent='이미 사용 중인 코드입니다.';return;}
+    if(code!==editingJudgeCode) await replaceJudgeInAssignments(editingJudgeCode,code);
+    await saveJudgeCodes(current.map(c=>c===editingJudgeCode?code:c));
+    judgeCodeMessage.textContent=`${editingJudgeCode} → ${code} 수정 완료`;
+  }else{
+    if(current.includes(code)){judgeCodeMessage.textContent='이미 사용 중인 코드입니다.';return;}
+    await saveJudgeCodes([...current,code]);
+    judgeCodeMessage.textContent=`${code} 추가 완료`;
+  }
+  editingJudgeCode='';judgeCodeInput.value='';judgeCodeSaveBtn.textContent='+ ADD JUDGE';judgeCodeCancelBtn.classList.add('hidden');
+});
+judgeCodeCancelBtn?.addEventListener('click',()=>{editingJudgeCode='';judgeCodeInput.value='';judgeCodeSaveBtn.textContent='+ ADD JUDGE';judgeCodeCancelBtn.classList.add('hidden');judgeCodeMessage.textContent='';});
+onValue(ref(db,'judgeCodes'),snap=>{
+  const value=snap.val();
+  let codes=value&&typeof value==='object'?Object.entries(value).filter(([,v])=>v!==false&&v!=null).map(([k])=>normalizeJudgeCode(k)).filter(validJudgeCode):[];
+  if(!codes.length) codes=DEFAULT_JUDGE_CODES.slice();
+  JUDGES=[...new Set(codes)].sort(judgeSort).map(code=>({code}));
+  refreshJudgeDependentUI();
+});
 
 // ===== V11 SIMPLE JUDGING -> RESULTS -> CERTIFICATES =====
 import { aggregateRecall, aggregateFinalSkating } from './results-engine.js';
