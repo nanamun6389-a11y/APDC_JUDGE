@@ -127,38 +127,30 @@
   <div id="ttBuilderMessage" class="message"></div>
   <div class="tt-builder-note">합동경기는 같은 라운드끼리 선택하는 것을 권장합니다. 합동 후에도 각 원래 경기의 선수 백넘버가 모두 유지됩니다.</div>
   <div id="ttBuilderList" class="tt-builder-list"></div>
+  <div id="ttJudgeEditor" class="tt-judge-editor hidden">
+    <div class="small-label">SELECTED EVENT SETTING</div>
+    <h3 id="ttJudgeEditorTitle">JUDGE SETUP</h3>
+    <label>ROUND
+      <select id="ttJudgeRound">
+        <option value="quarter">Quarter Final</option>
+        <option value="semi">Semi Final</option>
+        <option value="final">Final</option>
+      </select>
+    </label>
+    <div class="small-label judge-label">ASSIGNED JUDGES</div>
+    <div id="ttJudgeChecks" class="judge-check-grid"></div>
+    <div class="assignment-tools">
+      <button id="ttJudgeClearBtn" class="light" type="button">CLEAR ALL</button>
+      <button id="ttJudgeSaveBtn" class="dark" type="button">SAVE JUDGE SETTING</button>
+    </div>
+    <div id="ttJudgeMessage" class="message"></div>
+  </div>
   <div class="search-publish-box">
     <div class="small-label">FINAL PUBLISH</div>
     <h3>SEARCH에 새로운 시합 송출</h3>
     <p class="muted">엔트리와 타임테이블을 모두 확인한 뒤 마지막에 누르세요. 이 버튼을 누르기 전에는 기존 SEARCH 데이터는 바뀌지 않습니다.</p>
     <button id="publishSearchBtn" class="dark" type="button">SEARCH에 새로운 시합 송출</button>
     <div id="publishSearchMessage" class="message"></div>
-  </div>
-</section>
-
-<section class="judging-manager admin-tab-panel hidden" data-admin-panel="judging">
-  <div class="small-label">JUDGE ASSIGNMENT</div>
-  <h2>JUDGING</h2>
-  <p class="muted">타임테이블 EVENT 번호를 선택한 뒤 심사위원을 체크하세요. 체크/해제 즉시 저장되며, TIMETABLE에는 코드만 간단히 표시됩니다.</p>
-  <div class="entry-player-grid">
-    <label>EVENT NO. / EVENT
-      <select id="judgeAllocationEventSelect"></select>
-    </label>
-  </div>
-  <div id="judgeAllocationTitle" class="judge-allocation-title">SELECT EVENT</div>
-  <div class="small-label judge-label">ASSIGNED JUDGES</div>
-  <div id="judgeAllocationChecks" class="judge-check-grid"></div>
-  <div class="assignment-tools">
-    <button id="judgeAllocationClear" class="light" type="button">CLEAR ALL</button>
-  </div>
-  <div id="judgeAllocationMessage" class="message">체크하면 바로 저장됩니다.</div>
-  <div class="judge-code-manager" style="margin-top:26px;border-top:1px solid #ddd;padding-top:20px">
-    <div class="small-label">JUDGE CODE MANAGEMENT</div>
-    <h3>심사 코드 관리</h3>
-    <p class="muted">심사 화면에는 코드만 표시됩니다. 코드를 추가·수정·삭제하면 배부 목록과 심사 페이지에 즉시 반영됩니다.</p>
-    <div class="entry-player-grid"><label>JUDGE CODE<input id="judgeCodeInput" type="text" placeholder="T1 / W1 / A1" maxlength="12" autocomplete="off"></label></div>
-    <div class="entry-save-actions"><button id="judgeCodeSaveBtn" type="button">+ CODE ADD</button><button id="judgeCodeCancelBtn" class="light hidden" type="button">CANCEL EDIT</button></div>
-    <div id="judgeCodeMessage" class="message"></div><div id="judgeCodeList" class="custom-event-list"></div>
   </div>
 </section>
 
@@ -205,12 +197,6 @@
   <div id="autoAdvanceStatus" class="message">READY</div>
 </section>
 
-<section class="admin-tab-panel hidden" data-admin-panel="results" style="border:1px solid #ccc;padding:20px;background:#fff">
-  <div class="small-label">RESULT WORKFLOW</div><h2>RESULTS</h2>
-  <p class="muted">심사가 완료된 이벤트는 EVENT 번호 순서대로 RESULT 페이지에서 바로 확인할 수 있습니다. FINAL 결과는 2027 상장 출력 페이지와 자동 연결됩니다.</p>
-  <div class="entry-save-actions"><a id="liveResultsAdminLink" class="dark" href="live-results.html" style="display:inline-block;text-decoration:none;padding:13px 16px">OPEN LIVE RESULTS</a><a id="certificateAdminLink" class="light" href="certificate-live.html" style="display:inline-block;text-decoration:none;padding:13px 16px">2027 CERTIFICATE PRINT</a></div>
-</section>
-
 <section class="sponsor-admin-card admin-tab-panel hidden" data-admin-panel="sponsor"><div class="small-label">BROADCAST PARTNERS</div><h2>SPONSOR LOGOS</h2><p>Add a direct image URL for each sponsor logo.</p>
 <label>SPONSOR NAME<input id="sponsorNameInput" type="text" placeholder="Sponsor name"></label>
 <label>LOGO IMAGE URL<input id="sponsorUrlInput" type="url" placeholder="https://.../logo.png"></label>
@@ -244,6 +230,6 @@
 
 </main>
 <script src="i18n.js?v=v11-workflow"></script>
-<script type="module" src="admin.js?v=v11-workflow"></script>
+<script type="module" src="admin.js?v=20260818-code-only-cert-auto-v4"></script>
 </body>
 </html>

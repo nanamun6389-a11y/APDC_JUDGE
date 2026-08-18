@@ -3,10 +3,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebas
 import { getDatabase, ref as firebaseRef, set, get, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 import { firebaseConfig } from "./firebase-config.js";
 import { competitionPath, competitionId, isLegacyCompetition } from "./competition-context.js";
+import { aggregateRecall, aggregateFinalSkating } from "./results-engine.js";
 const ref=(db,path)=>firebaseRef(db, path===".info/connected"?path:competitionPath(path));
 
-const JUDGES = {"T1": "Raymond KIM", "T2": "Lorencia", "T3": "Marcus", "T4": "Crystal", "T5": "Tomohiro", "T6": "Annie Oo", "T7": "Nancy Chang", "T8": "Max Yim", "W1": "이종률", "W2": "김도영", "W3": "엄혜리", "W4": "구채림", "W5": "고재호", "W6": "임채성", "W7": "은일", "W8": "블라디", "W9": "이세영"};
-const JUDGE_LIST = [{"code": "T1", "name": "Raymond KIM"}, {"code": "T2", "name": "Lorencia"}, {"code": "T3", "name": "Marcus"}, {"code": "T4", "name": "Crystal"}, {"code": "T5", "name": "Tomohiro"}, {"code": "T6", "name": "Annie Oo"}, {"code": "T7", "name": "Nancy Chang"}, {"code": "T8", "name": "Max Yim"}, {"code": "W1", "name": "이종률"}, {"code": "W2", "name": "김도영"}, {"code": "W3", "name": "엄혜리"}, {"code": "W4", "name": "구채림"}, {"code": "W5", "name": "고재호"}, {"code": "W6", "name": "임채성"}, {"code": "W7", "name": "은일"}, {"code": "W8", "name": "블라디"}, {"code": "W9", "name": "이세영"}];
+const JUDGES = Object.fromEntries(["T1","T2","T3","T4","T5","T6","T7","T8","W1","W2","W3","W4","W5","W6","W7","W8","W9"].map(code=>[code,code]));
+const JUDGE_LIST = Object.keys(JUDGES).map(code=>({code}));
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
@@ -97,7 +98,7 @@ const natural = (a,b) => String(a).localeCompare(String(b), undefined, {numeric:
 function renderJudgeButtons() {
   const make = group => JUDGE_LIST
     .filter(j => j.code.startsWith(group))
-    .map(j => `<button class="judge-choice" data-code="${j.code}" type="button"><strong>${j.code}</strong><span>${j.name}</span></button>`)
+    .map(j => `<button class="judge-choice" data-code="${j.code}" type="button"><strong>${j.code}</strong></button>`)
     .join("");
   document.getElementById("tJudgeButtons").innerHTML = make("T");
   document.getElementById("wJudgeButtons").innerHTML = make("W");
@@ -116,7 +117,7 @@ function chooseJudge(code) {
   });
 
   document.getElementById("selectedJudgeName").innerHTML =
-    `<span class="current-check">✓</span> ${code} · ${JUDGES[code]}`;
+    `<span class="current-check">✓</span> ${code}`;
 
   setTimeout(() => {
     judgeGate.classList.add("hidden");
@@ -376,7 +377,6 @@ async function submitBallot() {
 
   const payload = {
     judge: currentJudge,
-    judgeName: JUDGES[currentJudge],
     eventKey: eventSelect.value,
     eventLabel: eventSelect.selectedOptions[0].textContent,
     round,
@@ -385,10 +385,50 @@ async function submitBallot() {
   };
 
   await set(ref(db, `submissions/${roundKey()}/${currentJudge}`), payload);
-  message.textContent = "SUBMITTED ✓";
+  const resultSaved = await autoSaveCompletedRound(round).catch(err => {
+    console.error("Automatic result calculation failed", err);
+    return false;
+  });
+  message.textContent = resultSaved ? "SUBMITTED ✓ · RESULT SAVED ✓" : "SUBMITTED ✓";
   message.className = "message submitted-message";
   setBallotLocked(true);
   refreshEventOptionStatuses();
+}
+
+async function competitorsForCalculation(eventKey, round) {
+  const [event,section,style] = eventKey.split("||");
+  let list = [...new Map(entries
+    .filter(x => x.event===event && x.section===section && x.style===style)
+    .map(x => [String(x.backNo), {backNo:String(x.backNo),name:x.competitor}])).values()];
+  const encoded=btoa(unescape(encodeURIComponent(eventKey))).replaceAll("=","");
+  const priorRound=round==="semi"?"quarter":round==="final"?"semi":"";
+  if(priorRound){
+    const prior=(await get(ref(db,`results/${encoded}/${priorRound}`))).val();
+    const qualified=prior?.qualifiedBackNos;
+    if(Array.isArray(qualified)&&qualified.length){const allowed=new Set(qualified.map(String));list=list.filter(x=>allowed.has(x.backNo));}
+  }
+  return list.sort((a,b)=>natural(a.backNo,b.backNo));
+}
+
+async function autoSaveCompletedRound(round) {
+  const eventKey=eventSelect.value;
+  const setting=getSetting(eventKey)||{};
+  const assigned=(setting.assignedJudges||[]).map(String);
+  if(!assigned.length)return false;
+  const encoded=btoa(unescape(encodeURIComponent(eventKey))).replaceAll("=","");
+  const saved=await get(ref(db,`results/${encoded}/${round}`));
+  if(saved.exists())return true;
+  const allSubmissions=(await get(ref(db,`submissions/${encoded}_${round}`))).val()||{};
+  if(!assigned.every(code=>allSubmissions[code]))return false;
+  const submissions=Object.fromEntries(assigned.map(code=>[code,allSubmissions[code]]));
+  const competitors=await competitorsForCalculation(eventKey,round);
+  if(!competitors.length)return false;
+  const calc=round==="final"
+    ?aggregateFinalSkating(submissions,competitors.map(x=>x.backNo))
+    :aggregateRecall(submissions,competitors.map(x=>x.backNo),round==="quarter"?12:6);
+  const eventLabel=setting.event||eventSelect.selectedOptions[0]?.dataset.originalLabel||eventKey.split("||")[0];
+  await set(ref(db,`results/${encoded}/${round}`),{...calc,eventKey,eventLabel,round,assignedJudges:assigned,submittedJudges:assigned,calculatedAt:Date.now(),automatic:true});
+  return true;
 }
 
 document.getElementById("submitBtn").onclick = submitBallot;

@@ -1,35 +1,100 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>APDC Certificate Print</title><link rel="stylesheet" href="style.css"><style>
 body{background:#f4f4f4}.wrap{max-width:1100px;margin:auto;padding:24px}.toolbar{background:#fff;border:1px solid #ccc;padding:18px;margin-bottom:18px}.toolbar select,.toolbar input{width:100%;padding:12px;margin:6px 0 12px}.toolbar button{padding:13px 18px}.list{background:#fff;border:1px solid #ccc}.row{display:grid;grid-template-columns:50px 80px 1fr 1.3fr 90px;gap:8px;padding:12px;border-bottom:1px solid #eee;align-items:center}.cert{position:relative;width:210mm;height:297mm;background:#fff;page-break-after:always;overflow:hidden}.cert img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;transform:scale(1.04)}.cover{position:absolute;z-index:2;text-align:center;display:flex;align-items:center;justify-content:center}.name{left:20%;top:41%;width:60%;height:7%;font:700 13mm Georgia;color:#8b5a2b}.event{left:18%;top:64.3%;width:64%;height:5.5%;font:600 5.7mm Georgia;color:#a36b1c}.place{left:30%;top:54%;width:40%;height:7%;font:700 13.5mm Georgia;color:#a36b1c}.batch{display:none}@media print{body>*:not(.batch){display:none!important}.batch{display:block}.cert{box-shadow:none;margin:0}}
-</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><label>EVENT<select id="event"></select></label><label><input id="all" type="checkbox"> 전체 선택</label><button id="print">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';
+</style></head><body><header><a class="brand brand-link" href="admin.html">APDC CERTIFICATE</a></header><main class="wrap"><div class="toolbar"><h1>FINAL RESULTS → CERTIFICATE</h1><div id="meta"></div><div style="font-size:12px;font-weight:800;margin:6px 0 12px">ALL ASSIGNED JUDGES MUST SUBMIT · 모든 배정 심사위원 제출 완료 경기만 표시</div><label>EVENT<select id="event"></select></label><label><input id="all" type="checkbox"> 전체 선택</label><button id="print">선택 상장 출력</button><span id="msg"></span></div><div id="list" class="list"></div></main><div id="batch" class="batch"></div><script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';import{getDatabase,ref as fbRef,onValue,set}from'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';import{firebaseConfig}from'./firebase-config.js';import{competitionPath,competitionId}from'./competition-context.js';import{aggregateFinalSkating}from'./results-engine.js';
 const db=getDatabase(initializeApp(firebaseConfig));const ref=p=>fbRef(db,competitionPath(p));const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-let results={},entries=[],meta={},finals=[];const sel=document.getElementById('event');
+let results={},entries=[],meta={},submissions={},eventSettings={},finals=[],repairing=false;const sel=document.getElementById('event');
 const eventKeyOf=x=>[x?.event||'',x?.section||'',x?.style||''].join('||');
 function asArray(value){return Array.isArray(value)?value:Object.values(value||{}).filter(Boolean)}
+function isFinalComplete(encoded,f){
+  const setting=eventSettings?.[encoded]||{};
+  const assigned=asArray(f?.assignedJudges).length?asArray(f.assignedJudges).map(String):asArray(setting?.assignedJudges).map(String);
+  if(!assigned.length)return false;
+  const ballots=submissions?.[`${encoded}_final`]||{};
+  return assigned.every(code=>!!ballots?.[code]);
+}
 function rebuildFinals(){
   const byEventBack=new Map(),byLabelBack=new Map(),byBack=new Map();
   entries.forEach(x=>{if(!x?.backNo)return;const back=String(x.backNo),key=`${eventKeyOf(x)}__${back}`,label=`${x.event||''}__${back}`;byEventBack.set(key,x);byLabelBack.set(label,x);if(!byBack.has(back))byBack.set(back,x)});
   finals=[];
+
+  // Build the certificate event list from COMPLETED FINAL submissions first.
+  // A pre-existing results node is no longer required for an event to appear.
+  Object.entries(eventSettings||{}).forEach(([encoded,setting])=>{
+    const assigned=asArray(setting?.assignedJudges).map(String).filter(Boolean);
+    if(!assigned.length)return;
+    const ballots=submissions?.[`${encoded}_final`]||{};
+    if(!assigned.every(code=>!!ballots?.[code]))return;
+
+    const eventKey=setting?.eventKey||'';
+    const eventLabel=String(setting?.event||eventKey.split('||')[0]||encoded).replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
+    let f=results?.[encoded]?.final||null;
+    let ranking=asArray(f?.ranking);
+
+    // If result persistence lagged or failed, calculate immediately from the completed ballots
+    // so the EVENT is visible in Certificate Print without another manual action.
+    if(!ranking.length){
+      const used=Object.fromEntries(assigned.map(code=>[code,ballots[code]]));
+      let competitorBackNos=[];
+      const fromBallots=assigned.flatMap(code=>asArray(ballots[code]?.result).map(x=>String(x?.backNo??'')).filter(Boolean));
+      if(fromBallots.length) competitorBackNos=[...new Set(fromBallots)];
+      if(!competitorBackNos.length && eventKey){
+        competitorBackNos=[...new Set(entries.filter(x=>eventKeyOf(x)===eventKey).map(x=>String(x.backNo||'')).filter(Boolean))];
+      }
+      if(competitorBackNos.length) ranking=asArray(aggregateFinalSkating(used,competitorBackNos).ranking);
+    }
+
+    ranking.forEach(r=>{
+      if(r?.backNo===undefined||r?.backNo===null)return;
+      const back=String(r.backNo);
+      const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`)||byBack.get(back)||{};
+      const place=Number(r.place??r.rank)||0;
+      finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:r.name||r.competitor||entry.competitor||entry.name||back,place});
+    });
+  });
+
+  // Compatibility fallback for older saved competitions that have results but no eventSettings node.
   Object.entries(results||{}).forEach(([encoded,ev])=>{
-    const f=ev?.final;if(!f)return;
+    if(eventSettings?.[encoded])return;
+    const f=ev?.final;if(!f||!isFinalComplete(encoded,f))return;
     const ranking=asArray(f.ranking);
     ranking.forEach(r=>{
       if(r?.backNo===undefined||r?.backNo===null)return;
       const back=String(r.backNo),eventKey=f.eventKey||'',eventLabel=String(f.eventLabel||'').replace(/^EVENT\s+[^·]+·\s*/i,'').trim();
       const entry=byEventBack.get(`${eventKey}__${back}`)||byLabelBack.get(`${eventLabel}__${back}`)||byBack.get(back)||{};
-      const place=Number(r.place??r.rank) || 0;
+      const place=Number(r.place??r.rank)||0;
       finals.push({eventKey,event:eventLabel||entry.event||encoded,backNo:back,name:r.name||r.competitor||entry.competitor||entry.name||back,place});
     });
   });
+
   const previous=sel.value,events=[...new Set(finals.map(x=>x.event).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:'base'}));
   sel.innerHTML='<option value="">ALL EVENTS</option>'+events.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
   if(events.includes(previous))sel.value=previous;
   document.getElementById('meta').textContent=`${meta.name||competitionId} ${meta.date?'· '+meta.date:''} · ${finals.length} CERTIFICATES`;
   render();
 }
-function rows(){return finals.filter(x=>!sel.value||x.event===sel.value).sort((a,b)=>a.event.localeCompare(b.event,undefined,{numeric:true,sensitivity:'base'})||a.place-b.place)}function render(){document.getElementById('list').innerHTML=rows().map((r,i)=>`<div class="row"><input type="checkbox" data-i="${i}"><b>${esc(r.backNo)}</b><span>${esc(r.name)}</span><span>${esc(r.event)}</span><b>${r.place}</b></div>`).join('')||'<div style="padding:30px">저장된 FINAL 결과가 없습니다.</div>';document.getElementById('all').checked=false}sel.onchange=render;document.getElementById('all').onchange=e=>document.querySelectorAll('[data-i]').forEach(x=>x.checked=e.target.checked);
-onValue(ref('results'),snap=>{results=snap.val()||{};rebuildFinals()});
-onValue(ref('entries'),snap=>{entries=asArray(snap.val());rebuildFinals()});
+async function repairCompletedFinals(){
+  if(repairing)return;repairing=true;
+  try{
+    for(const [encoded,setting] of Object.entries(eventSettings||{})){
+      if(results?.[encoded]?.final?.ranking)continue;
+      const assigned=(setting?.assignedJudges||[]).map(String);if(!assigned.length)continue;
+      const ballots=submissions?.[`${encoded}_final`]||{};if(!assigned.every(code=>ballots[code]))continue;
+      const eventKey=setting.eventKey||'';
+      const rankedBackNos=assigned.flatMap(code=>asArray(ballots[code]?.result).map(x=>String(x?.backNo??'')).filter(Boolean));
+      const competitors=[...new Set(rankedBackNos.length?rankedBackNos:entries.filter(x=>eventKeyOf(x)===eventKey).map(x=>String(x.backNo)).filter(Boolean))];
+      if(!competitors.length)continue;
+      const used=Object.fromEntries(assigned.map(code=>[code,ballots[code]]));
+      const calc=aggregateFinalSkating(used,competitors);
+      await set(ref(`results/${encoded}/final`),{...calc,eventKey,eventLabel:setting.event||eventKey.split('||')[0]||encoded,round:'final',assignedJudges:assigned,submittedJudges:assigned,calculatedAt:Date.now(),automatic:true,recoveredByCertificate:true});
+    }
+  }finally{repairing=false}
+}
+function rows(){return finals.filter(x=>!sel.value||x.event===sel.value).sort((a,b)=>a.event.localeCompare(b.event,undefined,{numeric:true,sensitivity:'base'})||a.place-b.place)}function render(){document.getElementById('list').innerHTML=rows().map((r,i)=>`<div class="row"><input type="checkbox" data-i="${i}"><b>${esc(r.backNo)}</b><span>${esc(r.name)}</span><span>${esc(r.event)}</span><b>${r.place}</b></div>`).join('')||'<div style="padding:30px">완료된 FINAL 결과가 없습니다.</div>';document.getElementById('all').checked=false}sel.onchange=render;document.getElementById('all').onchange=e=>document.querySelectorAll('[data-i]').forEach(x=>x.checked=e.target.checked);
+onValue(ref('results'),snap=>{results=snap.val()||{};rebuildFinals();repairCompletedFinals()});
+onValue(ref('entries'),snap=>{entries=asArray(snap.val());rebuildFinals();repairCompletedFinals()});
 onValue(ref('meta'),snap=>{meta=snap.val()||{};rebuildFinals()});
+onValue(ref('submissions'),snap=>{submissions=snap.val()||{};rebuildFinals();repairCompletedFinals()});
+onValue(ref('eventSettings'),snap=>{eventSettings=snap.val()||{};rebuildFinals();repairCompletedFinals()});
 const cert=r=>`<section class="cert"><img src="APDC_Certificate_Background_v2.png"><div class="cover name">${esc(r.name)}</div><div class="cover place">${r.place}${r.place===1?'ST':r.place===2?'ND':r.place===3?'RD':'TH'}</div><div class="cover event">${esc(r.event)}</div></section>`;document.getElementById('print').onclick=()=>{const rr=rows(),picked=[...document.querySelectorAll('[data-i]:checked')].map(x=>rr[Number(x.dataset.i)]).filter(Boolean);if(!picked.length)return alert('출력할 결과를 선택하세요.');document.getElementById('batch').innerHTML=picked.map(cert).join('');setTimeout(()=>window.print(),100)};
 </script></body></html>
