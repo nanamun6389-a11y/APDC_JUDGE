@@ -39,7 +39,6 @@
   <button type="button" data-admin-tab="judges">JUDGES</button>
   <button type="button" data-admin-tab="judging">JUDGING</button>
   <button type="button" data-admin-tab="results">RESULTS</button>
-  <button type="button" data-admin-tab="floor">FLOOR</button>
   <button type="button" data-admin-tab="sponsor">SPONSORS</button>
   <button type="button" data-admin-tab="system">SYSTEM</button>
 </div>
@@ -229,7 +228,7 @@
   <div class="small-label">COMPETITION RESULTS</div><h2>RESULTS</h2>
   <div class="entry-player-grid"><label>EVENT<select id="resultEvent"></select></label><label>ROUND<select id="resultRound"><option value="quarter">Quarter Final</option><option value="semi">Semi Final</option><option value="final">Final</option></select></label></div>
   <div id="resultSubmissionStatus" class="message"></div>
-  <div class="workflow-actions"><button id="calculateResultBtn" class="workflow-btn primary" type="button">CALCULATE / SAVE RESULT</button><a id="certificateLiveLink" class="workflow-btn secondary" href="certificate-live.html">CERTIFICATE PRINT <span aria-hidden="true">→</span></a></div>
+  <div class="workflow-actions"><button id="calculateResultBtn" class="workflow-btn primary" type="button">CALCULATE / SAVE RESULT</button><a id="liveResultsLink" class="workflow-btn secondary" href="live-results.html">RESULT BOARD <span aria-hidden="true">→</span></a><a id="certificateLiveLink" class="workflow-btn secondary" href="certificate-live.html">CERTIFICATE PRINT <span aria-hidden="true">→</span></a></div>
   <div id="resultOutput" style="margin-top:18px"></div>
 </section>
 <section class="on-deck-admin admin-tab-panel hidden" data-admin-panel="floor">
@@ -245,8 +244,6 @@
 </section>
 
 
-</div>
-
 <section class="system-panel admin-tab-panel hidden" data-admin-panel="system">
   <div class="small-label">SYSTEM</div>
   <h2>SYSTEM STATUS</h2>
@@ -259,6 +256,8 @@
   </div>
   
 </section>
+
+</div>
 
 </main>
 <script src="i18n.js?v=v11-workflow"></script>
